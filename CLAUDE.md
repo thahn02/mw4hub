@@ -1,0 +1,28 @@
+# MW4 Hub: working notes for Claude
+
+Static site for a small group of Modern Warfare 4 players. Live at https://thahn02.github.io/mw4hub/ (GitHub Pages, deployed by `.github/workflows/pages.yml` on every push to `main`). The owner is not a developer: make changes end to end, then say plainly what changed.
+
+## How it fits together
+
+- `data/*.json` is all content. `build.js` (Node, no dependencies) renders it into `dist/`. Never edit `dist/`.
+- `src/assets/` holds the styles and scripts. `planner.js` is the interactive map planner; it reads a JSON blob that `build.js` embeds in each map page.
+- `src/images/` holds minimaps (`<slug>-map.webp`, square), cover images (`<slug>-hero.webp`, 16:9) and Warzone map images.
+- Links are relative so the site works under any base path. Only `404.html` needs the base, passed as `BASE=/mw4hub/`.
+
+## Before every push
+
+```
+node build.js && node tools/check-site.js
+```
+
+`check-site.js` opens every page in headless Chromium (Playwright) and exercises the planner, filters and share links. It must print "All checks passed."
+
+## Updating content
+
+- Loadouts: edit `data/loadouts.json`. Fields: `game` (`ranked` or `warzone`), `kind` (`pro` or `meta`), `weapon`, `class`, `tier` (S to D), `category`, `players`, `team`, `builds[{name, attachments[{slot, name}]}]`, `source{label, url}`, `sources_tier` (tier per tracker, Warzone), `verified` (YYYY-MM-DD). Order in the file is display order within a tier.
+- Maps: edit `data/maps.json`. Coordinates run 0 to 1 from the top-left of the minimap. `hp.hills[{n, name, x, y}]` in rotation order; `snd.sites[{id: A|B, x, y}]` plus `snd.bomb`; `intel.hp` and `intel.snd` are official routes and notes in the planner's item format.
+- Always record where data came from (`source`, `sources`) and update `verified` when a build is re-checked.
+
+## Not built yet
+
+Accounts, cloud-saved plans and team boards. Plans live in each visitor's browser (`localStorage` keys `mw4hub:<map>:<mode>`) and are shared by link (`#p=` payload) or exported image.
