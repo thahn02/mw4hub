@@ -493,5 +493,30 @@
         }
       ]
     }
+  ],
+  "effects": {
+    "Kill Chain": "Kills you get with killstreaks count half toward your streaks.",
+    "Ninja": "Quieter footsteps.",
+    "Blood Rush": "Turns on Tactical Sprint for a burst of speed. Kills refill your stamina.",
+    "Fast Hands": "Faster reloads.",
+    "Bomb Squad": "Take less damage from explosives.",
+    "Battle Hardened": "Enemy tacticals affect you less."
+  },
+  "effectsSources": [
+    {
+      "label": "Dot Esports: Best MW4 perks",
+      "url": "https://dotesports.com/call-of-duty/guides/best-mw4-perks",
+      "date": "2026-11-17"
+    },
+    {
+      "label": "Insider Gaming: All Modern Warfare 4 perks",
+      "url": "https://insider-gaming.com/modern-warfare-4-all-perks/",
+      "date": "2026-11-17"
+    },
+    {
+      "label": "Mobalytics: MW4 perks tier list",
+      "url": "https://mobalytics.gg/gamebase/guides/mw4-perks-tier-list-loadouts",
+      "date": "2026-11-17"
+    }
   ]
 }

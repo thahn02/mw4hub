@@ -23,6 +23,18 @@ const server = http.createServer((req, res) => {
 	const allMaps = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'maps.json'), 'utf8'));
 	const maps = allMaps.filter((m) => m.modes && m.modes.length);
 	const browser = await chromium.launch({ executablePath: process.env.CHROME || undefined });
+	// Weapon pictures are loaded by link from callofduty.com. The checks never call out to it: a stand-in picture
+	// is served instead, and one context refuses the request to prove the page copes without the pictures.
+	const GUN_HOST = /^https:\/\/imgs\.callofduty\.com\//;
+	let standIn = null;
+	{
+		const sp = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
+		await sp.setContent('<body style="margin:0;background:#000"><div style="position:absolute;left:15%;top:22%;width:70%;height:20%;background:linear-gradient(90deg,#777,#bbb);border-radius:14px"></div><div style="position:absolute;left:44%;top:40%;width:7%;height:16%;background:#999"></div></body>');
+		standIn = await sp.screenshot({ type: 'png' });
+		await sp.close();
+	}
+	const newContext = browser.newContext.bind(browser);
+	browser.newContext = async (o) => { const c = await newContext(o); await c.route(GUN_HOST, (r) => r.fulfill({ status: 200, contentType: 'image/png', body: standIn })); return c; };
 	const problems = [];
 	const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
 	const page = await ctx.newPage();
@@ -53,15 +65,20 @@ const server = http.createServer((req, res) => {
 	const views = await page.locator('.ld-view').count();
 	expect(views > 0 && await page.locator('.ld-view:visible').count() === 1, 'loadout screen shows one loadout at a time');
 	expect(await page.locator('[data-ld-list=gun] .ld-item').count() + await page.locator('[data-ld-list=role] .ld-item').count() === views, 'every list entry has a loadout view');
-	expect(await page.locator('.ld-view:visible .ld-att').count() === 5 && await page.locator('.ld-view:visible .ld-kit').count() === 8, 'a loadout shows five attachments plus sidearm, melee, tactical, lethal, field upgrade and three perks');
+	expect(await page.locator('.ld-view:visible .ld-att').count() === 5 && await page.locator('.ld-view:visible .ld-stack .ld-slot').count() === 7 && await page.locator('.ld-view:visible .ld-perk').count() === 3 && await page.locator('.ld-view:visible .ld-pi').count() === 3,
+		'a loadout shows five attachments, the seven slots (primary, secondary, melee, tactical, lethal, field upgrade, perks) and three perk write-ups');
+	await page.waitForFunction(() => { const i = document.querySelector('.ld-view:not([hidden]) .ld-primary .gun-pic img'); return i && i.complete && i.naturalWidth > 0; });
+	expect(await page.locator('.ld-view:visible .ld-stack .gun-pic:visible').count() === 3 && await page.locator('.ld-view:visible .ld-hero .gun-pic:visible').count() === 1, 'primary, secondary and melee are pictured, plus the large weapon picture');
+	expect(await page.$$eval('.gun-pic img', (is) => is.every((i) => /^https:\/\/imgs\.callofduty\.com\//.test(i.src) && i.alt && i.referrerPolicy === 'no-referrer')), 'weapon pictures come from the official source and are labelled');
+	expect(await page.locator('.ld-view:visible .ld-primary .ld-pips i.on').count() === 5 && await page.locator('.ld-view:visible .ld-secondary .ld-pips i.on').count() === 0, 'attachment pips: five on the primary, none on the sidearm');
 	expect(await page.locator('.ld-view .cls-legal').count() === views && await page.locator('.ld-view .chip-ok').count() === views * 2, 'every loadout shows Ranked and CMG legal');
 	expect(await page.locator('.lo-stale').count() === 0, 'loadouts are not flagged stale on a fresh build');
 	const second = page.locator('[data-ld-list=gun] .ld-item').nth(1);
 	const secondId = await second.getAttribute('data-ld-open');
 	await second.click();
 	expect(await page.locator('.ld-view:visible').getAttribute('data-ld-view') === secondId && page.url().endsWith('#' + secondId), 'picking a loadout opens it and puts it in the address');
-	const tiles = await page.$$eval('.ld-view:not([hidden]) .ld-tile', (ts) => ts.filter((t) => t.scrollWidth > t.clientWidth + 1 || !t.querySelector('.ld-n').textContent.trim()).length);
-	expect(tiles === 0, 'no slot tile is empty or overflowing');
+	const tiles = await page.$$eval('.ld-view:not([hidden]) .ld-slot, .ld-view:not([hidden]) .ld-att', (ts) => ts.filter((t) => t.scrollWidth > t.clientWidth + 1 || !(t.querySelector('.ld-n, .ld-perk b') || {}).textContent).length);
+	expect(tiles === 0, 'no slot is empty or overflowing');
 	await shot('loadouts-gun', true);
 	await page.click('[data-ld-group=role]');
 	expect(await page.locator('[data-ld-list=role]').isVisible() && !(await page.locator('[data-ld-list=gun]').isVisible()) && await page.locator('[data-ld-list=role] .ld-group').count() === 4, 'by role lists four roles');
@@ -82,6 +99,16 @@ const server = http.createServer((req, res) => {
 	expect(await page.locator('[data-panel=rules] .rl-row').count() > 20 && await page.locator('.rl-card').count() === 2 && !(await page.locator('.ld').isVisible()), 'rules panel: gun check and both rule sets');
 	await page.click('[data-seg] [data-tab=loadouts]');
 	expect(await page.locator('.ld-view:visible').count() === 1, 'back to the loadout screen');
+	// If the weapon pictures cannot be loaded, the slots still show the names.
+	{
+		const bare = await newContext({ viewport: { width: 1280, height: 800 } });
+		await bare.route(GUN_HOST, (r) => r.abort());
+		const bp = await bare.newPage();
+		await bp.goto(base + 'ranked-loadouts/', { waitUntil: 'networkidle' });
+		await bp.waitForFunction(() => document.querySelectorAll('.ld-view:not([hidden]) .gun-pic.is-missing').length === 4).catch(() => {});
+		expect(await bp.locator('.ld-view:visible .gun-pic:visible').count() === 0 && (await bp.locator('.ld-view:visible .ld-primary .ld-n').innerText()).trim().length > 0, 'loadouts still read without the weapon pictures');
+		await bare.close();
+	}
 	// If the daily refresh stops, old loadouts are hidden rather than shown as current.
 	{
 		const late = await browser.newContext();
@@ -251,7 +278,7 @@ const server = http.createServer((req, res) => {
 	await mp.locator('[data-ld-list=gun] .ld-item').last().scrollIntoViewIfNeeded();
 	await mp.locator('[data-ld-list=gun] .ld-item').last().tap();
 	if (await mp.locator('.ld-view:visible').getAttribute('data-ld-view') !== await mp.locator('[data-ld-list=gun] .ld-item').last().getAttribute('data-ld-open')) problems.push('loadout list does not work on a phone');
-	if (await mp.$$eval('.ld-view:not([hidden]) .ld-tile', (ts) => ts.filter((t) => t.scrollWidth > t.clientWidth + 1).length)) problems.push('a slot tile overflows on a phone');
+	if (await mp.$$eval('.ld-view:not([hidden]) .ld-slot, .ld-view:not([hidden]) .ld-att', (ts) => ts.filter((t) => t.scrollWidth > t.clientWidth + 1).length)) problems.push('a slot overflows on a phone');
 	if (SHOTS) await mp.screenshot({ path: path.join(SHOTS, 'mobile-loadouts.png'), fullPage: true });
 	await browser.close(); server.close();
 	console.log('Checked ' + (10 + maps.length) + ' pages and ' + seen.size + ' internal links at ' + (PREFIX || '/'));

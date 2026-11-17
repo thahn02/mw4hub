@@ -121,6 +121,11 @@
 		}
 	});
 
+	// Weapon pictures are official graphics loaded by link. If one does not load, drop it and keep the name.
+	function picMissing(img) { var p = img.closest && img.closest('.gun-pic'); if (p) p.classList.add('is-missing'); }
+	document.addEventListener('error', function (e) { if (e.target && e.target.tagName === 'IMG') picMissing(e.target); }, true);
+	Array.prototype.forEach.call(document.querySelectorAll('.gun-pic img'), function (img) { if (img.complete && !img.naturalWidth && img.currentSrc) picMissing(img); });
+
 	// Loadout screen: pick a loadout from the list, shown as slot tiles. The open loadout is kept in the address
 	// so a link to it can be shared.
 	Array.prototype.forEach.call(document.querySelectorAll('[data-ld]'), function (ld) {

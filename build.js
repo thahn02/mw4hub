@@ -31,6 +31,7 @@ const extras = read('map-extras.json');
 const rules = read('rules.json');
 const classData = read('classes.json');
 const weaponList = read('weapons.json');
+const gunImages = read('gun-images.json');
 
 // Freshness. Anything not re-checked within these many days is left off the site, so a stale build can never be
 // shown as current. TODAY can be pinned (TODAY=2026-11-17 node build.js) for a repeatable build.
@@ -73,8 +74,6 @@ const ICO = {
 	map: '<path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/>',
 	gun: '<path d="M3 10h14l2-2h2v4h-3l-1 2h-4l-1 4H8l1-4H5l-2-2z"/>',
 	drop: '<path d="M12 3l7 4v6c0 4-3 7-7 8-4-1-7-4-7-8V7z"/><path d="M9 12l2 2 4-4"/>',
-	pistol: '<path d="M3 7h17v4h-7l-1.5 3h-3v-3h-1L6 19H2.5L4 11H3z"/>',
-	knife: '<path d="M9 15L19.5 4.5c.8 3.2-.2 6.2-2.3 8.3L11.5 17.5z"/><path d="M7.5 13.5l3 3M8.5 16L4.5 20"/>',
 	tactical: '<circle cx="12" cy="12" r="3.6"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/>',
 	lethal: '<rect x="7" y="9" width="10" height="12" rx="4"/><path d="M10 9V6h4v3M14 6h3.5l1 3"/>',
 	fieldUpgrade: '<path d="M12 3.5v9.5M7 20.5l5-7.5 5 7.5M8 7h8"/><circle cx="12" cy="7" r="1.2"/>',
@@ -82,7 +81,6 @@ const ICO = {
 	perk2: '<path d="M12 3l7.8 4.5v9L12 21l-7.8-4.5v-9z"/><path d="M10 10.2c.3-1.9 3.8-1.9 3.8.2 0 1.6-2.4 2.6-3.9 4.8h4.2"/>',
 	perk3: '<path d="M12 3l7.8 4.5v9L12 21l-7.8-4.5v-9z"/><path d="M10 9.2h3.8l-2.2 2.7c3.4 0 3 3.6.4 3.6-1.1 0-1.9-.5-2.2-1.2"/>',
 };
-const RIFLE = '<svg viewBox="0 6 25 11.5" fill="none" stroke="currentColor" stroke-linejoin="round" aria-hidden="true"><path d="M.6 9.6h4.6l1-1.1h7.6l.5-1.2h2.6l.5 1.2h2.2v1h4.2v1.1h-4.2v.9h-5.2l-.8 1.3h-1.6l-.8 4.1h-2.5l.6-4.1H7.6l-1.3 2.6H4.4l.7-2.6H3.9L1.6 14.6H.6z"/><path d="M14.2 7.3v-.7h1.4v.7M9 9.6h3.4"/></svg>';
 const ico = (n) => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (ICO[n] || '') + '</svg>';
 
 // ---------- layout ----------
@@ -287,21 +285,30 @@ function legalChips(lg) {
 function srcLinks(list) {
 	return (list || []).map((x) => '<a class="lo-src" href="' + esc(x.url) + '" target="_blank" rel="noopener nofollow">' + esc((x.kind ? x.kind + ': ' : '') + x.label.replace(/^[^:]+: /, (m) => m)) + '</a>').join('');
 }
-// ---------- loadout screen: a list of loadouts on the left, the picked one on the right as slot tiles ----------
-const KIT_ICON = { secondary: 'pistol', melee: 'knife', tactical: 'tactical', lethal: 'lethal', fieldUpgrade: 'fieldUpgrade', perk1: 'perk1', perk2: 'perk2', perk3: 'perk3' };
+// ---------- loadout screen: laid out like the in-game class editor (numbered class list, a stacked column of
+// slots with the weapon pictured, details beside it), without the operator ----------
+const KIT_ICON = { tactical: 'tactical', lethal: 'lethal', fieldUpgrade: 'fieldUpgrade', perk1: 'perk1', perk2: 'perk2', perk3: 'perk3' };
+const MAX_ATTACHMENTS = 5;
 function buildWho(bd) {
 	return bd.kind === 'pro' ? (bd.players && bd.players.length ? bd.players.join(' & ') + (bd.team ? ' · ' + bd.team : '') : 'Pro build') : 'Creator variant';
 }
-function ldTile(label, name, sub, cls, icon) {
-	return '<div class="ld-tile' + (cls ? ' ' + cls : '') + '"><span class="ld-k">' + esc(label) + '</span>' + (icon ? '<span class="ld-ico">' + ico(icon) + '</span>' : '') +
-		'<b class="ld-n">' + esc(name) + '</b>' + (sub ? '<span class="ld-s">' + esc(sub) + '</span>' : '') + '</div>';
+// Official weapon graphic, shown by link and cropped to the weapon with CSS (see data/gun-images.json).
+function gunPic(name, cls) {
+	const key = Object.keys(gunImages.images).find((k) => same(k, name));
+	if (!key) return '';
+	const g = gunImages.images[key], c = g.crop || gunImages.defaultCrop, pct = (n) => (Math.round(n * 1e4) / 100) + '%';
+	const ar = Math.round((c[2] * gunImages.size[0]) / (c[3] * gunImages.size[1]) * 1000) / 1000;
+	return '<span class="gun-pic' + (cls ? ' ' + cls : '') + '" style="--ar:' + ar + '"><img src="' + esc(gunImages.base + g.file + gunImages.ext) + '" alt="' + esc(g.name || name) + '" width="' + gunImages.size[0] + '" height="' + gunImages.size[1] + '" loading="lazy" decoding="async" referrerpolicy="no-referrer" style="width:' + pct(1 / c[2]) + ';left:' + pct(-c[0] / c[2]) + ';top:' + pct(-c[1] / c[3]) + '"></span>';
 }
-function kitTile(kit, k, label) {
+const pips = (n) => '<span class="ld-pips" role="img" aria-label="' + n + ' of ' + MAX_ATTACHMENTS + ' attachments">' + Array.from({ length: MAX_ATTACHMENTS }, (_, i) => '<i' + (i < n ? ' class="on"' : '') + '></i>').join('') + '</span>';
+function gunSlot(label, name, cls, n, slotCls) {
+	return '<div class="ld-slot ld-gun ' + slotCls + '"><div class="ld-slot-top"><span class="ld-k">' + esc(label) + '</span>' + (n === null ? '' : pips(n)) + '</div>' + gunPic(name) +
+		'<div class="ld-slot-name">' + (cls ? '<span class="ld-s">' + esc(cls) + '</span>' : '') + '<b class="ld-n">' + esc(name) + '</b></div></div>';
+}
+function rowSlot(kit, k, label) {
 	const it = kit[k];
 	if (!it) return '';
-	let sub = it.alt && it.alt.length ? 'or ' + it.alt.join(', ') : '';
-	if (k === 'secondary') { const w = weaponList.find((x) => same(x.name, it.name)); sub = w ? w.class : ''; }
-	return ldTile(label, it.name, sub, 'ld-kit ld-' + k, KIT_ICON[k]);
+	return '<div class="ld-slot ld-row ld-' + k + '"><div><span class="ld-k">' + esc(label) + '</span><b class="ld-n">' + esc(it.name) + '</b>' + (it.alt && it.alt.length ? '<span class="ld-s">or ' + esc(it.alt.join(', ')) + '</span>' : '') + '</div><span class="ld-ico">' + ico(KIT_ICON[k]) + '</span></div>';
 }
 function rolePicks(key) {
 	const cfg = classData.roles[key];
@@ -309,44 +316,50 @@ function rolePicks(key) {
 	return picks.length ? picks : liveBuilds.filter((x) => inList(cfg.guns, x.weapon)).slice(0, 2);
 }
 function loadoutView(id, bd, kit, role, first) {
-	const who = buildWho(bd), atts = bd.attachments || [];
+	const who = buildWho(bd), atts = bd.attachments || [], effects = classData.effects || {};
 	const runBy = role ? [] : roleData.roles.filter((r) => classData.roles[r.key] && inList(classData.roles[r.key].guns, bd.weapon));
-	const sec = (title, cls, body) => '<section class="ld-sec ' + cls + '"><h3>' + esc(title) + '</h3>' + body + '</section>';
+	const secClass = kit.secondary ? ((weaponList.find((x) => same(x.name, kit.secondary.name)) || {}).class || '') : '';
+	const perks = ['perk1', 'perk2', 'perk3'].filter((k) => kit[k]);
 	let h = '<article class="card ld-view" data-ld-view="' + esc(id) + '" data-build="' + esc(bd.id) + '"' + (role ? ' style="--role:' + esc(role.color) + '"' : '') + (first ? '' : ' hidden') + '>';
-	h += '<header class="ld-head"><div class="ld-title">' + (role ? '<span class="role-badge">' + esc(role.short) + '</span>' : '') + '<div><span class="ld-eyebrow">' + esc(role ? role.tag + ' class' : bd.weapon + (who !== bd.label ? ' \u00b7 ' + who : '')) + '</span><h2>' + esc(role ? role.name : bd.label) + '</h2></div></div>' +
+	h += '<header class="ld-head"><div class="ld-title">' + (role ? '<span class="role-badge">' + esc(role.short) + '</span>' : '') + '<div><span class="ld-eyebrow">' + esc(role ? role.tag + ' class' : bd.weapon + (who !== bd.label ? ' · ' + who : '')) + '</span><h2>' + esc(role ? role.name : bd.label) + '</h2></div></div>' +
 		'<div class="ld-actions">' + legalChips(bd.legal) + '<button class="btn btn-sm lo-copy" type="button" data-copy="' + esc(classCopyText(bd, kit)) + '">Copy class</button></div></header>';
-	if (role) h += '<p class="ld-note">' + esc(classData.roles[role.key].note) + '</p>';
-	h += '<div class="ld-grid">';
-	h += sec('Primary weapon', 'ld-primary', '<div class="ld-weapon"><div><b class="ld-wname">' + esc(bd.weapon) + '</b><span class="ld-s">' + esc(bd.class) + (role ? ' · ' + esc(bd.label) + (who !== bd.label ? ' · ' + esc(who) : '') : ' · ' + atts.length + ' attachments') + '</span></div>' + RIFLE + '</div>' +
-		atts.map((x, i) => ldTile(x.slot || 'Attachment', x.name || x.type || '', x.name ? (x.type && !same(x.type, x.slot) ? x.type : '') : 'Name not given by the source', 'ld-att' + (i === atts.length - 1 && atts.length % 2 ? ' ld-wide' : ''))).join('') +
-		bd.legal.ga.map((g) => '<p class="cls-ga">' + esc(g.text) + ' It is still legal in Ranked and CMG Arena as the rules are written.</p>').join(''));
-	h += sec('Secondary', 'ld-c6', kitTile(kit, 'secondary', 'Sidearm') + kitTile(kit, 'melee', 'Melee'));
-	h += sec('Equipment', 'ld-c9', kitTile(kit, 'tactical', 'Tactical') + kitTile(kit, 'lethal', 'Lethal') + kitTile(kit, 'fieldUpgrade', 'Field upgrade'));
-	h += sec('Perks', 'ld-perks', kitTile(kit, 'perk1', 'Perk 1') + kitTile(kit, 'perk2', 'Perk 2') + kitTile(kit, 'perk3', 'Perk 3'));
-	h += '</div>';
-	if (bd.note) h += '<p class="ld-note">' + (role ? '<b>' + esc(bd.weapon + ' · ' + bd.label) + ':</b> ' : '') + esc(bd.note) + '</p>';
+	if (role) h += '<p class="ld-note ld-rolenote">' + esc(classData.roles[role.key].note) + '</p>';
+	// Slot column
+	h += '<div class="ld-stack">' + gunSlot('Primary', bd.weapon, bd.class, atts.length, 'ld-primary') +
+		(kit.secondary ? gunSlot('Secondary', kit.secondary.name, secClass, 0, 'ld-secondary') : '') +
+		(kit.melee ? gunSlot('Melee', kit.melee.name, '', null, 'ld-melee') : '') +
+		rowSlot(kit, 'tactical', 'Tactical') + rowSlot(kit, 'lethal', 'Lethal') + rowSlot(kit, 'fieldUpgrade', 'Field upgrade') +
+		'<div class="ld-slot ld-perks"><span class="ld-k">Perks</span><div class="ld-perkrow">' + perks.map((k) => '<span class="ld-perk"><span class="ld-ico">' + ico(KIT_ICON[k]) + '</span><b>' + esc(kit[k].name) + '</b></span>').join('') + '</div></div></div>';
+	h += '<div class="ld-detail">';
+	const hero = gunPic(bd.weapon, 'gun-hero');
+	h += '<section class="ld-sec ld-gunsmith"><div class="ld-hero">' + hero + '<div class="ld-hero-name"><span class="ld-s">' + esc(bd.class) + (role ? ' · ' + esc(bd.label) + (who !== bd.label ? ' · ' + esc(who) : '') : '') + '</span><b>' + esc(bd.weapon) + '</b></div>' +
+		(hero ? '<span class="ld-credit">Image: ' + esc(gunImages.credit) + '</span>' : '') + '</div>' +
+		'<h3>Attachments <span>' + atts.length + ' of ' + MAX_ATTACHMENTS + '</span></h3><ol class="ld-atts">' + atts.map((x) => '<li class="ld-att"><span class="ld-k">' + esc(x.slot || 'Attachment') + '</span><b class="ld-n">' + esc(x.name || x.type || '') + '</b><span class="ld-s">' + esc(x.name ? (x.type && !same(x.type, x.slot) ? x.type : '') : 'Name not given by the source') + '</span></li>').join('') + '</ol>' +
+		bd.legal.ga.map((g) => '<p class="cls-ga">' + esc(g.text) + ' It is still legal in Ranked and CMG Arena as the rules are written.</p>').join('') +
+		(bd.note ? '<p class="ld-note">' + esc(bd.note) + '</p>' : '') + '</section>';
+	h += '<section class="ld-sec ld-perkinfo"><h3>Perks</h3>' + perks.map((k, i) => '<div class="ld-pi"><b>' + esc(kit[k].name) + '</b><span class="ld-k">Perk ' + (i + 1) + (kit[k].alt && kit[k].alt.length ? ' · or ' + esc(kit[k].alt.join(', ')) : '') + '</span>' +
+		'<p>' + [effects[Object.keys(effects).find((e) => same(e, kit[k].name))] || '', kit[k].note || ''].filter(Boolean).map(esc).join(' <i>' ) .replace(/ <i>(.*)$/, ' <i>$1</i>') + '</p></div>').join('') + '</section>';
 	if (runBy.length) h += '<div class="ld-runby"><span>Run by</span>' + runBy.map((r) => '<button type="button" class="chip cls-role" style="--role:' + esc(r.color) + '" data-ld-open="r-' + esc(r.key) + '-' + esc(bd.id) + '" data-ld-fallback="r-' + esc(r.key) + '"><i></i>' + esc(r.name) + '</button>').join('') + '</div>';
-	h += '<details class="ld-why"><summary>Why these picks</summary><ul>' + KIT_SLOTS.filter(([k]) => kit[k] && kit[k].note).map(([k, label]) => '<li><b>' + esc(label) + '</b> ' + esc(kit[k].note) + '</li>').join('') + '</ul>' +
+	h += '<details class="ld-why"><summary>Why this equipment</summary><ul>' + KIT_SLOTS.filter(([k]) => kit[k] && kit[k].note && !/^perk/.test(k)).map(([k, label]) => '<li><b>' + esc(label) + '</b> ' + esc(kit[k].note) + '</li>').join('') + '</ul>' +
 		'<div class="cls-srcs"><span class="lo-date">Perks and equipment from</span>' + srcLinks(classData.kit.sources) + '</div></details>';
 	h += '<footer class="ld-foot"><span class="lo-date">Seen in use ' + esc(fmtDate(bd.verified)) + '</span><div class="cls-srcs">' + srcLinks(bd.sources) + (role ? '<a class="lo-src" href="../roles/#role-' + esc(role.key) + '">How to play ' + esc(role.name) + '</a>' : '') + '</div></footer>';
-	return h + '</article>';
+	return h + '</div></article>';
 }
 function loadoutScreen() {
-	const guns = [];
+	const guns = [], views = [], two = (n) => (n < 10 ? '0' : '') + n;
 	liveBuilds.forEach((x) => { if (guns.indexOf(x.weapon) < 0) guns.push(x.weapon); });
-	const item = (id, title, sub, on) => '<button type="button" class="ld-item' + (on ? ' is-on' : '') + '" data-ld-open="' + esc(id) + '"' + (on ? ' aria-current="true"' : '') + '><b>' + esc(title) + '</b><span>' + esc(sub) + '</span></button>';
-	const views = [];
-	let gunList = '', roleList = '';
+	const item = (id, n, title, sub, on) => '<button type="button" class="ld-item' + (on ? ' is-on' : '') + '" data-ld-open="' + esc(id) + '"' + (on ? ' aria-current="true"' : '') + '><span class="ld-num">' + two(n) + '</span><b>' + esc(title) + '</b><span>' + esc(sub) + '</span></button>';
+	let gunList = '', roleList = '', gi = 0, ri = 0;
 	guns.forEach((g) => {
 		const bs = liveBuilds.filter((x) => x.weapon === g);
 		gunList += '<div class="ld-group"><div class="ld-gh"><b>' + esc(g) + '</b><span>' + esc(bs[0].class) + '</span></div><div class="ld-items">' +
-			bs.map((x) => { const id = 'g-' + x.id; views.push(loadoutView(id, x, kitFor(null), null, !views.length)); return item(id, x.label, buildWho(x) !== x.label ? buildWho(x) : 'Seen ' + fmtDate(x.verified), views.length === 1); }).join('') + '</div></div>';
+			bs.map((x) => { const id = 'g-' + x.id; views.push(loadoutView(id, x, kitFor(null), null, !views.length)); return item(id, ++gi, x.label, buildWho(x) !== x.label ? buildWho(x) : 'Seen ' + fmtDate(x.verified), views.length === 1); }).join('') + '</div></div>';
 	});
 	roleData.roles.forEach((r) => {
 		if (!classData.roles[r.key]) return;
 		const bs = rolePicks(r.key), kit = kitFor(r.key);
 		roleList += '<div class="ld-group" data-ld-role="' + esc(r.key) + '" style="--role:' + esc(r.color) + '"><div class="ld-gh"><b><i></i>' + esc(r.name) + '</b><span>' + esc(r.tag) + '</span></div><div class="ld-items">' +
-			(bs.length ? bs.map((x) => { const id = 'r-' + r.key + '-' + x.id; views.push(loadoutView(id, x, kit, r, false)); return item(id, x.weapon, x.label, false); }).join('') : '<p class="muted ld-empty">No current build for this role. It will be back after the next refresh.</p>') + '</div></div>';
+			(bs.length ? bs.map((x) => { const id = 'r-' + r.key + '-' + x.id; views.push(loadoutView(id, x, kit, r, false)); return item(id, ++ri, x.weapon, x.label, false); }).join('') : '<p class="muted ld-empty">No current build for this role. It will be back after the next refresh.</p>') + '</div></div>';
 	});
 	if (!views.length) return '<p class="lo-none muted">No current classes right now. They will be back after the next refresh.</p>';
 	return '<div class="ld" data-ld><aside class="ld-side" aria-label="Loadouts"><div class="seg ld-sw" role="tablist"><button type="button" role="tab" class="is-on" aria-selected="true" data-ld-group="gun">By gun</button><button type="button" role="tab" aria-selected="false" data-ld-group="role">By role</button></div>' +
@@ -528,6 +541,7 @@ function credits() {
 		['Call of Duty League: Competitive Settings', 'https://callofdutyleague.com/en-us/competitive-settings', 'The restricted weapons, attachments, perks and equipment every Ranked class is checked against.'],
 		['Checkmate Gaming', 'https://www.checkmategaming.com/cmg-arena/ladders/01a169a6-4c72-7a28-85a7-4e633f8baefc/rules', 'CMG MW4 Arena rules: the banned and allowed lists every class is also checked against.'],
 		['BoomKid, Apathy and Harrz (YouTube)', 'https://www.youtube.com/watch?v=LP-1qApCG3s', 'Breakdowns of the classes Call of Duty League pros are running, used for the competitive builds, perks and equipment. Each build links to the video it came from.'],
+		['Call of Duty (Activision): Weapons Detail', 'https://www.callofduty.com/blog/2026/10/call-of-duty-modern-warfare-4-launch-multiplayer-operators-weapons-equipment-create-a-class', 'The weapon pictures on the Ranked Loadouts page. They are Activision\u2019s official graphics, shown by link from callofduty.com rather than copied.'],
 		['RankKD', 'https://www.rankkd.com/guides-tools/call-of-duty-modern-warfare-4/', 'Callout names, the short names for each Hardpoint hill and the map notes in the planner, plus the Hardpoint and Hijack job breakdowns in the role guide.'],
 	];
 	return '<div class="credits prose"><p>MW4 Hub combines and reworks public information into its own tools. Map marker positions were plotted onto the minimaps from the sources below; tiers and builds were cross-checked across sites. Please support these creators.</p><div class="grid">' +
