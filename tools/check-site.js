@@ -148,6 +148,19 @@ const server = http.createServer((req, res) => {
 		ex3(/view=brief/.test(p3.url()), 'briefing view is in the address');
 		await p3.click('[data-brief-exit]');
 		ex3(await p3.locator('.mw4-planner.is-brief').count() === 0 && await p3.locator('.pl-panel').isVisible(), 'briefing view closes');
+		// Toggling any layer must not move the planner: scroll the panel so the switches sit lower down, then flip each one.
+		await p3.setViewportSize({ width: 1180, height: 620 });
+		await open();
+		const frame = () => p3.evaluate(() => { const r = (id) => { const b = document.getElementById(id).getBoundingClientRect(); return [Math.round(b.x), Math.round(b.y), Math.round(b.width), Math.round(b.height)]; }; return JSON.stringify([r('mw4-planner'), r('pl-stage'), r('pl-panel'), document.getElementById('mw4-planner').scrollTop, scrollY]); });
+		const frame0 = await frame();
+		for (const k of await p3.$$eval('[data-layer]', (els) => els.map((e) => e.getAttribute('data-layer')))) {
+			const lab = p3.locator('.pl-toggle:has([data-layer=' + k + '])');
+			await lab.scrollIntoViewIfNeeded();
+			for (let n = 0; n < 2; n++) { await lab.click(); await p3.waitForTimeout(120); ex3(await frame() === frame0, 'toggling "' + k + '" moved the planner'); }
+		}
+		await p3.keyboard.press('Tab'); await p3.keyboard.press('Tab');
+		ex3(await frame() === frame0, 'keyboard focus moved the planner');
+		await p3.setViewportSize({ width: 1360, height: 860 });
 		// A team link replaces the callouts on the device that opens it.
 		const pack = Buffer.from(JSON.stringify({ v: 1, m: hpMap.slug, c: [['Link Callout', 0.5, 0.5, 0]], sp: { 1: { own: [0.2, 0.2] } } })).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 		await open('#t=' + pack);

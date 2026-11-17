@@ -1564,6 +1564,12 @@
 		if (S.editIntel && S.intelDirty) { e.preventDefault(); e.returnValue = ''; }
 	});
 
+	// The planner frame, map stage and panel shell must never scroll. Focus or scrollIntoView on something inside
+	// them can still nudge an overflow-hidden box, so put it straight back.
+	[root, stage, panel].forEach(function (el) {
+		el.addEventListener('scroll', function () { if (el.scrollTop || el.scrollLeft) { el.scrollTop = 0; el.scrollLeft = 0; } });
+	});
+
 	// ---------- boot ----------
 	buildPanel();
 	setTool('pan');

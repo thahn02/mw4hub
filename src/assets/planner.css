@@ -9,6 +9,7 @@
 	height: calc(100vh - var(--header-h, 64px));
 	height: calc(100dvh - var(--header-h, 64px));
 	overflow: hidden;
+	overflow: clip; /* clip cannot be scrolled by focus or scrollIntoView, which used to push the whole planner off screen */
 	background: #040605;
 }
 .mw4-planner:fullscreen { height: 100vh; }
@@ -149,8 +150,9 @@
 .pl-site-bomb b { background: #1a1c16; color: #cbbd8f; border: 1px solid #cbbd8f; }
 .pl-site-bomb b svg { width: 20px; height: 20px; }
 .pl-layers { display: grid; gap: 4px; }
-.pl-toggle { display: flex; align-items: center; gap: 12px; padding: 8px 4px; cursor: pointer; font-size: .9rem; font-weight: 600; }
-.pl-toggle input { position: absolute; opacity: 0; pointer-events: none; }
+.pl-toggle { position: relative; display: flex; align-items: center; gap: 12px; padding: 8px 4px; cursor: pointer; font-size: .9rem; font-weight: 600; }
+/* The hidden checkbox must sit inside its own label: left unanchored it stays put while the panel scrolls, and focusing it scrolled the planner. */
+.pl-toggle input { position: absolute; left: 4px; top: 50%; width: 40px; height: 24px; margin: -12px 0 0; opacity: 0; pointer-events: none; }
 .pl-toggle .sw { flex: 0 0 auto; width: 40px; height: 24px; border-radius: 999px; background: rgba(255, 255, 255, .12); position: relative; transition: background .3s var(--ease, ease); }
 .pl-toggle .sw::after { content: ""; position: absolute; left: 3px; top: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 2px 6px rgba(0, 0, 0, .4); transition: transform .35s var(--ease-spring, ease); }
 .pl-toggle input:checked + .sw { background: linear-gradient(180deg, #a3b37c, #6b7a3a); }
