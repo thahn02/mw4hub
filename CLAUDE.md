@@ -44,6 +44,6 @@ node build.js && node tools/check-site.js
   - Briefing view: `?view=brief` or the screen button on the map. Read-only, covers the page, steps through the plan.
 - Always record where data came from (`source`, `sources`) and update `verified` when a build is re-checked.
 
-## Not built yet
+## Not built, by the owner's choice
 
-Accounts, cloud-saved plans and a live shared team board (the owner has approved building it; it needs a free backend and a sign-in from them). Squad line-ups are also per device for the same reason. Plans live in each visitor's browser (`localStorage` keys `mw4hub:<map>:<mode>`) and are shared by link (`#p=` payload) or exported image.
+A live shared team board with accounts or cloud-saved plans. The owner was offered it on 2026-11-17 and chose to skip it, so do not sign up for a backend unless they ask again. (Their Chrome is signed into a work Google account; never create anything there.) Plans live in each visitor's browser (`localStorage` keys `mw4hub:<map>:<mode>`) and are shared by link (`#p=` payload) or exported image; team callouts go by team link (`#t=`), squads by squad link (`#s=`).
