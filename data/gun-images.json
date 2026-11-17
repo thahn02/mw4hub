@@ -24,11 +24,11 @@
       "crop": [0.095, 0.09, 0.795, 0.52],
       "checked": true
     },
-    "Hyeon Burst": { "file": "011" },
-    "Patriot XMR": { "file": "012" },
-    "Kastov 762": { "file": "013" },
+    "Hyeon Burst": { "file": "011", "checked": true },
+    "Patriot XMR": { "file": "012", "checked": true },
+    "Kastov 762": { "file": "013", "checked": true },
     "Oden": { "file": "014" },
-    "Axion": { "file": "015" },
+    "Axion": { "file": "015", "checked": true },
     "ISO Nightshade": {
       "file": "017",
       "crop": [0.165, 0.075, 0.685, 0.545],
@@ -39,9 +39,9 @@
       "crop": [0.245, 0.04, 0.515, 0.55],
       "checked": true
     },
-    "WZ.55 Striga": { "file": "019" },
-    "PPSh-41": { "file": "020" },
-    "X-58 Nyx": { "file": "021" },
+    "WZ.55 Striga": { "file": "019", "checked": true },
+    "PPSh-41": { "file": "020", "checked": true },
+    "X-58 Nyx": { "file": "021", "checked": true },
     "Sang 9mm": {
       "file": "033",
       "crop": [0.335, 0.07, 0.38, 0.52],
@@ -55,16 +55,16 @@
     },
     "Rezi 12": { "file": "022" },
     "Warlord": { "file": "023" },
-    "FiNN LMG": { "file": "024" },
-    "Type 73": { "file": "025" },
+    "FiNN LMG": { "file": "024", "checked": true },
+    "Type 73": { "file": "025", "checked": true },
     "MAR-9": { "file": "027" },
     "Oris 8.6": { "file": "028" },
-    "Mosin-Nagant": { "file": "029" },
-    "KG-7 Vulcan": { "file": "030" },
-    "Astaroth .57": { "file": "031" },
+    "Mosin-Nagant": { "file": "029", "checked": true },
+    "KG-7 Vulcan": { "file": "030", "checked": true },
+    "Astaroth .57": { "file": "031", "checked": true },
     "Signal 50": { "file": "032" },
     "Krait P68": { "file": "034" },
-    ".50 GS": { "file": "035" },
+    ".50 GS": { "file": "035", "checked": true },
     "Mojave .357": { "file": "036" }
   }
 }
