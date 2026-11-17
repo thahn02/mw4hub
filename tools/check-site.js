@@ -49,30 +49,48 @@ const server = http.createServer((req, res) => {
 	for (const href of seen) { const r = await ctx.request.get(href); if (r.status() !== 200) problems.push('broken link ' + href); }
 
 	await go('ranked-loadouts/');
-	const guns = await page.locator('[data-panel=guns] .cls-gun').count();
-	expect(guns > 0, 'competitive gun cards');
-	expect(await page.locator('.cls-kit .cls-slots > div').count() === 8, 'class kit lists secondary, melee, tactical, lethal, field upgrade and three perks');
-	expect(await page.locator('[data-panel=guns] .lo-build').count() === await page.locator('[data-panel=guns] .lo-build .chip-ok').count() / 2, 'every build shows Ranked and CMG legal');
+	// Loadout screen: a list on the left, the picked loadout on the right as slot tiles.
+	const views = await page.locator('.ld-view').count();
+	expect(views > 0 && await page.locator('.ld-view:visible').count() === 1, 'loadout screen shows one loadout at a time');
+	expect(await page.locator('[data-ld-list=gun] .ld-item').count() + await page.locator('[data-ld-list=role] .ld-item').count() === views, 'every list entry has a loadout view');
+	expect(await page.locator('.ld-view:visible .ld-att').count() === 5 && await page.locator('.ld-view:visible .ld-kit').count() === 8, 'a loadout shows five attachments plus sidearm, melee, tactical, lethal, field upgrade and three perks');
+	expect(await page.locator('.ld-view .cls-legal').count() === views && await page.locator('.ld-view .chip-ok').count() === views * 2, 'every loadout shows Ranked and CMG legal');
 	expect(await page.locator('.lo-stale').count() === 0, 'loadouts are not flagged stale on a fresh build');
-	await page.click('[data-seg] [data-tab=roles]');
-	expect(await page.locator('[data-panel=roles]').isVisible() && await page.locator('.cls-rolecard').count() === 4, 'four role classes');
-	expect(await page.locator('.cls-rolecard .lo-copy').first().getAttribute('data-copy').then((t) => /Perk 1: /.test(t) && /Tactical: /.test(t)), 'copy text carries the whole class');
+	const second = page.locator('[data-ld-list=gun] .ld-item').nth(1);
+	const secondId = await second.getAttribute('data-ld-open');
+	await second.click();
+	expect(await page.locator('.ld-view:visible').getAttribute('data-ld-view') === secondId && page.url().endsWith('#' + secondId), 'picking a loadout opens it and puts it in the address');
+	const tiles = await page.$$eval('.ld-view:not([hidden]) .ld-tile', (ts) => ts.filter((t) => t.scrollWidth > t.clientWidth + 1 || !t.querySelector('.ld-n').textContent.trim()).length);
+	expect(tiles === 0, 'no slot tile is empty or overflowing');
+	await shot('loadouts-gun', true);
+	await page.click('[data-ld-group=role]');
+	expect(await page.locator('[data-ld-list=role]').isVisible() && !(await page.locator('[data-ld-list=gun]').isVisible()) && await page.locator('[data-ld-list=role] .ld-group').count() === 4, 'by role lists four roles');
+	expect((await page.locator('.ld-view:visible').getAttribute('data-ld-view')).startsWith('r-') && await page.locator('.ld-view:visible .role-badge').count() === 1, 'by role opens a role class');
+	expect(await page.locator('.ld-view:visible .lo-copy').getAttribute('data-copy').then((t) => /Perk 1: /.test(t) && /Tactical: /.test(t)), 'copy text carries the whole class');
+	await page.locator('[data-ld-list=role] .ld-item').first().focus();
+	await page.keyboard.press('ArrowDown');
+	expect(await page.locator('.ld-view:visible').getAttribute('data-ld-view') === await page.locator('[data-ld-list=role] .ld-item').nth(1).getAttribute('data-ld-open'), 'arrow keys move through the list');
+	await shot('loadouts-role', true);
+	await page.click('[data-ld-group=gun]');
+	expect(await page.locator('.ld-view:visible').getAttribute('data-ld-view') === secondId, 'switching back to by gun returns to the loadout that was open');
+	await page.click('.ld-view:visible .ld-runby [data-ld-open]');
+	expect((await page.locator('.ld-view:visible').getAttribute('data-ld-view')).startsWith('r-'), 'Run by chip opens that role class');
+	const deep = await page.locator('[data-ld-list=role] .ld-item').last().getAttribute('data-ld-open');
+	await page.goto(base + 'ranked-loadouts/#' + deep, { waitUntil: 'networkidle' });
+	expect(await page.locator('.ld-view:visible').getAttribute('data-ld-view') === deep && await page.locator('.ld-item.is-on:visible').count() === 1, 'a link to one loadout opens it');
 	await page.click('[data-seg] [data-tab=rules]');
-	expect(await page.locator('[data-panel=rules] .rl-row').count() > 20 && await page.locator('.rl-card').count() === 2, 'rules panel: gun check and both rule sets');
-	await page.click('[data-seg] [data-tab=guns]');
-	await page.fill('[data-filter-search]', 'zzzz-nothing');
-	expect(await page.locator('.lo-none').isVisible(), 'empty filter message');
-	await page.fill('[data-filter-search]', '');
-	await shot('loadouts-guns', true);
+	expect(await page.locator('[data-panel=rules] .rl-row').count() > 20 && await page.locator('.rl-card').count() === 2 && !(await page.locator('.ld').isVisible()), 'rules panel: gun check and both rule sets');
+	await page.click('[data-seg] [data-tab=loadouts]');
+	expect(await page.locator('.ld-view:visible').count() === 1, 'back to the loadout screen');
 	// If the daily refresh stops, old loadouts are hidden rather than shown as current.
 	{
 		const late = await browser.newContext();
 		const lp = await late.newPage();
 		await lp.clock.install({ time: new Date(Date.now() + 40 * 86400000) });
 		await lp.goto(base + 'ranked-loadouts/', { waitUntil: 'networkidle' });
-		expect(await lp.locator('.lo-stale').count() === 1 && !(await lp.locator('.cls-gun').first().isVisible()), 'stale loadouts are hidden');
+		expect(await lp.locator('.lo-stale').count() === 1 && await lp.locator('.ld-view:visible').count() === 0 && !(await lp.locator('.ld').isVisible()), 'stale loadouts are hidden');
 		await lp.click('.lo-stale button');
-		expect(await lp.locator('.cls-gun').first().isVisible(), 'stale loadouts can be shown on request');
+		expect(await lp.locator('.ld-view:visible').count() === 1, 'stale loadouts can be shown on request');
 		await lp.goto(base + 'warzone/', { waitUntil: 'networkidle' });
 		expect(await lp.locator('.lo-stale').count() === 1, 'stale Warzone builds are flagged');
 		await late.close();
@@ -228,6 +246,13 @@ const server = http.createServer((req, res) => {
 	if (SHOTS) await mp.screenshot({ path: path.join(SHOTS, 'mobile-home.png') });
 	await mp.goto(base + 'maps/' + m0.slug + '/', { waitUntil: 'networkidle' });
 	if (SHOTS) await mp.screenshot({ path: path.join(SHOTS, 'mobile-planner.png') });
+	await mp.goto(base + 'ranked-loadouts/', { waitUntil: 'networkidle' });
+	if (await mp.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1)) problems.push('loadout screen is wider than a phone');
+	await mp.locator('[data-ld-list=gun] .ld-item').last().scrollIntoViewIfNeeded();
+	await mp.locator('[data-ld-list=gun] .ld-item').last().tap();
+	if (await mp.locator('.ld-view:visible').getAttribute('data-ld-view') !== await mp.locator('[data-ld-list=gun] .ld-item').last().getAttribute('data-ld-open')) problems.push('loadout list does not work on a phone');
+	if (await mp.$$eval('.ld-view:not([hidden]) .ld-tile', (ts) => ts.filter((t) => t.scrollWidth > t.clientWidth + 1).length)) problems.push('a slot tile overflows on a phone');
+	if (SHOTS) await mp.screenshot({ path: path.join(SHOTS, 'mobile-loadouts.png'), fullPage: true });
 	await browser.close(); server.close();
 	console.log('Checked ' + (10 + maps.length) + ' pages and ' + seen.size + ' internal links at ' + (PREFIX || '/'));
 	console.log(problems.length ? 'PROBLEMS (' + problems.length + '):\n  ' + [...new Set(problems)].join('\n  ') : 'All checks passed.');

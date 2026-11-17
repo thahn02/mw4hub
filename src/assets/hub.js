@@ -121,6 +121,65 @@
 		}
 	});
 
+	// Loadout screen: pick a loadout from the list, shown as slot tiles. The open loadout is kept in the address
+	// so a link to it can be shared.
+	Array.prototype.forEach.call(document.querySelectorAll('[data-ld]'), function (ld) {
+		var last = {};
+		function groupOf(id) { return id.charAt(0) === 'r' ? 'role' : 'gun'; }
+		function setGroup(g) {
+			Array.prototype.forEach.call(ld.querySelectorAll('[data-ld-group]'), function (b) {
+				var on = b.getAttribute('data-ld-group') === g;
+				b.classList.toggle('is-on', on);
+				b.setAttribute('aria-selected', on ? 'true' : 'false');
+			});
+			Array.prototype.forEach.call(ld.querySelectorAll('[data-ld-list]'), function (l) { l.hidden = l.getAttribute('data-ld-list') !== g; });
+		}
+		function open(id, remember) {
+			var view = id && ld.querySelector('[data-ld-view="' + id.replace(/[^a-z0-9-]/gi, '') + '"]');
+			if (!view) return false;
+			Array.prototype.forEach.call(ld.querySelectorAll('[data-ld-view]'), function (v) { v.hidden = v !== view; });
+			Array.prototype.forEach.call(ld.querySelectorAll('.ld-item'), function (b) {
+				var on = b.getAttribute('data-ld-open') === id;
+				b.classList.toggle('is-on', on);
+				if (on) { b.setAttribute('aria-current', 'true'); if (b.scrollIntoView && b.offsetParent) b.scrollIntoView({ block: 'nearest', inline: 'nearest' }); } else b.removeAttribute('aria-current');
+			});
+			setGroup(groupOf(id));
+			last[groupOf(id)] = id;
+			if (remember && window.history && history.replaceState) { try { history.replaceState(null, '', '#' + id); } catch (e) { /* ignore */ } }
+			return true;
+		}
+		ld.addEventListener('click', function (e) {
+			var g = e.target.closest('[data-ld-group]');
+			if (g) {
+				var key = g.getAttribute('data-ld-group');
+				var first = ld.querySelector('[data-ld-list="' + key + '"] .ld-item');
+				if (!open(last[key] || (first && first.getAttribute('data-ld-open')), true)) setGroup(key);
+				return;
+			}
+			var b = e.target.closest('[data-ld-open]');
+			if (!b) return;
+			if (!open(b.getAttribute('data-ld-open'), true)) {
+				// "Run by" chip for a role that does not list this exact build: open that role's first class.
+				var alt = ld.querySelector('.ld-item[data-ld-open^="' + (b.getAttribute('data-ld-fallback') || '~') + '-"]');
+				if (alt) open(alt.getAttribute('data-ld-open'), true);
+			}
+			if (!b.classList.contains('ld-item')) { var main = ld.querySelector('.ld-main'); if (main && main.getBoundingClientRect().top < 0) main.scrollIntoView({ block: 'start' }); }
+		});
+		ld.addEventListener('keydown', function (e) {
+			if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+			var cur = e.target.closest('.ld-item');
+			if (!cur) return;
+			var items = Array.prototype.slice.call(cur.closest('.ld-list').querySelectorAll('.ld-item'));
+			var next = items[items.indexOf(cur) + (e.key === 'ArrowDown' ? 1 : -1)];
+			if (!next) return;
+			e.preventDefault();
+			next.focus();
+			open(next.getAttribute('data-ld-open'), true);
+		});
+		open(location.hash.slice(1), false);
+		window.addEventListener('hashchange', function () { open(location.hash.slice(1), false); });
+	});
+
 	document.addEventListener('click', function (e) {
 		// Build variant tabs inside a card.
 		var tab = e.target.closest('.lo-tabs button[data-b]');
