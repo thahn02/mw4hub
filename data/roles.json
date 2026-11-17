@@ -1,0 +1,99 @@
+{
+    "roles": [
+        {
+            "key": "ar",
+            "name": "Main AR",
+            "short": "AR",
+            "tag": "Anchor",
+            "color": "#4fc3f7",
+            "group": "ar",
+            "summary": "The anchor. Controls long lanes and power positions so the rest of the team can fight on their terms.",
+            "hp": [
+                "Hold the lanes and power positions that overlook the hill instead of standing on it.",
+                "Watch the enemy spawn side and call where they are coming from.",
+                "Cover teammates as they rotate, then lock a long angle on the next hill.",
+                "Stay alive. A living AR keeps your spawns stable."
+            ],
+            "snd": [
+                "Anchor a site or watch the main lane. Your job is information and trades, not first contact.",
+                "Hold crossfires with a teammate and slow pushes down with utility.",
+                "Late in the round, play the bomb and the clock instead of hunting."
+            ]
+        },
+        {
+            "key": "flex",
+            "name": "Flex",
+            "short": "FX",
+            "tag": "Rotator",
+            "color": "#b388ff",
+            "group": "ar",
+            "summary": "Fills whatever the team needs: AR or SMG depending on the map, first to the next hill, and the glue between the two pairs.",
+            "hp": [
+                "Leave early to scout and set up the next hill before it moves.",
+                "Swap between AR and SMG classes depending on the map and the hill.",
+                "Fill gaps: if the slayers are down, hold time; if the hill is held, help break it."
+            ],
+            "snd": [
+                "Lurk or support depending on the plan and catch rotations off a flank.",
+                "Gather info for the team and stay ready to trade either pair.",
+                "Adapt your class to the map: AR for open sightlines, SMG for tight sites."
+            ]
+        },
+        {
+            "key": "entry",
+            "name": "Entry SMG",
+            "short": "EN",
+            "tag": "Slayer",
+            "color": "#ffb74d",
+            "group": "smg",
+            "summary": "The spearhead. Breaks held hills and opens rounds with aggressive, fast fights.",
+            "hp": [
+                "First in to break a held hill. Create space for your team to follow.",
+                "Push into the enemy setup to flip spawns when your team is ready to follow.",
+                "Take fights, but not alone. Make sure a teammate can trade you."
+            ],
+            "snd": [
+                "Look for the opening pick to put your team up a player.",
+                "Hit with a trade partner directly behind you.",
+                "Use utility before you swing. Never dry peek a held angle."
+            ]
+        },
+        {
+            "key": "sub",
+            "name": "Second SMG",
+            "short": "S2",
+            "tag": "Objective",
+            "color": "#81c784",
+            "group": "smg",
+            "summary": "The objective player. Lives in or next to the hill, trades the entry and wins the time.",
+            "hp": [
+                "Play inside or right next to the hill and hold time.",
+                "Trade the Entry SMG and clean up the fights they start.",
+                "Clear lethals and contest late when the hill is about to rotate."
+            ],
+            "snd": [
+                "Trade the entry and secure the plant or defuse.",
+                "Support the site with utility and hold post-plant positions.",
+                "Call what you see. You are often the last player near the bomb."
+            ]
+        }
+    ],
+    "coaching": {
+        "hp": [
+            "Rotate as a group. Start moving before the hill ends and send the Flex early to scout and set up.",
+            "Never trickle in one at a time. Group up and break the hill together.",
+            "While holding, keep at least one player outside the hill on an off-angle.",
+            "Stay within trading distance of a teammate on every fight.",
+            "Track score and time. Giving up the end of a hill to set up early on the next one can win more points.",
+            "Call the enemy spawn every time. It tells you which lanes they will use."
+        ],
+        "snd": [
+            "Play for information first. Use utility and sound before you commit.",
+            "Trade every fight. Avoid 1v1s when a teammate can swing with you.",
+            "Never dry peek a long angle. Clear it with a smoke, flash or stun first.",
+            "On defense, set crossfires on site and let one player rotate on info.",
+            "On attack, spread out for info, then commit all four players to one site.",
+            "After the plant, play positions that watch the bomb instead of hunting."
+        ]
+    }
+}

@@ -1,0 +1,32 @@
+{
+  "maps": {
+    "title": "Interactive Maps",
+    "eyebrow": "Modern Warfare 4 · Map planner",
+    "lead": "Every launch map with hardpoint rotations, Search & Destroy bomb sites and a planner for routes, strong points and enemy paths."
+  },
+  "ranked-loadouts": {
+    "title": "Ranked Loadouts",
+    "eyebrow": "Modern Warfare 4 · Ranked Play",
+    "lead": "Builds pros are running right now, plus the current multiplayer meta by tier."
+  },
+  "warzone": {
+    "title": "Warzone",
+    "eyebrow": "Warzone · Meta",
+    "lead": "The best Warzone loadouts ranked by tier, plus the newest 2026 maps."
+  },
+  "roles": {
+    "title": "Team Roles",
+    "eyebrow": "Pro structure · 4v4",
+    "lead": "Ranked Play is 4v4, the same format as the pros. Here is who does what, modeled on OpTic Texas."
+  },
+  "my-plans": {
+    "title": "My Plans",
+    "eyebrow": "Planner",
+    "lead": "Your saved game plans, kept on this device."
+  },
+  "credits": {
+    "title": "Sources & Credits",
+    "eyebrow": "About",
+    "lead": "Where our map, loadout and roster data comes from."
+  }
+}

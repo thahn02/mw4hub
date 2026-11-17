@@ -1,0 +1,62 @@
+[
+  {
+    "name": "Hajin",
+    "slug": "hajin",
+    "status": "New",
+    "type": "Battle Royale",
+    "released": "November 2026",
+    "description": "The new full-size battle royale map, shaped by the Modern Warfare 4 campaign along the Korean border. It doubles as the DMZ map. Drop spots include 14th Political Prison, Chang-San Air Base, Deadtown and Imjin Farmland.",
+    "url": "https://www.gamesatlas.com/cod-warzone/maps/hajin",
+    "image": "images/warzone/hajin.jpg"
+  },
+  {
+    "name": "Zodiac",
+    "slug": "zodiac",
+    "status": "New",
+    "type": "Resurgence",
+    "released": "November 2026",
+    "description": "A new Resurgence map built by Beenox with a moving train you can use for rotations. Early hot spots include Admin, Solar, Dispatch and Depot.",
+    "url": "https://www.gamesatlas.com/cod-warzone/maps/zodiac",
+    "image": "images/warzone/zodiac.jpg"
+  },
+  {
+    "name": "Avalon",
+    "slug": "avalon",
+    "status": "Active",
+    "type": "Battle Royale",
+    "released": "Spring 2026",
+    "description": "A Blackout-inspired battle royale map that arrived in 2026. Look for the Golf Club, Trinity Stadium, Coastal Security and the Firing Range.",
+    "url": "https://www.gamesatlas.com/cod-warzone/maps/avalon",
+    "image": "images/warzone/avalon.jpg"
+  },
+  {
+    "name": "Haven’s Hollow",
+    "slug": "haven-s-hollow",
+    "status": "Active",
+    "type": "Resurgence",
+    "released": "December 2025",
+    "description": "Still in the active rotation from late 2025.",
+    "url": "https://www.gamesatlas.com/cod-warzone/maps/haven-s-hollow",
+    "image": null
+  },
+  {
+    "name": "Verdansk",
+    "slug": "verdansk",
+    "status": "Active",
+    "type": "Battle Royale",
+    "released": "Returned April 2025",
+    "description": "The original Warzone map, back in rotation since April 2025.",
+    "url": "https://www.gamesatlas.com/cod-warzone/maps/verdansk",
+    "image": null
+  },
+  {
+    "name": "Rebirth Island",
+    "slug": "rebirth-island",
+    "status": "Active",
+    "type": "Resurgence",
+    "released": "Returned April 2024",
+    "description": "The fast-paced Resurgence favorite, active again since April 2024.",
+    "url": "https://www.gamesatlas.com/cod-warzone/maps/rebirth-island",
+    "image": null
+  }
+]
