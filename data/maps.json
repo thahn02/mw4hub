@@ -7,6 +7,7 @@
     "size": "Medium",
     "description": "A covert armory hidden on the edge of a French rail yard. An old wine warehouse and a run-down mechanic's garage frame tight interior fights around the central containers.",
     "ranked": false,
+    "modes": [],
     "image": {
       "file": "images/maps/cachette-map.webp",
       "w": 2048,
@@ -96,7 +97,10 @@
     "location": "Russia",
     "size": "Medium",
     "description": "A derelict Soviet coal plant high in the mountains: a toppled smokestack, ore chutes and processing halls that spill down toward a polluted, slurry-choked river.",
-    "ranked": false,
+    "ranked": true,
+    "modes": [
+      "snd"
+    ],
     "image": {
       "file": "images/maps/coal-map.webp",
       "w": 2048,
@@ -186,7 +190,11 @@
     "location": "Mexico",
     "size": "Medium",
     "description": "A lithium refinery beneath the Sierra range turned into a live combat zone, with refinery halls, packaging lines and silos wrapped around an open road.",
-    "ranked": false,
+    "ranked": true,
+    "modes": [
+      "hp",
+      "hj"
+    ],
     "image": {
       "file": "images/maps/lithium-map.webp",
       "w": 2048,
@@ -282,7 +290,12 @@
     "location": "South Korea",
     "size": "Medium",
     "description": "A coastal fishing village right after an amphibious landing. Fights flow between the fish market, hostel, boathouse, gardens and apartment blocks.",
-    "ranked": false,
+    "ranked": true,
+    "modes": [
+      "hp",
+      "snd",
+      "hj"
+    ],
     "image": {
       "file": "images/maps/lotus-map.webp",
       "w": 2048,
@@ -379,6 +392,7 @@
     "size": "Medium",
     "description": "A fugitive's safehouse buried in a dense Mumbai neighborhood, built around a Victorian-era market with a rail line slicing through the blocks.",
     "ranked": false,
+    "modes": [],
     "image": {
       "file": "images/maps/mumbai-map.webp",
       "w": 2048,
@@ -468,7 +482,12 @@
     "location": "North Korea",
     "size": "Medium",
     "description": "A live command post with a large munitions depot, monitoring rooms, a sky bridge, a crane, a water tower and several hangars.",
-    "ranked": false,
+    "ranked": true,
+    "modes": [
+      "hp",
+      "snd",
+      "hj"
+    ],
     "image": {
       "file": "images/maps/munition-map.webp",
       "w": 2048,
@@ -565,6 +584,7 @@
     "size": "Medium",
     "description": "A ferry escaping the front line at dawn. Debris covers every deck while fires burn along the bow and starboard side.",
     "ranked": false,
+    "modes": [],
     "image": {
       "file": "images/maps/nautical-map.webp",
       "w": 2048,
@@ -654,7 +674,11 @@
     "location": "South Korea",
     "size": "Medium",
     "description": "A Korean nuclear plant mid-meltdown: a sparking, curved control room and a boiling containment pool sit at the heart of the map.",
-    "ranked": false,
+    "ranked": true,
+    "modes": [
+      "hp",
+      "snd"
+    ],
     "image": {
       "file": "images/maps/reactor-u92-map.webp",
       "w": 2048,
@@ -744,7 +768,11 @@
     "location": "New York, USA",
     "size": "Medium",
     "description": "The snowy rooftops of a Manhattan hotel: greenhouse, HVAC decks, boiler room, patio, skylights, pigeon coop and laundry room.",
-    "ranked": false,
+    "ranked": true,
+    "modes": [
+      "hp",
+      "snd"
+    ],
     "image": {
       "file": "images/maps/rooftops-map.webp",
       "w": 2048,
@@ -840,7 +868,10 @@
     "location": "Military base (whiteout)",
     "size": "Medium",
     "description": "A snowbound military base in whiteout conditions. A garage, generator room and substation surround the central command center and a half-destroyed barracks.",
-    "ranked": false,
+    "ranked": true,
+    "modes": [
+      "hp"
+    ],
     "image": {
       "file": "images/maps/sentry-map.webp",
       "w": 2048,
@@ -930,7 +961,10 @@
     "location": "South Korea",
     "size": "Medium",
     "description": "A packed South Korean shopping street with alleys behind the perimeter apartments, a stocked convenience store, a gaming den and the subway entrance in the middle.",
-    "ranked": false,
+    "ranked": true,
+    "modes": [
+      "snd"
+    ],
     "image": {
       "file": "images/maps/silkworm-map.webp",
       "w": 2048,
@@ -1027,6 +1061,7 @@
     "size": "Medium",
     "description": "A weed-covered bus lot in western India full of rusting, brightly painted buses, ringed by a repair shop, a small gas station and tenement towers.",
     "ranked": false,
+    "modes": [],
     "image": {
       "file": "images/maps/transit-213-map.webp",
       "w": 2048,

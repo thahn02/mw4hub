@@ -18,6 +18,11 @@
 	var NS = 'http://www.w3.org/2000/svg';
 	var FONT = '-apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, "Segoe UI", Roboto, Arial, sans-serif';
 	var HAS_SND = !!(MAP.snd && MAP.snd.sites && MAP.snd.sites.length === 2);
+	var MODE_NAMES = { hp: 'Hardpoint', snd: 'Search & Destroy', hj: 'Hijack' };
+	var MODES = (MAP.modes && MAP.modes.length ? MAP.modes : ['hp', 'snd']).filter(function (m) { return !!MODE_NAMES[m]; });
+	if (!MODES.length) MODES = ['hp', 'snd'];
+	function pickMode(m) { return MODES.indexOf(m) >= 0 ? m : MODES[0]; }
+	function modeParam(u, m) { if (m !== MODES[0]) u.searchParams.set('mode', m); else u.searchParams.delete('mode'); }
 
 	var ROLE = {
 		ar: { label: 'AR', name: 'Main AR', color: '#4fc3f7', ink: '#04202c' },
@@ -101,7 +106,7 @@
 		return e;
 	}
 	function clear(g) { while (g.firstChild) g.removeChild(g.firstChild); }
-	function modeName(m) { return (m || S.mode) === 'snd' ? 'Search & Destroy' : 'Hardpoint'; }
+	function modeName(m) { return MODE_NAMES[m || S.mode] || 'Hardpoint'; }
 	function visName(v) { return v === 'private' ? 'Only me' : (v === 'team' ? 'My team' : 'Anyone with link'); }
 	function copyText(text) {
 		if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
@@ -147,13 +152,13 @@
 	// ---------- state ----------
 	var params = new URLSearchParams(location.search);
 	var S = {
-		mode: params.get('mode') === 'snd' ? 'snd' : 'hp',
+		mode: pickMode(params.get('mode')),
 		cam: { x: 500, y: 500, k: 1 }, vw: 1, vh: 1, kMin: 0.5, kMax: 4,
 		anim: null, vel: null, raf: 0, lastT: 0,
 		layers: { obj: true, rot: true, route: true, enemy: true, strong: true, note: true, plan: true },
 		tool: 'pan', role: 'entry', icon: 'ar', sel: null,
-		plans: { hp: [], snd: [] },
-		intel: { hp: (MAP.intel && MAP.intel.hp) ? MAP.intel.hp.slice() : [], snd: (MAP.intel && MAP.intel.snd) ? MAP.intel.snd.slice() : [] },
+		plans: { hp: [], snd: [], hj: [] },
+		intel: { hp: (MAP.intel && MAP.intel.hp) ? MAP.intel.hp.slice() : [], snd: (MAP.intel && MAP.intel.snd) ? MAP.intel.snd.slice() : [], hj: (MAP.intel && MAP.intel.hj) ? MAP.intel.hj.slice() : [] },
 		editIntel: false, intelDirty: false,
 		history: [], future: [],
 		planMeta: { code: null, title: '', visibility: 'unlisted', canEdit: true },
@@ -163,7 +168,7 @@
 	var lastTap = { t: 0, x: 0, y: 0 };
 
 	function lsKey(m) { return 'mw4hub:' + MAP.slug + ':' + m; }
-	['hp', 'snd'].forEach(function (m) {
+	['hp', 'snd', 'hj'].forEach(function (m) {
 		try {
 			var v = JSON.parse(localStorage.getItem(lsKey(m)) || '[]');
 			if (Array.isArray(v)) S.plans[m] = v;
@@ -173,7 +178,7 @@
 		try {
 			var shared = JSON.parse(b64d(location.hash.slice(3)));
 			if (shared && Array.isArray(shared.i)) {
-				S.mode = shared.d === 'snd' ? 'snd' : 'hp';
+				S.mode = pickMode(shared.d);
 				S.plans[S.mode] = shared.i;
 				S.sharedLoaded = true;
 			}
@@ -338,7 +343,7 @@
 				lb.appendChild(s('text', { y: 34, 'text-anchor': 'middle', 'font-size': 11.5, 'font-weight': 650, fill: '#f3f1e6', stroke: 'rgba(0,0,0,0.85)', 'stroke-width': 3.2, 'paint-order': 'stroke', 'font-family': FONT }, hl.name));
 				gObj.appendChild(lb); track(SC.obj, lb, x, y);
 			});
-		} else if (HAS_SND) {
+		} else if (S.mode === 'snd' && HAS_SND) {
 			MAP.snd.sites.forEach(function (st) {
 				var col = st.id === 'A' ? '#ff6b4a' : '#4fc3f7';
 				var x = st.x * 1000, y = st.y * 1000;
@@ -734,7 +739,7 @@
 				'<div class="pl-crumbs"><a href="' + esc(D.links.maps) + '">' + ico('back') + 'All maps</a><select data-map-switch aria-label="Switch map">' + mapOpts + '</select></div>' +
 				'<h1 class="pl-title">' + esc(MAP.name) + '</h1>' +
 				'<div class="pl-chips">' + (MAP.location ? '<span class="chip">' + esc(MAP.location) + '</span>' : '') + (MAP.size ? '<span class="chip">' + esc(MAP.size) + '</span>' : '') + (MAP.ranked ? '<span class="chip chip-sage">Ranked pool</span>' : '') + '<span class="chip chip-brass">4v4</span></div>' +
-				'<div class="seg pl-modes" role="tablist" aria-label="Game mode"><button type="button" role="tab" data-mode="hp">Hardpoint</button><button type="button" role="tab" data-mode="snd">Search &amp; Destroy</button></div>' +
+				'<div class="seg pl-modes" role="tablist" aria-label="Game mode">' + MODES.map(function (m) { return '<button type="button" role="tab" data-mode="' + m + '">' + esc(MODE_NAMES[m]) + '</button>'; }).join('') + '</div>' +
 			'</div>' +
 			'<div class="pl-tabs" role="tablist" aria-label="Panel"><button type="button" role="tab" data-tab="intel">Intel</button><button type="button" role="tab" data-tab="plan">Plan</button><button type="button" role="tab" data-tab="roles">Roles</button></div>' +
 			'<div class="pl-body"><section data-pane="intel"></section><section data-pane="plan" hidden></section><section data-pane="roles" hidden></section></div>';
@@ -750,6 +755,8 @@
 				html += '<li><button type="button" data-fly-hill="' + hl.n + '" class="' + (S.sel === 'h' + hl.n ? 'is-sel' : '') + '"><span class="pl-num">P' + hl.n + '</span><span class="pl-hname">' + esc(hl.name) + '</span><span class="pl-next">next P' + nx.n + '</span></button></li>';
 			});
 			html += '</ol>' + srcLine([MAP.sources && MAP.sources.hp, MAP.sources && MAP.sources.rot]) + '</div>';
+		} else if (S.mode === 'hj') {
+			html += '<div class="pl-sec"><div class="pl-sec-h"><h3>Hijack</h3></div><p class="pl-empty">Comm Station and Data Spike positions for ' + esc(MAP.name) + ' have not been mapped yet. You can still plan here and mark them with labels.</p></div>';
 		} else {
 			html += '<div class="pl-sec"><div class="pl-sec-h"><h3>Bomb sites</h3></div>';
 			if (HAS_SND) {
@@ -758,13 +765,14 @@
 				}).join('');
 				if (MAP.snd.bomb) html += '<button type="button" class="pl-site pl-site-bomb" data-fly-bomb="1"><b>' + ico('bomb') + '</b><span>Bomb spawn' + (MAP.snd.bomb.approx ? ' (approx.)' : '') + '</span></button>';
 				html += '</div>' + srcLine([MAP.sources && MAP.sources.snd]);
+				if (D.links.bombSites) html += '<p class="pl-src"><a href="' + esc(D.links.bombSites) + '#' + esc(MAP.slug) + '">Bomb site layout and photos</a></p>';
 			} else {
 				html += '<p class="pl-empty">Bomb-site positions for ' + esc(MAP.name) + ' have not been published by our sources yet. You can still plan here and mark the sites with labels.</p>';
 			}
 			html += '</div>';
 		}
 		html += '<div class="pl-sec"><div class="pl-sec-h"><h3>Layers</h3></div><div class="pl-layers">' +
-			layerToggle('obj', S.mode === 'hp' ? 'Hardpoints' : 'Bomb sites & bomb spawn') +
+			(S.mode === 'hj' ? '' : layerToggle('obj', S.mode === 'hp' ? 'Hardpoints' : 'Bomb sites & bomb spawn')) +
 			(S.mode === 'hp' ? layerToggle('rot', 'Rotation path') : '') +
 			layerToggle('route', 'Team routes & setups', countOf('route') + countOf('icon')) +
 			layerToggle('strong', 'Strong points to hold', countOf('strong')) +
@@ -780,7 +788,8 @@
 		} else if (notes.length) {
 			html += '<ul class="pl-notes">' + notes.map(function (n) { return '<li><button type="button" data-fly-xy="' + n.x + ',' + n.y + '">' + esc(n.s) + '</button></li>'; }).join('') + '</ul>';
 		}
-		html += '<h4>General ' + esc(modeName()) + ' tips</h4><ol class="pl-tips">' + ((D.coaching && D.coaching[S.mode]) || []).map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ol></div>';
+		var tips = (D.coaching && D.coaching[S.mode]) || [];
+		html += (tips.length ? '<h4>General ' + esc(modeName()) + ' tips</h4><ol class="pl-tips">' + tips.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ol>' : '') + '</div>';
 		paneEl('intel').innerHTML = html;
 	}
 
@@ -818,7 +827,7 @@
 			(D.roles || []).map(function (r) {
 				var pros = roster[r.group] || [];
 				return '<article class="pl-role" style="--role:' + r.color + '"><div class="pl-role-h"><span class="role-badge">' + esc(r.short) + '</span><div><b>' + esc(r.name) + '</b><span class="muted">' + esc(r.tag) + '</span></div></div><ul>' +
-					(r[S.mode] || []).map(function (li) { return '<li>' + esc(li) + '</li>'; }).join('') + '</ul>' +
+					(r[S.mode] || r.hp || []).map(function (li) { return '<li>' + esc(li) + '</li>'; }).join('') + '</ul>' +
 					(pros.length ? '<div class="pl-role-pros">' + esc(team) + ' ' + (r.group === 'ar' ? 'AR' : 'SMG') + ': <b>' + esc(pros.join(' \u00b7 ')) + '</b></div>' : '') + '</article>';
 			}).join('') + '<a class="pl-link" href="' + esc(D.links.roles) + '">Open the full role guide</a></div>';
 	}
@@ -865,7 +874,7 @@
 			S.planMeta = { code: null, title: '', visibility: 'unlisted', canEdit: true };
 			var u = new URL(location.href);
 			u.searchParams.delete('plan');
-			if (m === 'snd') u.searchParams.set('mode', 'snd'); else u.searchParams.delete('mode');
+			modeParam(u, m);
 			u.hash = '';
 			history.replaceState(null, '', u.toString());
 		}
@@ -918,10 +927,10 @@
 	panel.addEventListener('change', function (e) {
 		var t = e.target;
 		if (t.hasAttribute('data-layer')) { S.layers[t.getAttribute('data-layer')] = t.checked; renderAll(); return; }
-		if (t.hasAttribute('data-map-switch')) { location.href = t.value + (S.mode === 'snd' ? '?mode=snd' : ''); return; }
+		if (t.hasAttribute('data-map-switch')) { location.href = t.value + '?mode=' + S.mode; return; }
 		if (t.hasAttribute('data-edit-intel')) {
 			if (!t.checked && S.intelDirty && !window.confirm('Discard unpublished intel changes?')) { t.checked = true; return; }
-			if (!t.checked && S.intelDirty) { S.intel = { hp: (MAP.intel.hp || []).slice(), snd: (MAP.intel.snd || []).slice() }; S.intelDirty = false; }
+			if (!t.checked && S.intelDirty) { S.intel = { hp: (MAP.intel.hp || []).slice(), snd: (MAP.intel.snd || []).slice(), hj: (MAP.intel.hj || []).slice() }; S.intelDirty = false; }
 			S.editIntel = t.checked; S.history = []; S.future = [];
 			renderAll(); renderPanels();
 		}
@@ -938,7 +947,7 @@
 		if (!items.length) { toast('Draw something first'); return; }
 		var u = new URL(location.href);
 		u.searchParams.delete('plan');
-		if (S.mode === 'snd') u.searchParams.set('mode', 'snd'); else u.searchParams.delete('mode');
+		modeParam(u, S.mode);
 		u.hash = 'p=' + b64e(JSON.stringify({ v: 1, d: S.mode, i: items }));
 		var url = u.toString();
 		copyText(url).then(function () {
@@ -997,7 +1006,7 @@
 			}).then(function (p) {
 				S.planMeta = { code: p.code, title: p.title, visibility: p.visibility, canEdit: !!p.canEdit };
 				var u = new URL(location.href); u.searchParams.set('plan', p.code);
-				if (S.mode === 'snd') u.searchParams.set('mode', 'snd'); else u.searchParams.delete('mode');
+				modeParam(u, S.mode);
 				u.hash = ''; history.replaceState(null, '', u.toString());
 				close(); renderPlanPane();
 				toast('Saved \u201c' + p.title + '\u201d');
@@ -1022,12 +1031,12 @@
 	}
 	function applyPlan(p) {
 		if (p.map && p.map !== MAP.slug && p.url) { location.href = p.url; return; }
-		S.editIntel = false; S.mode = p.mode === 'snd' ? 'snd' : 'hp';
+		S.editIntel = false; S.mode = pickMode(p.mode);
 		S.plans[S.mode] = Array.isArray(p.items) ? p.items.slice() : [];
 		S.planMeta = { code: p.code, title: p.title, visibility: p.visibility, canEdit: !!p.canEdit };
 		S.history = []; S.future = []; S.sel = null;
 		var u = new URL(location.href); u.searchParams.set('plan', p.code);
-		if (S.mode === 'snd') u.searchParams.set('mode', 'snd'); else u.searchParams.delete('mode');
+		modeParam(u, S.mode);
 		u.hash = ''; history.replaceState(null, '', u.toString());
 		renderAll(); renderPanels();
 	}

@@ -6,7 +6,7 @@ Ranked game plans, pro loadouts and interactive maps for Modern Warfare 4. A sta
 
 | Path | What it holds |
 | --- | --- |
-| `data/maps.json` | Maps: hardpoints, S&D sites, bomb spawn, official intel, sources |
+| `data/maps.json` | Maps: which modes each is played on, hardpoints, S&D sites, bomb spawn, bomb-site photos, official intel, sources |
 | `data/loadouts.json` | Every build: ranked pro builds, ranked meta tiers, Warzone meta tiers |
 | `data/warzone-maps.json` | Warzone map cards |
 | `data/roster.json`, `data/roles.json` | Pro roster, the four roles and general coaching |

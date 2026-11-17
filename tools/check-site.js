@@ -20,7 +20,8 @@ const server = http.createServer((req, res) => {
 (async () => {
 	await new Promise((r) => server.listen(0, r));
 	const base = 'http://127.0.0.1:' + server.address().port + PREFIX + '/';
-	const maps = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'maps.json'), 'utf8'));
+	const allMaps = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'maps.json'), 'utf8'));
+	const maps = allMaps.filter((m) => m.modes && m.modes.length);
 	const browser = await chromium.launch({ executablePath: process.env.CHROME || undefined });
 	const problems = [];
 	const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
@@ -40,7 +41,7 @@ const server = http.createServer((req, res) => {
 	await shot('home', true);
 	// Every internal link on every top page resolves.
 	const seen = new Set();
-	for (const p of ['', 'maps/', 'ranked-loadouts/', 'warzone/', 'roles/', 'my-plans/', 'credits/']) {
+	for (const p of ['', 'maps/', 'bomb-sites/', 'ranked-loadouts/', 'warzone/', 'roles/', 'my-plans/', 'credits/']) {
 		await go(p);
 		for (const href of await page.$$eval('a[href]', (as) => as.map((a) => a.href))) if (href.startsWith(base)) seen.add(href.split('#')[0]);
 		await shot(p.replace(/\//g, '') || 'index', true);
@@ -62,13 +63,32 @@ const server = http.createServer((req, res) => {
 	expect(await page.locator('.wz-map').first().isVisible(), 'warzone maps panel');
 	await shot('warzone-maps', true);
 
+	const NAMES = { hp: 'Hardpoint', snd: 'Search & Destroy', hj: 'Hijack' };
 	for (const m of maps) {
 		await go('maps/' + m.slug + '/');
 		expect(await page.locator('.mw4-planner.is-ready').count() === 1, 'planner ready');
 		expect(await page.locator('.pl-title').innerText() === m.name, 'planner title');
-		expect(await page.locator('.mk-hill').count() === ((m.hp && m.hp.hills) || []).length, 'hill markers');
 		expect(await page.evaluate(() => { const i = document.getElementById('pl-img'); return !!i && i.naturalWidth > 0; }), 'map image loaded');
+		const btns = await page.$$eval('.pl-modes [data-mode]', (bs) => bs.map((b) => b.getAttribute('data-mode')));
+		expect(btns.join() === m.modes.join(), 'mode buttons ' + btns.join() + ' vs ' + m.modes.join());
+		for (const mode of m.modes) {
+			await page.click('.pl-modes [data-mode=' + mode + ']');
+			expect((await page.locator('.pl-badge span').innerText()).toLowerCase() === NAMES[mode].toLowerCase(), 'badge for ' + mode);
+			expect(await page.locator('.mk-hill').count() === (mode === 'hp' ? m.hp.hills.length : 0), mode + ' hill markers');
+			expect(await page.locator('.mk-site').count() === (mode === 'snd' ? 2 : 0), mode + ' site markers');
+		}
 	}
+	for (const m of allMaps.filter((x) => !(x.modes && x.modes.length))) {
+		const r = await ctx.request.get(base + 'maps/' + m.slug + '/');
+		if (r.status() !== 404) problems.push('removed map still published: ' + m.slug);
+	}
+	await go('bomb-sites/');
+	const sndCount = maps.filter((m) => m.modes.indexOf('snd') >= 0).length;
+	expect(await page.locator('.bs-card').count() === sndCount, 'bomb-site cards');
+	expect(await page.locator('.bs-pin.bs-a').count() === sndCount && await page.locator('.bs-pin.bs-b').count() === sndCount, 'bomb-site pins');
+	await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight)); await page.waitForTimeout(400);
+	await page.evaluate(() => window.scrollTo(0, 0)); await page.waitForTimeout(600);
+	await shot('bomb-sites-top');
 	// Draw a route on the first map, check it persists and shows on My Plans.
 	const m0 = maps[0];
 	await go('maps/' + m0.slug + '/');
@@ -83,7 +103,7 @@ const server = http.createServer((req, res) => {
 	expect(await page.locator('.it-route').count() >= 1, 'route drawn');
 	expect(await page.locator('[data-save]').count() === 0 && await page.locator('text=Sign in to save').count() === 0, 'no sign-in button');
 	await shot('planner-plan');
-	if (m0.snd && m0.snd.sites) { await page.click('[data-mode=snd]'); expect(await page.locator('.mk-site').count() === 2, 'snd sites'); await shot('planner-snd'); }
+	await go('maps/lotus/?mode=hj'); await shot('planner-hijack');
 	await go('my-plans/');
 	expect(await page.locator('.plan-row').count() === 1, 'plan listed on My Plans');
 	const share = await page.locator('[data-copy]').first().getAttribute('data-copy');
@@ -106,7 +126,7 @@ const server = http.createServer((req, res) => {
 	await mp.goto(base + 'maps/' + m0.slug + '/', { waitUntil: 'networkidle' });
 	if (SHOTS) await mp.screenshot({ path: path.join(SHOTS, 'mobile-planner.png') });
 	await browser.close(); server.close();
-	console.log('Checked ' + (9 + maps.length) + ' pages and ' + seen.size + ' internal links at ' + (PREFIX || '/'));
+	console.log('Checked ' + (10 + maps.length) + ' pages and ' + seen.size + ' internal links at ' + (PREFIX || '/'));
 	console.log(problems.length ? 'PROBLEMS (' + problems.length + '):\n  ' + [...new Set(problems)].join('\n  ') : 'All checks passed.');
 	process.exit(problems.length ? 1 : 0);
 })().catch((e) => { console.error(e); process.exit(2); });

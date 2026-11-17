@@ -18,7 +18,10 @@ const OUT = path.join(ROOT, process.env.OUT || 'dist');
 const read = (f) => JSON.parse(fs.readFileSync(path.join(DATA, f), 'utf8'));
 const site = read('site.json');
 if (process.env.BASE) site.base = process.env.BASE; // e.g. BASE=/mw4hub/ for a GitHub Pages project site
-const maps = read('maps.json');
+const allMaps = read('maps.json');
+const maps = allMaps.filter((m) => m.modes && m.modes.length); // only maps in the Ranked pool are published
+const has = (m, mode) => m.modes.indexOf(mode) >= 0;
+const sndMaps = maps.filter((m) => has(m, 'snd') && m.snd && m.snd.sites && m.snd.sites.length);
 const loadouts = read('loadouts.json');
 const wzmaps = read('warzone-maps.json');
 const roleData = read('roles.json');
@@ -53,7 +56,7 @@ function copyDir(from, to) {
 }
 const jsonForScript = (o) => JSON.stringify(o).replace(/</g, '\\u003C').replace(/>/g, '\\u003E').replace(/&/g, '\\u0026');
 
-const NAV = [['maps', 'Maps'], ['ranked-loadouts', 'Ranked Loadouts'], ['warzone', 'Warzone'], ['roles', 'Roles']];
+const NAV = [['maps', 'Maps'], ['bomb-sites', 'Bomb Sites'], ['ranked-loadouts', 'Ranked Loadouts'], ['warzone', 'Warzone'], ['roles', 'Roles']];
 const LOGO = '<svg viewBox="0 0 24 24" fill="none" stroke="#d8a94b" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="7.5"/><path d="M12 1.5v5M12 17.5v5M1.5 12h5M17.5 12h5"/><circle cx="12" cy="12" r="1.6" fill="#d8a94b" stroke="none"/></svg>';
 const ICO = {
 	map: '<path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/>',
@@ -199,9 +202,10 @@ function mapsGrid(r) {
 	return '<div class="map-grid">' + maps.map((m) => {
 		const hills = ((m.hp && m.hp.hills) || []).length;
 		let h = '<a class="map-card card reveal" href="' + r + 'maps/' + m.slug + '/"><div class="map-thumb">' + (m.hero ? '<img src="' + r + esc(m.hero) + '" alt="" loading="lazy" decoding="async">' : '') + '<span class="map-loc chip">' + esc(m.location || '') + '</span></div>';
-		h += '<div class="map-body"><h3>' + esc(m.name) + '</h3><div class="map-tags"><span class="chip chip-brass">Hardpoint \u00b7 ' + hills + ' hills</span>';
-		if (m.snd && m.snd.sites && m.snd.sites.length) h += '<span class="chip chip-red">S&amp;D \u00b7 A / B</span>';
-		if (m.ranked) h += '<span class="chip chip-sage">Ranked pool</span>';
+		h += '<div class="map-body"><h3>' + esc(m.name) + '</h3><div class="map-tags">';
+		if (has(m, 'hp')) h += '<span class="chip chip-brass">Hardpoint \u00b7 ' + hills + ' hills</span>';
+		if (has(m, 'snd')) h += '<span class="chip chip-red">S&amp;D \u00b7 A / B</span>';
+		if (has(m, 'hj')) h += '<span class="chip chip-sage">Hijack</span>';
 		return h + '</div></div></a>';
 	}).join('') + '</div>';
 }
@@ -234,6 +238,7 @@ function credits() {
 		['Breaking Point', 'https://breakingpoint.gg/posts/modern-warfare-4-search-destroy-bombsites', 'Search & Destroy bomb-site layouts, hardpoint rotation graphics, Day 1 pro class setups and the OpTic Texas roster.'],
 		['warzoneloadout.games', 'https://warzoneloadout.games/', 'Warzone and MW4 multiplayer tier rankings and attachment builds.'],
 		['wzstats.gg', 'https://wzstats.gg/', 'Warzone meta tier list used in our combined Warzone rankings.'],
+		['Call of Duty League', 'https://callofdutyleague.com/en-us/competitive-settings', 'CDL 2027 Competitive Maps & Modes: the Hardpoint, Search & Destroy and Hijack map pool used for the Ranked maps shown here.'],
 		['Call of Duty (Activision)', 'https://www.callofduty.com/blog/2026/10/call-of-duty-modern-warfare-4-ready-for-launch-maps-modes', 'Official launch map and mode announcement.'],
 	];
 	return '<div class="credits prose"><p>MW4 Hub combines and reworks public information into its own tools. Map marker positions were plotted onto the minimaps from the sources below; tiers and builds were cross-checked across sites. Please support these creators.</p><div class="grid">' +
@@ -245,20 +250,20 @@ function myPlans() {
 		'<div class="card card-pad team-card"><div><span class="eyebrow">How saving works</span><h3>Plans save on this device</h3><p class="muted">Every plan you draw in the map planner is kept in this browser automatically. To send one to your squad, open it and use Copy link or Export image. Team boards with sign-in are planned.</p></div>' +
 		'<div class="hero-actions" style="margin-top:0"><a class="btn btn-primary" href="../maps/">Open the map planner</a></div></div>' +
 		'<section class="plans-list"><h3>My plans <span class="muted" data-plan-count>0</span></h3><div class="plans-rows" data-plan-rows><p class="muted">Nothing saved yet. Open a map and draw your plan; it is saved here as you go.</p></div></section>' +
-		'</div>\n<script type="application/json" id="mw4-maps">' + jsonForScript(maps.map((m) => ({ slug: m.slug, name: m.name }))) + '</script>';
+		'</div>\n<script type="application/json" id="mw4-maps">' + jsonForScript(maps.map((m) => ({ slug: m.slug, name: m.name, modes: m.modes }))) + '</script>';
 }
 function planner(m, r) {
 	const data = {
 		map: {
 			id: m.id || 0, slug: m.slug, name: m.name, url: r + 'maps/' + m.slug + '/', location: m.location || '', size: m.size || '', description: m.description || '',
 			image: m.image ? { url: r + m.image.file, w: m.image.w, h: m.image.h } : null,
-			hp: m.hp || { hills: [] }, snd: m.snd || null, intel: { hp: (m.intel && m.intel.hp) || [], snd: (m.intel && m.intel.snd) || [] }, sources: m.sources || [], ranked: !!m.ranked,
+			hp: m.hp || { hills: [] }, snd: m.snd || null, intel: { hp: (m.intel && m.intel.hp) || [], snd: (m.intel && m.intel.snd) || [] }, sources: m.sources || [], ranked: !!m.ranked, modes: m.modes,
 		},
 		maps: maps.map((x) => ({ slug: x.slug, name: x.name, url: r + 'maps/' + x.slug + '/' })),
 		roles: roleData.roles, coaching: roleData.coaching, roster: roster,
 		user: { loggedIn: false, name: '', canEdit: false, team: '', loginUrl: '', registerUrl: '' },
 		rest: { root: '', nonce: '' },
-		links: { maps: r + 'maps/', myPlans: r + 'my-plans/', roles: r + 'roles/' },
+		links: { maps: r + 'maps/', myPlans: r + 'my-plans/', roles: r + 'roles/', bombSites: r + 'bomb-sites/' },
 	};
 	let h = '<div class="mw4-planner" id="mw4-planner"><div class="pl-stage" id="pl-stage" tabindex="0" role="application" aria-label="' + esc(m.name + ' map. Drag to pan, scroll or pinch to zoom.') + '">';
 	if (m.image) h += '<img class="pl-img" id="pl-img" src="' + r + esc(m.image.file) + '" width="' + (+m.image.w) + '" height="' + (+m.image.h) + '" alt="' + esc(m.name + ' minimap') + '" draggable="false" decoding="async" fetchpriority="high">';
@@ -266,11 +271,30 @@ function planner(m, r) {
 	h += '<aside class="pl-panel" id="pl-panel" aria-label="Planner"><div class="pl-fallback"><h1>' + esc(m.name) + '</h1><p>' + esc(m.description || '') + '</p><noscript><p>Turn on JavaScript to use the interactive planner.</p></noscript></div></aside></div>';
 	return h + '<script type="application/json" id="mw4-planner-data">' + jsonForScript(data) + '</script>';
 }
+function bombSites(r) {
+	const pin = (cls, pt, label, title) => '<span class="bs-pin ' + cls + '" style="left:' + (pt.x * 100).toFixed(2) + '%;top:' + (pt.y * 100).toFixed(2) + '%" title="' + esc(title) + '">' + label + '</span>';
+	let h = '<div class="bs-grid">';
+	for (const m of sndMaps) {
+		const thumb = 'images/maps/' + m.slug + '-map-900.webp';
+		const img = fs.existsSync(path.join(SRC, thumb)) ? thumb : (m.image && m.image.file);
+		const src = m.sources && m.sources.snd;
+		const photos = (m.snd.photos || []);
+		h += '<article class="card bs-card reveal" id="' + esc(m.slug) + '"><div class="bs-map">' + (img ? '<img src="' + r + esc(img) + '" alt="' + esc(m.name + ' minimap with the A and B bomb sites marked') + '" loading="lazy" decoding="async">' : '');
+		for (const st of m.snd.sites) h += pin(st.id === 'A' ? 'bs-a' : 'bs-b', st, esc(st.id), st.id + ' bomb site');
+		if (m.snd.bomb) h += pin('bs-bomb', m.snd.bomb, '', 'Bomb spawn (attackers)' + (m.snd.bomb.approx ? ', approximate' : ''));
+		h += '</div><div class="card-pad"><h3>' + esc(m.name) + '</h3><div class="lo-meta"><span class="chip chip-red">A site</span><span class="chip" style="color:#4fc3f7;border-color:rgba(79,195,247,.3)">B site</span>' + (m.snd.bomb ? '<span class="chip">Bomb spawn' + (m.snd.bomb.approx ? ' (approx.)' : '') + '</span>' : '') + '</div>';
+		h += photos.length
+			? '<div class="bs-photos">' + photos.map((p) => '<a href="' + r + esc(p.file) + '" target="_blank" rel="noopener"><img src="' + r + esc(p.file) + '" alt="' + esc(m.name + ' ' + (p.label || 'bomb site')) + '" loading="lazy" decoding="async">' + (p.label ? '<span>' + esc(p.label) + '</span>' : '') + '</a>').join('') + '</div>'
+			: '<p class="bs-empty muted">No site photos uploaded yet.</p>';
+		h += '<div class="bs-actions"><a class="btn btn-sm btn-primary" href="' + r + 'maps/' + m.slug + '/?mode=snd">Plan this map</a>' + (src && src.url ? '<a class="lo-src" href="' + esc(src.url) + '" target="_blank" rel="noopener nofollow">Source: ' + esc(src.label || 'link') + '</a>' : '') + '</div></div></article>';
+	}
+	return h + '</div>';
+}
 function home() {
 	const r = './';
-	const hills = maps.reduce((a, m) => a + ((m.hp && m.hp.hills) || []).length, 0);
-	const snd = maps.filter((m) => m.snd && m.snd.sites && m.snd.sites.length).length;
-	const stats = [[maps.length, 'Launch maps'], [hills, 'Hardpoints mapped'], [snd, 'S&D bomb-site layouts'], [loadouts.length, 'Builds tracked']];
+	const hills = maps.reduce((a, m) => a + (has(m, 'hp') ? ((m.hp && m.hp.hills) || []).length : 0), 0);
+	const snd = sndMaps.length;
+	const stats = [[maps.length, 'Ranked maps'], [hills, 'Hardpoints mapped'], [snd, 'S&D bomb-site layouts'], [loadouts.length, 'Builds tracked']];
 	const feature = (slug, icon, cls, title, text, more) => '<a class="card feature reveal' + cls + '" href="' + r + slug + '/"><span class="ico">' + ico(icon) + '</span><h3>' + esc(title) + '</h3><p>' + esc(text) + '</p><span class="more">' + esc(more) + '</span></a>';
 	const head = (eyebrow, h2, slug, btn) => '<div class="section-head reveal"><div><span class="eyebrow">' + esc(eyebrow) + '</span><h2>' + esc(h2) + '</h2></div><a class="btn btn-sm" href="' + r + slug + '/">' + esc(btn) + '</a></div>';
 	return '<section class="hero">\n\t<div class="hero-art" aria-hidden="true"><div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="sweep"></div><div class="cross"></div><span class="blip" style="left:62%;top:34%"></span><span class="blip b2" style="left:30%;top:58%"></span><span class="blip b3" style="left:70%;top:68%"></span></div>\n' +
@@ -279,11 +303,11 @@ function home() {
 		'\t\t<div class="hero-actions reveal d3"><a class="btn btn-primary" href="' + r + 'maps/">' + ico('map') + ' Open the map planner</a><a class="btn" href="' + r + 'ranked-loadouts/">Pro loadouts</a></div>\n' +
 		'\t\t<div class="stats reveal">' + stats.map((s) => '<div class="stat"><b>' + esc(s[0]) + '</b><span>' + esc(s[1]) + '</span></div>').join('') + '</div>\n\t</div>\n</section>\n\n' +
 		'<section class="section"><div class="container"><div class="grid grid-3">' +
-		feature('maps', 'map', '', 'Interactive maps', 'Zoom into every launch map. See hardpoint rotations, S&D bomb sites and bomb spawns, then draw routes, strong points and enemy paths for your team of four.', 'Plan a map') +
+		feature('maps', 'map', '', 'Interactive maps', 'Zoom into every Ranked Play map. See hardpoint rotations, S&D bomb sites and bomb spawns, then draw routes, strong points and enemy paths for your team of four.', 'Plan a map') +
 		feature('ranked-loadouts', 'gun', ' d1', 'Ranked loadouts', 'Builds the pros are running right now, plus a tier list of the multiplayer meta. Copy any build with one tap.', 'See builds') +
 		feature('warzone', 'drop', ' d2', 'Warzone', 'A ranked Warzone meta built from multiple trackers, with full builds and the newest 2026 maps.', 'Warzone meta') +
 		'</div></div></section>\n\n' +
-		'<section class="section"><div class="container">' + head('Launch map pool', 'Pick a map. Build the plan.', 'maps', 'All maps') + mapsGrid(r) + '</div></section>\n\n' +
+		'<section class="section"><div class="container">' + head('Ranked map pool', 'Pick a map. Build the plan.', 'maps', 'All maps') + mapsGrid(r) + '</div></section>\n\n' +
 		'<section class="section"><div class="container">' + head('Pro structure', 'Four players. Four jobs.', 'roles', 'Role guide') + rolesBlock(true) + '</div></section>\n\n' +
 		'<section class="section"><div class="container"><div class="cta reveal"><span class="eyebrow">Squad up</span><h2>Save plans and share them with your team.</h2>' +
 		'<p class="lead">Plans save on your device as you draw. Copy a link or export an image and send it to your squad before you queue.</p>' +
@@ -294,12 +318,25 @@ function home() {
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(OUT, { recursive: true });
 const nAssets = copyDir(path.join(SRC, 'assets'), path.join(OUT, 'assets'));
-const nImages = copyDir(path.join(SRC, 'images'), path.join(OUT, 'images'));
+const used = new Set();
+for (const m of maps) {
+	[m.hero, m.image && m.image.file].concat(((m.snd && m.snd.photos) || []).map((p) => p.file)).forEach((f) => f && used.add(f));
+	if (fs.existsSync(path.join(SRC, 'images/maps/' + m.slug + '-map-900.webp'))) used.add('images/maps/' + m.slug + '-map-900.webp');
+}
+for (const m of wzmaps) if (m.image) used.add(m.image);
+let nImages = 0;
+for (const f of used) {
+	if (!fs.existsSync(path.join(SRC, f))) continue;
+	fs.mkdirSync(path.dirname(path.join(OUT, f)), { recursive: true });
+	fs.copyFileSync(path.join(SRC, f), path.join(OUT, f));
+	nImages++;
+}
 for (const f of ['CNAME', 'robots.txt']) if (fs.existsSync(path.join(SRC, f))) fs.copyFileSync(path.join(SRC, f), path.join(OUT, f));
 fs.writeFileSync(path.join(OUT, '.nojekyll'), '');
 
 write('index.html', layout({ depth: 0, bodyClass: 'home', title: site.name + ' \u2013 ' + site.tagline, description: site.tagline, content: home() }));
 write('maps/index.html', standardPage('maps', mapsGrid('../')));
+write('bomb-sites/index.html', standardPage('bomb-sites', bombSites('../')));
 write('ranked-loadouts/index.html', standardPage('ranked-loadouts', rankedLoadouts()));
 write('warzone/index.html', standardPage('warzone', warzone('../')));
 write('roles/index.html', standardPage('roles', rolesBlock(false)));
@@ -316,9 +353,8 @@ write('404.html', layout({
 	content: '<div class="container notfound">\n\t<b>404</b>\n\t<h1 style="font-size:2rem;margin-top:.4em">Off the map.</h1>\n\t<p class="muted">That page was not found. Head back to base.</p>\n\t<p><a class="btn btn-primary" href="' + (site.base || '/') + '">Back home</a></p>\n</div>',
 }));
 
-console.log('Built ' + (8 + maps.length) + ' pages, ' + nAssets + ' assets, ' + nImages + ' images -> ' + path.relative(ROOT, OUT) + '/');
+console.log('Built ' + (9 + maps.length) + ' pages, ' + nAssets + ' assets, ' + nImages + ' images -> ' + path.relative(ROOT, OUT) + '/');
 console.log('  maps: ' + maps.length + ', loadouts: ' + loadouts.length + ', warzone maps: ' + wzmaps.length);
 const missing = [];
-for (const m of maps) for (const f of [m.hero, m.image && m.image.file]) if (f && !fs.existsSync(path.join(SRC, f))) missing.push(f);
-for (const m of wzmaps) if (m.image && !fs.existsSync(path.join(SRC, m.image))) missing.push(m.image);
+for (const f of used) if (!fs.existsSync(path.join(SRC, f))) missing.push(f);
 if (missing.length) console.log('  MISSING IMAGES (' + missing.length + '): ' + missing.join(', '));

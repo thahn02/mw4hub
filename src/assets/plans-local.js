@@ -22,7 +22,7 @@
 	function load() {
 		var list = [];
 		maps.forEach(function (m) {
-			['hp', 'snd'].forEach(function (mode) {
+			(m.modes || ['hp', 'snd']).forEach(function (mode) {
 				var items = [];
 				try { items = JSON.parse(localStorage.getItem(key(m.slug, mode)) || '[]'); } catch (e) { items = []; }
 				if (Array.isArray(items) && items.length) list.push({ map: m, mode: mode, items: items });
@@ -36,11 +36,11 @@
 		if (!list.length) { rows.innerHTML = emptyHtml; return; }
 		rows.innerHTML = list.map(function (p) {
 			var u = new URL('../maps/' + p.map.slug + '/', location.href);
-			if (p.mode === 'snd') u.searchParams.set('mode', 'snd');
+			u.searchParams.set('mode', p.mode);
 			var open = u.toString();
 			u.hash = 'p=' + b64e(JSON.stringify({ v: 1, d: p.mode, i: p.items }));
 			var n = p.items.length;
-			return '<div class="plan-row card"><div class="plan-main"><b>' + esc(p.map.name) + ' ' + (p.mode === 'snd' ? 'S&amp;D' : 'Hardpoint') + ' plan</b><span class="muted">' + n + (n === 1 ? ' item' : ' items') + ' · saved on this device</span></div><div class="plan-actions">' +
+			return '<div class="plan-row card"><div class="plan-main"><b>' + esc(p.map.name) + ' ' + ({ hp: 'Hardpoint', snd: 'S&amp;D', hj: 'Hijack' }[p.mode] || 'Hardpoint') + ' plan</b><span class="muted">' + n + (n === 1 ? ' item' : ' items') + ' · saved on this device</span></div><div class="plan-actions">' +
 				'<a class="btn btn-sm btn-primary" href="' + esc(open) + '">Open</a><button type="button" class="btn btn-sm" data-copy="' + esc(u.toString()) + '">Copy link</button>' +
 				'<button type="button" class="btn btn-sm btn-ghost" data-local-del="' + esc(p.map.slug + ':' + p.mode) + '">Delete</button></div></div>';
 		}).join('');
