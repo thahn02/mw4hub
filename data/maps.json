@@ -302,8 +302,21 @@
         "y": 0.5202,
         "approx": true
       },
-      "commStations": null,
-      "note": "Team spawns are from the official Call of Duty tac map, registered to this minimap via the hardpoint positions (about 1% error). The Data Spike area is the midpoint between spawns: officially it starts around the central area. Comm Station positions were not published anywhere as of 2026-11-17."
+      "commStations": [
+        {
+          "x": 0.1816,
+          "y": 0.4794,
+          "r": 0.1025,
+          "estimated": true
+        },
+        {
+          "x": 0.8138,
+          "y": 0.5766,
+          "r": 0.1367,
+          "estimated": true
+        }
+      ],
+      "note": "Team spawns are from the official Call of Duty tac map, registered to this minimap via the hardpoint positions (about 1% error). The Data Spike area is the midpoint between spawns: officially it starts around the central area. Comm Station positions were not published anywhere as of 2026-11-17, so commStations are ESTIMATED zones: each covers a team spawn and the Domination flag nearest to it (official tac map). Replace with exact x,y (drop r and estimated) when a source appears."
     }
   },
   {
@@ -426,8 +439,21 @@
         "y": 0.4627,
         "approx": true
       },
-      "commStations": null,
-      "note": "Team spawns are from the official Call of Duty tac map, registered to this minimap via the hardpoint positions (about 1% error). The Data Spike area is the midpoint between spawns: officially it starts around the central area. Comm Station positions were not published anywhere as of 2026-11-17."
+      "commStations": [
+        {
+          "x": 0.7899,
+          "y": 0.6555,
+          "r": 0.1036,
+          "estimated": true
+        },
+        {
+          "x": 0.243,
+          "y": 0.407,
+          "r": 0.1259,
+          "estimated": true
+        }
+      ],
+      "note": "Team spawns are from the official Call of Duty tac map, registered to this minimap via the hardpoint positions (about 1% error). The Data Spike area is the midpoint between spawns: officially it starts around the central area. Comm Station positions were not published anywhere as of 2026-11-17, so commStations are ESTIMATED zones: each covers a team spawn and the Domination flag nearest to it (official tac map). Replace with exact x,y (drop r and estimated) when a source appears."
     }
   },
   {
@@ -641,8 +667,21 @@
         "y": 0.6576,
         "approx": true
       },
-      "commStations": null,
-      "note": "Team spawns are from the official Call of Duty tac map, registered to this minimap via the hardpoint positions (about 1% error). The Data Spike area is the midpoint between spawns: officially it starts around the central area. Comm Station positions were not published anywhere as of 2026-11-17."
+      "commStations": [
+        {
+          "x": 0.2656,
+          "y": 0.6291,
+          "r": 0.0784,
+          "estimated": true
+        },
+        {
+          "x": 0.788,
+          "y": 0.6635,
+          "r": 0.0947,
+          "estimated": true
+        }
+      ],
+      "note": "Team spawns are from the official Call of Duty tac map, registered to this minimap via the hardpoint positions (about 1% error). The Data Spike area is the midpoint between spawns: officially it starts around the central area. Comm Station positions were not published anywhere as of 2026-11-17, so commStations are ESTIMATED zones: each covers a team spawn and the Domination flag nearest to it (official tac map). Replace with exact x,y (drop r and estimated) when a source appears."
     }
   },
   {

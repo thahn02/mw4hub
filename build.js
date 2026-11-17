@@ -257,7 +257,7 @@ function planner(m, r) {
 		map: {
 			id: m.id || 0, slug: m.slug, name: m.name, url: r + 'maps/' + m.slug + '/', location: m.location || '', size: m.size || '', description: m.description || '',
 			image: m.image ? { url: r + m.image.file, w: m.image.w, h: m.image.h } : null,
-			hp: m.hp || { hills: [] }, snd: m.snd || null, intel: { hp: (m.intel && m.intel.hp) || [], snd: (m.intel && m.intel.snd) || [] }, sources: m.sources || [], ranked: !!m.ranked, modes: m.modes, hj: m.hj ? { spawns: m.hj.spawns, spike: m.hj.spike } : null,
+			hp: m.hp || { hills: [] }, snd: m.snd || null, intel: { hp: (m.intel && m.intel.hp) || [], snd: (m.intel && m.intel.snd) || [] }, sources: m.sources || [], ranked: !!m.ranked, modes: m.modes, hj: m.hj ? { spawns: m.hj.spawns, spike: m.hj.spike, commStations: m.hj.commStations || [] } : null,
 		},
 		maps: maps.map((x) => ({ slug: x.slug, name: x.name, url: r + 'maps/' + x.slug + '/' })),
 		roles: roleData.roles, coaching: roleData.coaching, roster: roster,

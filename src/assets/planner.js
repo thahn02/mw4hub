@@ -371,6 +371,14 @@
 				gk.appendChild(s('text', { y: 4.2, 'text-anchor': 'middle', 'font-size': 11, 'font-weight': 850, fill: '#1b1608', 'font-family': FONT }, 'DS'));
 				gObj.appendChild(gk); track(SC.obj, gk, kx, ky);
 			}
+			(MAP.hj.commStations || []).forEach(function (cs, i) {
+				var ccol = i ? '#ff6b4a' : '#4fc3f7', cx0 = cs.x * 1000, cy0 = cs.y * 1000;
+				if (cs.r) gObj.appendChild(s('circle', { cx: r2(cx0), cy: r2(cy0), r: r2(cs.r * 1000), fill: ccol, 'fill-opacity': 0.1, stroke: ccol, 'stroke-width': 2, 'stroke-dasharray': '8 7', 'vector-effect': 'non-scaling-stroke' }));
+				var gc = s('g', { 'class': 'mk mk-comm', 'data-tip': cs.estimated ? 'Comm Station area \u00b7 estimated, not confirmed' : 'Comm Station' });
+				gc.appendChild(s('path', { d: 'M0,-17 L15,-8.5 L15,8.5 L0,17 L-15,8.5 L-15,-8.5 Z', fill: '#12160c', stroke: ccol, 'stroke-width': 2.4 }));
+				gc.appendChild(s('text', { y: 4.2, 'text-anchor': 'middle', 'font-size': 11, 'font-weight': 850, fill: ccol, 'font-family': FONT }, cs.estimated ? 'CS?' : 'CS'));
+				gObj.appendChild(gc); track(SC.obj, gc, cx0, cy0);
+			});
 			(MAP.hj.spawns || []).forEach(function (sp, i) {
 				var scol = i ? '#ff6b4a' : '#4fc3f7';
 				var gs = s('g', { 'class': 'mk mk-spawn', 'data-tip': 'Team spawn \u00b7 official tac map' });
@@ -780,7 +788,11 @@
 					return '<button type="button" class="pl-site pl-site-' + (i ? 'A' : 'B') + '" data-fly-xy="' + sp.x + ',' + sp.y + '"><b>SP</b><span>Team spawn</span></button>';
 				}).join('');
 				if (MAP.hj.spike) html += '<button type="button" class="pl-site pl-site-bomb" data-fly-xy="' + MAP.hj.spike.x + ',' + MAP.hj.spike.y + '"><b>DS</b><span>Data Spike start area (approx.)</span></button>';
-				html += '</div><p class="pl-empty" style="margin-top:10px">Each team plants at the enemy Comm Station on the other side of the map. Exact Comm Station positions for ' + esc(MAP.name) + ' have not been published yet, so they are not marked.</p>' + srcLine([MAP.sources && MAP.sources.hj]);
+				html += (MAP.hj.commStations || []).map(function (cs, i) {
+					return '<button type="button" class="pl-site pl-site-' + (i ? 'A' : 'B') + '" data-fly-xy="' + cs.x + ',' + cs.y + '"><b>CS</b><span>Comm Station' + (cs.estimated ? ' (est.)' : '') + '</span></button>';
+				}).join('');
+				var est = (MAP.hj.commStations || []).some(function (cs) { return cs.estimated; });
+				html += '</div><p class="pl-empty" style="margin-top:10px">Each team plants at the enemy Comm Station on the other side of the map.' + (est ? ' Exact Comm Station positions for ' + esc(MAP.name) + ' have not been published, so the dashed zones are estimates: each covers a team spawn and the nearest Domination flag.' : '') + '</p>' + srcLine([MAP.sources && MAP.sources.hj]);
 			} else {
 				html += '<p class="pl-empty">Comm Station and Data Spike positions for ' + esc(MAP.name) + ' have not been mapped yet. You can still plan here and mark them with labels.</p>';
 			}
@@ -800,7 +812,7 @@
 			html += '</div>';
 		}
 		html += '<div class="pl-sec"><div class="pl-sec-h"><h3>Layers</h3></div><div class="pl-layers">' +
-			(S.mode === 'hj' ? (MAP.hj ? layerToggle('obj', 'Team spawns & Data Spike area') : '') : layerToggle('obj', S.mode === 'hp' ? 'Hardpoints' : 'Bomb sites & bomb spawn')) +
+			(S.mode === 'hj' ? (MAP.hj ? layerToggle('obj', 'Spawns, Comm Stations & Data Spike') : '') : layerToggle('obj', S.mode === 'hp' ? 'Hardpoints' : 'Bomb sites & bomb spawn')) +
 			(S.mode === 'hp' ? layerToggle('rot', 'Rotation path') : '') +
 			layerToggle('route', 'Team routes & setups', countOf('route') + countOf('icon')) +
 			layerToggle('strong', 'Strong points to hold', countOf('strong')) +
