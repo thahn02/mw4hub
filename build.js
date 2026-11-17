@@ -28,6 +28,15 @@ const roleData = read('roles.json');
 const roster = read('roster.json');
 const guide = read('role-guide.json');
 const extras = read('map-extras.json');
+const rules = read('rules.json');
+const classData = read('classes.json');
+const weaponList = read('weapons.json');
+
+// Freshness. Anything not re-checked within these many days is left off the site, so a stale build can never be
+// shown as current. TODAY can be pinned (TODAY=2026-11-17 node build.js) for a repeatable build.
+const TODAY = process.env.TODAY || new Date().toISOString().slice(0, 10);
+const MAX_AGE = { classes: 14, warzone: 3 };
+const ageDays = (iso) => (iso ? Math.floor((Date.parse(TODAY) - Date.parse(iso)) / 86400000) : 9999);
 const pages = read('pages.json');
 
 // ---------- helpers ----------
@@ -142,7 +151,9 @@ function loadoutCard(d, showTier) {
 		h += '<div class="lo-build" data-b="' + i + '"' + (i ? ' hidden' : '') + '>';
 		if (builds.length === 1 && b.name && (b.name !== (d.category || '') || players.length)) h += '<div class="lo-bname">' + esc(b.name) + '</div>';
 		h += '<ol class="lo-atts">' + (b.attachments || []).map((a) => '<li><span class="lo-slot">' + esc(a.slot || '') + '</span><span class="lo-att">' + esc(a.name || '') + '</span></li>').join('');
-		h += '</ol><button class="btn btn-sm lo-copy" type="button" data-copy="' + esc(buildCopyText(d, b)) + '">Copy build</button></div>';
+		h += '</ol>';
+		if (b.source && b.source.url) h += '<a class="lo-bsrc" href="' + esc(b.source.url) + '" target="_blank" rel="noopener nofollow">' + esc((b.both ? 'Same build on both trackers \u00b7 ' : '') + b.source.label) + '</a>';
+		h += '<button class="btn btn-sm lo-copy" type="button" data-copy="' + esc(buildCopyText(d, b)) + '">Copy build</button></div>';
 	});
 	if (!builds.length) h += '<p class="muted lo-empty">Full build not published by our sources yet.</p>';
 	if (d.video) h += ytLite(d.video);
@@ -150,7 +161,7 @@ function loadoutCard(d, showTier) {
 	if (d.source && d.source.url) h += '<a class="lo-src" href="' + esc(d.source.url) + '" target="_blank" rel="noopener nofollow">' + esc('Source: ' + (d.source.label || 'link')) + '</a>';
 	const st = d.sources_tier && Object.keys(d.sources_tier);
 	if (st && st.length) h += '<span class="lo-date" title="Tier on each source site">' + esc(st.map((k) => k + ' ' + d.sources_tier[k]).join(' \u00b7 ')) + '</span>';
-	else if (d.verified) h += '<span class="lo-date">' + esc('Checked ' + fmtDate(d.verified)) + '</span>';
+	if (d.verified) h += '<span class="lo-date">' + esc('Checked ' + fmtDate(d.verified)) + '</span>';
 	return h + '</footer></article>';
 }
 function tierSections(items, labels) {
@@ -172,23 +183,193 @@ function filtersBar(items, tabs) {
 		'</div><input type="search" placeholder="Search weapon or player" data-filter-search aria-label="Search builds"></div></div>';
 }
 const NONE = '<p class="lo-none muted" hidden>No builds match that filter.</p></div>';
+// ---------- competitive classes: legality against the Ranked (CDL) and CMG rule sets ----------
+const same = (x, y) => String(x || '').toLowerCase() === String(y || '').toLowerCase();
+const inList = (list, v) => (list || []).some((x) => same(x, v));
+function gunLegality(name, cls) {
+	const w = weaponList.find((x) => same(x.name, name)) || { name, class: cls };
+	const out = { cdl: [], cmg: [] };
+	if (inList(rules.cdl.weaponClasses, w.class)) out.cdl.push('All ' + w.class + 's are restricted');
+	if (inList(rules.cdl.weapons, w.name)) out.cdl.push(w.name + ' is restricted');
+	if (inList(rules.cmg.weaponClasses, w.class)) out.cmg.push('All ' + w.class + 's are banned');
+	if (inList(rules.cmg.weapons, w.name)) out.cmg.push(w.name + ' is banned');
+	if (rules.cmg.battlePassBanned && w.battlePass) out.cmg.push('Battle Pass weapons are banned');
+	return out;
+}
+function buildLegality(bd) {
+	const out = gunLegality(bd.weapon, bd.class);
+	out.ga = [];
+	const C = rules.cdl, M = rules.cmg;
+	for (const at of bd.attachments || []) {
+		const label = at.name || at.type || at.slot, text = (at.type || '') + ' ' + (at.name || '');
+		if (inList(C.attachmentSlots, at.slot)) out.cdl.push(at.slot + ' attachments are restricted (' + label + ')');
+		if (at.name && Object.keys(C.attachments).some((k) => inList(C.attachments[k], at.name))) out.cdl.push(at.name + ' is restricted');
+		if (inList(M.attachmentSlots, at.slot)) out.cmg.push(at.slot + ' attachments are banned (' + label + ')');
+		if (/silenc|suppress/i.test(text)) out.cmg.push('Silencers are banned (' + label + ')');
+		if (/rapid fire/i.test(text)) out.cmg.push('Rapid fire attachments are banned (' + label + ')');
+		if (/akimbo/i.test(text)) out.cmg.push('Akimbo is banned');
+		if (/headshot/i.test(text)) out.cmg.push('Headshot multiplier barrels are banned (' + label + ')');
+		if (at.slot === 'Underbarrel' && /launcher|40mm/i.test(text)) out.cmg.push('Launcher underbarrels are banned (' + label + ')');
+		if (at.slot === 'Ammunition' && (M.bannedAmmo || []).some((x) => text.toLowerCase().indexOf(x.toLowerCase()) >= 0)) out.cmg.push(label + ' ammunition is banned');
+		if (at.slot === 'Optic' && !(inList(M.optics1x, at.name) || /reflex|red dot|\b1x\b|1\.0x/i.test(at.type || ''))) out.cmg.push('Optic not confirmed as 1.0x (' + label + ')');
+		if (at.slot === 'Muzzle' && !at.type) out.cmg.push('Muzzle type not recorded, so it cannot be checked against the silencer ban (' + label + ')');
+		for (const g of rules.ga.items || []) if (g.match && same(g.match.weapon, bd.weapon) && same(g.match.attachment, at.name)) out.ga.push(g);
+	}
+	return out;
+}
+function kitLegality(kit) {
+	const out = { cdl: [], cmg: [] }, C = rules.cdl.banned, A = rules.cmg.allowed;
+	for (const slot of ['tactical', 'lethal', 'fieldUpgrade', 'perk1', 'perk2', 'perk3', 'melee']) {
+		const it = kit[slot];
+		if (!it) continue;
+		for (const name of [it.name].concat(it.alt || [])) {
+			if (inList(C[slot], name)) out.cdl.push(name + ' is restricted');
+			if (A[slot] && !inList(A[slot], name)) out.cmg.push(name + ' is not on the allowed list');
+		}
+	}
+	const sec = kit.secondary && kit.secondary.name;
+	if (sec) { const g = gunLegality(sec, 'Pistol'); out.cdl.push.apply(out.cdl, g.cdl); out.cmg.push.apply(out.cmg, g.cmg); }
+	return out;
+}
+// Only current, legal classes are published. A class that breaks either rule set stops the build, so the daily
+// refresh cannot put an illegal class on the site by accident.
+const classProblems = [];
+const liveBuilds = classData.builds.filter((bd) => {
+	const lg = buildLegality(bd);
+	bd.legal = lg;
+	if (lg.cdl.length || lg.cmg.length) classProblems.push(bd.id + ': ' + lg.cdl.map((x) => 'Ranked: ' + x).concat(lg.cmg.map((x) => 'CMG: ' + x)).join('; '));
+	if (ageDays(bd.verified) > MAX_AGE.classes) { console.log('  hidden as stale (' + ageDays(bd.verified) + ' days): class ' + bd.id); return false; }
+	return true;
+});
+const kitLegal = kitLegality(classData.kit);
+if (kitLegal.cdl.length || kitLegal.cmg.length) classProblems.push('kit: ' + kitLegal.cdl.concat(kitLegal.cmg).join('; '));
+for (const rk of Object.keys(classData.roles)) {
+	const r = classData.roles[rk], k = { perk2: { name: r.perk2, alt: r.perk2Alt ? [r.perk2Alt] : [] }, lethal: { name: r.lethal } };
+	const lg = kitLegality(k);
+	if (lg.cdl.length || lg.cmg.length) classProblems.push('role ' + rk + ': ' + lg.cdl.concat(lg.cmg).join('; '));
+}
+if (classProblems.length) { console.error('Classes that break the rules in data/rules.json (fix or remove them in data/classes.json):\n  ' + classProblems.join('\n  ')); process.exit(1); }
+const liveWarzone = loadouts.filter((d) => {
+	if (d.game !== 'warzone') return false;
+	if (ageDays(d.verified) > MAX_AGE.warzone) { console.log('  hidden as stale (' + ageDays(d.verified) + ' days): warzone ' + d.weapon); return false; }
+	return true;
+});
+
+const KIT_SLOTS = [['secondary', 'Secondary'], ['melee', 'Melee'], ['tactical', 'Tactical'], ['lethal', 'Lethal'], ['fieldUpgrade', 'Field upgrade'], ['perk1', 'Perk 1'], ['perk2', 'Perk 2'], ['perk3', 'Perk 3']];
+function kitFor(roleKey) {
+	const r = roleKey ? classData.roles[roleKey] : null, out = {};
+	for (const [k] of KIT_SLOTS) {
+		const it = classData.kit[k];
+		if (!it) continue;
+		out[k] = { name: it.name, alt: (it.alt || []).slice(), note: it.note || '' };
+		if (r && r[k]) { out[k].alt = [it.name].concat(it.alt || []).filter((x) => !same(x, r[k])); out[k].name = r[k]; if (k === 'perk2' && r.perk2Alt) out[k].alt = [r.perk2Alt]; if (k === 'lethal') out[k].alt = out[k].alt.slice(0, 1); }
+	}
+	return out;
+}
+function kitText(kit) { return KIT_SLOTS.filter(([k]) => kit[k]).map(([k, label]) => label + ': ' + kit[k].name).join(' | '); }
+function classCopyText(bd, kit) {
+	return bd.weapon + ' [' + bd.label + '] - ' + (bd.attachments || []).map((x) => x.slot + ': ' + (x.name || x.type)).join(' | ') + ' - ' + kitText(kit) + ' - via MW4 Hub';
+}
+function legalChips(lg) {
+	let h = '<div class="cls-legal"><span class="chip chip-ok" title="Passes ' + esc(rules.cdl.title) + '">Ranked legal</span><span class="chip chip-ok" title="Passes ' + esc(rules.cmg.title) + '">CMG legal</span>';
+	for (const g of lg.ga || []) h += '<span class="chip chip-warn" title="' + esc(g.text) + '">Pros agreed not to use</span>';
+	return h + '</div>';
+}
+function srcLinks(list) {
+	return (list || []).map((x) => '<a class="lo-src" href="' + esc(x.url) + '" target="_blank" rel="noopener nofollow">' + esc((x.kind ? x.kind + ': ' : '') + x.label.replace(/^[^:]+: /, (m) => m)) + '</a>').join('');
+}
+function attList(bd) {
+	return '<ol class="lo-atts">' + (bd.attachments || []).map((x) => '<li><span class="lo-slot">' + esc(x.slot || '') + '</span><span class="lo-att">' + esc(x.name || x.type || '') + (x.name && x.type && !same(x.type, x.slot) ? '<em>' + esc(x.type) + '</em>' : (!x.name ? '<em>name not given by the source</em>' : '')) + '</span></li>').join('') + '</ol>';
+}
+function gunCard(weapon, builds) {
+	const cls = builds[0].class, players = [].concat.apply([], builds.map((x) => x.players || []));
+	const search = [weapon, cls].concat(players, builds.map((x) => x.label), builds.map((x) => x.team || '')).join(' ').toLowerCase();
+	const roleKeys = Object.keys(classData.roles).filter((k) => inList(classData.roles[k].guns, weapon));
+	const newest = builds.map((x) => x.verified).sort().pop();
+	let h = '<article class="lo-card card cls-gun" id="gun-' + esc(weapon.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')) + '" data-class="' + esc(cls) + '" data-search="' + esc(search) + '" data-verified="' + esc(newest) + '">';
+	h += '<header class="lo-head"><div class="lo-title"><h3 class="lo-weapon">' + esc(weapon) + '</h3><div class="lo-meta"><span class="chip">' + esc(cls) + '</span>' +
+		roleKeys.map((k) => { const r = roleData.roles.find((x) => x.key === k); return r ? '<span class="chip cls-role" style="--role:' + esc(r.color) + '"><i></i>' + esc(r.name) + '</span>' : ''; }).join('') + '</div></div></header>';
+	if (builds.length > 1) h += '<div class="lo-tabs" role="tablist">' + builds.map((x, i) => '<button type="button" role="tab" data-b="' + i + '" class="' + (i === 0 ? 'is-on' : '') + '" aria-selected="' + (i === 0 ? 'true' : 'false') + '">' + esc(x.label) + '</button>').join('') + '</div>';
+	builds.forEach((x, i) => {
+		h += '<div class="lo-build" data-b="' + i + '" data-build="' + esc(x.id) + '"' + (i ? ' hidden' : '') + '>';
+		h += '<div class="cls-bhead"><span class="lo-bname">' + esc(x.label) + '</span><span class="chip ' + (x.kind === 'pro' ? 'chip-brass' : '') + '">' + esc(x.kind === 'pro' ? (x.players && x.players.length ? x.players.join(' & ') + (x.team ? ' \u00b7 ' + x.team : '') : 'Pro build') : 'Creator variant') + '</span></div>';
+		h += attList(x) + (x.note ? '<p class="cls-note">' + esc(x.note) + '</p>' : '') + legalChips(x.legal);
+		for (const g of x.legal.ga) h += '<p class="cls-ga">' + esc(g.text) + ' It is still legal in Ranked and CMG Arena as the rules are written.</p>';
+		h += '<div class="cls-foot"><button class="btn btn-sm lo-copy" type="button" data-copy="' + esc(classCopyText(x, kitFor(roleKeys[0]))) + '">Copy class</button><span class="lo-date">Seen in use ' + esc(fmtDate(x.verified)) + '</span></div>';
+		h += '<div class="cls-srcs">' + srcLinks(x.sources) + '</div></div>';
+	});
+	return h + '</article>';
+}
+function kitBlock(kit, title, sub) {
+	return '<div class="cls-kit card"><div class="cls-kit-h"><div><span class="eyebrow">' + esc(sub) + '</span><h3>' + esc(title) + '</h3></div>' + legalChips({}) + '</div><dl class="cls-slots">' +
+		KIT_SLOTS.filter(([k]) => kit[k]).map(([k, label]) => '<div><dt>' + esc(label) + '</dt><dd><b>' + esc(kit[k].name) + '</b>' + (kit[k].alt && kit[k].alt.length ? '<span class="cls-alt">or ' + esc(kit[k].alt.join(', ')) + '</span>' : '') + (kit[k].note ? '<small>' + esc(kit[k].note) + '</small>' : '') + '</dd></div>').join('') +
+		'</dl><div class="cls-srcs">' + srcLinks(classData.kit.sources) + '</div></div>';
+}
+function roleClassCard(r) {
+	const cfg = classData.roles[r.key];
+	if (!cfg) return '';
+	const kit = kitFor(r.key);
+	const picks = (cfg.builds || []).map((id) => liveBuilds.find((x) => x.id === id)).filter(Boolean);
+	const builds = picks.length ? picks : liveBuilds.filter((x) => inList(cfg.guns, x.weapon)).slice(0, 2);
+	let h = '<article class="card cls-rolecard" id="class-' + esc(r.key) + '" style="--role:' + esc(r.color) + '"><div class="role-top"><span class="role-badge">' + esc(r.short) + '</span><div><h3>' + esc(r.name) + '</h3><span class="muted">' + esc(r.tag) + ' \u00b7 ' + esc(cfg.guns.join(' or ')) + '</span></div></div>';
+	h += '<p class="cls-note">' + esc(cfg.note) + '</p>';
+	if (builds.length > 1) h += '<div class="lo-tabs" role="tablist">' + builds.map((x, i) => '<button type="button" role="tab" data-b="' + i + '" class="' + (i === 0 ? 'is-on' : '') + '" aria-selected="' + (i === 0 ? 'true' : 'false') + '">' + esc(x.weapon + ' \u00b7 ' + x.label) + '</button>').join('') + '</div>';
+	builds.forEach((x, i) => {
+		h += '<div class="lo-build" data-b="' + i + '"' + (i ? ' hidden' : '') + '><div class="cls-bhead"><span class="lo-bname">' + esc(x.weapon + ' \u00b7 ' + x.label) + '</span></div>' + attList(x) + legalChips(x.legal) +
+			x.legal.ga.map((g) => '<p class="cls-ga">' + esc(g.text) + '</p>').join('') +
+			'<button class="btn btn-sm lo-copy" type="button" data-copy="' + esc(classCopyText(x, kit)) + '">Copy full class</button></div>';
+	});
+	if (!builds.length) h += '<p class="muted lo-empty">No current build for this role right now. It will be back after the next refresh.</p>';
+	h += '<dl class="cls-slots cls-slots-tight">' + KIT_SLOTS.filter(([k]) => kit[k]).map(([k, label]) => '<div><dt>' + esc(label) + '</dt><dd><b>' + esc(kit[k].name) + '</b>' + (kit[k].alt && kit[k].alt.length ? '<span class="cls-alt">or ' + esc(kit[k].alt.join(', ')) + '</span>' : '') + '</dd></div>').join('') + '</dl>';
+	return h + '<a class="lo-src" href="../roles/#role-' + esc(r.key) + '">How to play ' + esc(r.name) + '</a></article>';
+}
+function rulesPanel() {
+	const C = rules.cdl, M = rules.cmg, li = (xs) => xs.map((x) => '<li>' + esc(x) + '</li>').join('');
+	const group = (title, xs) => (xs && xs.length ? '<div class="rl-group"><h4>' + esc(title) + '</h4><ul>' + li(xs) + '</ul></div>' : '');
+	const mark = (issues) => (issues.length ? '<span class="chip chip-red" title="' + esc(issues.join('. ')) + '">' + esc(issues[0].replace(/^All /, '')) + '</span>' : '<span class="chip chip-ok">Legal</span>');
+	let h = '<div class="card card-pad rl-guns"><span class="eyebrow">Gun check</span><h3>Which guns you can bring</h3><div class="rl-table" role="table"><div class="rl-row rl-head" role="row"><span>Gun</span><span>Ranked / CDL</span><span>CMG Arena</span></div>' +
+		weaponList.map((w) => { const g = gunLegality(w.name, w.class); return '<div class="rl-row" role="row"><span><b>' + esc(w.name) + '</b><em>' + esc(w.class) + '</em></span><span>' + mark(g.cdl) + '</span><span>' + mark(g.cmg) + '</span></div>'; }).join('') + '</div>' +
+		'<p class="muted">A legal gun still has to be built from legal attachments. Every class on this page already is.</p></div>';
+	h += '<div class="grid rl-grid"><article class="card card-pad rl-card rl-cdl"><span class="eyebrow">' + esc(C.name) + '</span><h3>' + esc(C.title) + '</h3><p class="muted">' + esc(C.note) + '</p><p class="rl-kind">Everything listed is restricted. Anything not listed is allowed.</p>' +
+		group('Primary weapons', C.weaponClasses.filter((x) => x !== 'Launcher').map((x) => 'All ' + x + 's').concat(C.weapons)) + group('Secondary weapons', ['All Launchers']) +
+		group('Attachments', C.attachmentSlots.map((x) => 'All ' + x + ' attachments')) + Object.keys(C.attachments).map((k) => group(k + (k.slice(-1) === 's' ? '' : 's'), C.attachments[k])).join('') +
+		group('Tactical', C.banned.tactical) + group('Lethal', C.banned.lethal) + group('Field upgrades', C.banned.fieldUpgrade) + group('Perk 1', C.banned.perk1) + group('Perk 2', C.banned.perk2) + group('Perk 3', C.banned.perk3) + group('Killstreaks', C.banned.killstreaks) +
+		'<a class="lo-src" href="' + esc(C.source.url) + '" target="_blank" rel="noopener nofollow">Source: ' + esc(C.source.label) + '</a></article>';
+	h += '<article class="card card-pad rl-card"><span class="eyebrow">' + esc(M.name) + '</span><h3>' + esc(M.title) + '</h3><p class="muted">' + esc(M.note) + '</p><p class="rl-kind">Weapons and attachments are ban lists. Equipment and perks are allow lists: only what is named is legal.</p>' +
+		group('Banned weapons', M.weaponClasses.map((x) => 'All ' + x + 's').concat(M.weapons, M.battlePassBanned ? ['All Battle Pass weapons (' + weaponList.filter((w) => w.battlePass).map((w) => w.name).join(', ') + ')'] : [])) +
+		group('Banned attachments', M.attachmentRules) +
+		group('Allowed lethals', M.allowed.lethal) + group('Allowed tacticals', M.allowed.tactical.map((x) => x + (M.conditions[x] ? ': ' + M.conditions[x] : ''))) + group('Allowed field upgrades', M.allowed.fieldUpgrade) +
+		group('Allowed Perk 1', M.allowed.perk1) + group('Allowed Perk 2', M.allowed.perk2) + group('Allowed Perk 3', M.allowed.perk3) + group('Also', M.notes) +
+		group('Recent rule changes', M.changes.map((x) => fmtDate(x.date) + ': ' + x.text)) +
+		'<a class="lo-src" href="' + esc(M.source.url) + '" target="_blank" rel="noopener nofollow">Source: ' + esc(M.source.label) + '</a></article></div>';
+	h += '<div class="card card-pad rl-ga"><span class="eyebrow">' + esc(rules.ga.name) + '</span><p class="muted">' + esc(rules.ga.note) + '</p><ul>' + rules.ga.items.map((g) => '<li>' + esc(g.text) + ' <a class="lo-src" href="' + esc(g.source.url) + '" target="_blank" rel="noopener nofollow">' + esc(g.source.label) + '</a></li>').join('') + '</ul></div>';
+	return h;
+}
 function rankedLoadouts() {
-	const pro = loadouts.filter((d) => d.game === 'ranked' && d.kind === 'pro');
-	const meta = loadouts.filter((d) => d.game === 'ranked' && d.kind === 'meta');
-	return '<div class="lo-app" data-lo-app>' + filtersBar(pro.concat(meta), [['pro', 'Pro builds', pro.length], ['meta', 'Meta tier list', meta.length]]) +
-		'<section data-panel="pro"><p class="lo-note">Builds Call of Duty League pros ran at the Modern Warfare 4 kickoff events, as reported by Breaking Point. These follow the competitive ruleset, so they are the closest thing to Ranked Play builds. Five attachments each.</p><div class="grid lo-grid">' +
-		pro.map((d) => loadoutCard(d, false)).join('') + '</div></section>' +
-		'<section data-panel="meta" hidden><p class="lo-note">Public multiplayer meta for Modern Warfare 4, ranked by tier. Ranked Play restrictions can ban some attachments or weapons, so check the in-game restrictions list. Tier data: warzoneloadout.games.</p>' +
-		tierSections(meta, { S: 'Meta: best in class', A: 'Strong picks', B: 'Viable', C: 'Situational', D: 'Off-meta' }) + '</section>' + NONE;
+	const guns = [];
+	liveBuilds.forEach((x) => { if (guns.indexOf(x.weapon) < 0) guns.push(x.weapon); });
+	const lastChange = (rules.cmg.changes[0] || {}).date;
+	let h = '<div class="lo-app cls-app" data-lo-app data-checked="' + esc(classData.updated) + '" data-max-age="' + MAX_AGE.classes + '">' +
+		'<div class="cls-status card"><div><span class="eyebrow">Checked <span data-ago="' + esc(classData.updated) + '">' + esc(fmtDate(classData.updated)) + '</span></span><p>' + esc(classData.summary) + '</p></div>' +
+		'<div class="cls-status-rules"><span class="chip chip-sage">' + esc(rules.cdl.title) + '</span><span class="chip chip-sage">' + esc(rules.cmg.title) + (lastChange ? ' \u00b7 changed ' + esc(fmtDate(lastChange)) : '') + '</span><span class="chip">Rules read ' + esc(fmtDate(rules.checked)) + '</span></div></div>';
+	h += filtersBar(liveBuilds, [['guns', 'By gun', guns.length], ['roles', 'By role', Object.keys(classData.roles).length], ['rules', 'Rules & bans', '']]);
+	h += '<section data-panel="guns"><p class="lo-note">Classes pros are running now, one card per gun. Every build is checked against both rule sets when the site is built, and a build nobody has been seen using for ' + MAX_AGE.classes + ' days drops off the page.</p>' +
+		kitBlock(kitFor(null), 'The rest of the class', 'Same on every gun') +
+		'<div class="grid lo-grid cls-grid">' + guns.map((g) => gunCard(g, liveBuilds.filter((x) => x.weapon === g))).join('') + '</div></section>';
+	h += '<section data-panel="roles" hidden><p class="lo-note">One full class per role: the gun, its attachments, perks and equipment. Tap Copy full class to send it to your squad.</p><div class="grid cls-roles">' + roleData.roles.map(roleClassCard).join('') + '</div></section>';
+	h += '<section data-panel="rules" hidden><p class="lo-note">The two rule sets every class above is checked against. Rules were last read on ' + esc(fmtDate(rules.checked)) + '.</p>' + rulesPanel() + '</section>';
+	return h + NONE;
 }
 function warzone(r) {
-	const wz = loadouts.filter((d) => d.game === 'warzone');
+	const wz = liveWarzone;
+	const wzChecked = wz.map((d) => d.verified).sort().pop() || '';
 	const long = wz.find((d) => d.tier === 'S' && d.category === 'Long Range');
 	const close = wz.find((d) => d.tier === 'S' && d.category === 'Close Range');
-	let h = '<div class="lo-app" data-lo-app>' + filtersBar(wz, [['meta', 'Meta loadouts', wz.length], ['maps', 'Newest maps', wzmaps.length]]) + '<section data-panel="meta">';
+	let h = '<div class="lo-app" data-lo-app data-checked="' + esc(wzChecked) + '" data-max-age="' + MAX_AGE.warzone + '">' + filtersBar(wz, [['meta', 'Meta loadouts', wz.length], ['maps', 'Newest maps', wzmaps.length]]) + '<section data-panel="meta">';
 	if (long && close) h += '<div class="wz-pair card"><span class="eyebrow">Meta pairing</span><div class="wz-pair-row"><div><b>' + esc(long.weapon) + '</b><span class="muted">Long range primary</span></div><span class="wz-plus">+</span><div><b>' + esc(close.weapon) + '</b><span class="muted">Close range secondary</span></div></div></div>';
-	h += '<p class="lo-note">Our Warzone tiers combine the current rankings from wzstats.gg and warzoneloadout.games. Weapons rated highly on both sites rank highest. Each card shows the tier on each source so you can see where they agree.</p>';
-	h += tierSections(wz, { S: 'Meta: both trackers agree', A: 'Strong picks', B: 'Viable', C: 'Situational' });
+	h += '<p class="lo-note">Checked <b data-ago="' + esc(wzChecked) + '">' + esc(fmtDate(wzChecked)) + '</b>. Tiers combine today\u2019s rankings from wzstats.gg and warzoneloadout.games: weapons rated highly on both rank highest, and each card shows the tier on each site. Where the two sites build a gun differently you get both builds. Anything not re-checked for ' + MAX_AGE.warzone + ' days is taken off the page.</p>';
+	if (!wz.length) h += '<p class="lo-empty muted">No Warzone builds have been re-checked in the last ' + MAX_AGE.warzone + ' days, so none are shown. They return after the next refresh.</p>';
+	h += tierSections(wz, { S: 'Meta: top of the two trackers', A: 'Strong picks', B: 'Viable', C: 'Situational' });
 	h += '</section><section data-panel="maps" hidden><div class="grid grid-3 wz-maps">';
 	for (const m of wzmaps) {
 		h += '<article class="card wz-map"><div class="wz-thumb">' + (m.image ? '<img src="' + r + esc(m.image) + '" alt="' + esc(m.name + ' map') + '" loading="lazy" decoding="async">' : '<div class="wz-thumb-empty">' + esc(m.name) + '</div>');
@@ -311,11 +492,14 @@ function rolesGuide() {
 function credits() {
 	const rows = [
 		['GamesAtlas', 'https://www.gamesatlas.com/cod-modern-warfare-4/maps/', 'Map list, minimap layouts and cover images, hardpoint names and rotation order, Warzone map info.'],
-		['Breaking Point', 'https://breakingpoint.gg/posts/modern-warfare-4-search-destroy-bombsites', 'Search & Destroy bomb-site layouts, hardpoint rotation graphics, Day 1 pro class setups and the OpTic Texas roster.'],
-		['warzoneloadout.games', 'https://warzoneloadout.games/', 'Warzone and MW4 multiplayer tier rankings and attachment builds.'],
-		['wzstats.gg', 'https://wzstats.gg/', 'Warzone meta tier list used in our combined Warzone rankings.'],
+		['Breaking Point', 'https://breakingpoint.gg/posts/modern-warfare-4-search-destroy-bombsites', 'Search & Destroy bomb-site layouts, hardpoint rotation graphics and the OpTic Texas roster.'],
+		['warzoneloadout.games', 'https://warzoneloadout.games/', 'Warzone tier rankings and attachment builds, re-read daily.'],
+		['wzstats.gg', 'https://wzstats.gg/', 'Warzone meta tier list and builds used in our combined Warzone rankings, re-read daily.'],
 		['Call of Duty League', 'https://callofdutyleague.com/en-us/competitive-settings', 'CDL 2027 Competitive Maps & Modes: the Hardpoint, Search & Destroy and Hijack map pool used for the Ranked maps shown here.'],
 		['Call of Duty (Activision)', 'https://www.callofduty.com/blog/2026/10/call-of-duty-modern-warfare-4-ready-for-launch-maps-modes', 'Official launch map and mode announcement, and the tac maps used for team spawn positions, area names and Domination flags in the planner.'],
+		['Call of Duty League: Competitive Settings', 'https://callofdutyleague.com/en-us/competitive-settings', 'The restricted weapons, attachments, perks and equipment every Ranked class is checked against.'],
+		['Checkmate Gaming', 'https://www.checkmategaming.com/cmg-arena/ladders/01a169a6-4c72-7a28-85a7-4e633f8baefc/rules', 'CMG MW4 Arena rules: the banned and allowed lists every class is also checked against.'],
+		['BoomKid, Apathy and Harrz (YouTube)', 'https://www.youtube.com/watch?v=LP-1qApCG3s', 'Breakdowns of the classes Call of Duty League pros are running, used for the competitive builds, perks and equipment. Each build links to the video it came from.'],
 		['RankKD', 'https://www.rankkd.com/guides-tools/call-of-duty-modern-warfare-4/', 'Callout names, the short names for each Hardpoint hill and the map notes in the planner, plus the Hardpoint and Hijack job breakdowns in the role guide.'],
 	];
 	return '<div class="credits prose"><p>MW4 Hub combines and reworks public information into its own tools. Map marker positions were plotted onto the minimaps from the sources below; tiers and builds were cross-checked across sites. Please support these creators.</p><div class="grid">' +
@@ -386,7 +570,7 @@ function home() {
 	const r = './';
 	const hills = maps.reduce((a, m) => a + (has(m, 'hp') ? ((m.hp && m.hp.hills) || []).length : 0), 0);
 	const snd = sndMaps.length;
-	const stats = [[maps.length, 'Ranked maps'], [hills, 'Hardpoints mapped'], [snd, 'S&D bomb-site layouts'], [loadouts.length, 'Builds tracked']];
+	const stats = [[maps.length, 'Ranked maps'], [hills, 'Hardpoints mapped'], [snd, 'S&D bomb-site layouts'], [liveBuilds.length + liveWarzone.reduce((n, d) => n + d.builds.length, 0), 'Current builds']];
 	const feature = (slug, icon, cls, title, text, more) => '<a class="card feature reveal' + cls + '" href="' + r + slug + '/"><span class="ico">' + ico(icon) + '</span><h3>' + esc(title) + '</h3><p>' + esc(text) + '</p><span class="more">' + esc(more) + '</span></a>';
 	const head = (eyebrow, h2, slug, btn) => '<div class="section-head reveal"><div><span class="eyebrow">' + esc(eyebrow) + '</span><h2>' + esc(h2) + '</h2></div><a class="btn btn-sm" href="' + r + slug + '/">' + esc(btn) + '</a></div>';
 	return '<section class="hero">\n\t<div class="hero-art" aria-hidden="true"><div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="sweep"></div><div class="cross"></div><span class="blip" style="left:62%;top:34%"></span><span class="blip b2" style="left:30%;top:58%"></span><span class="blip b3" style="left:70%;top:68%"></span></div>\n' +
@@ -396,7 +580,7 @@ function home() {
 		'\t\t<div class="stats reveal">' + stats.map((s) => '<div class="stat"><b>' + esc(s[0]) + '</b><span>' + esc(s[1]) + '</span></div>').join('') + '</div>\n\t</div>\n</section>\n\n' +
 		'<section class="section"><div class="container"><div class="grid grid-3">' +
 		feature('maps', 'map', '', 'Interactive maps', 'Zoom into every Ranked Play map. See hardpoint rotations, S&D bomb sites and bomb spawns, then draw routes, strong points and enemy paths for your team of four.', 'Plan a map') +
-		feature('ranked-loadouts', 'gun', ' d1', 'Ranked loadouts', 'Builds the pros are running right now, plus a tier list of the multiplayer meta. Copy any build with one tap.', 'See builds') +
+		feature('ranked-loadouts', 'gun', ' d1', 'Ranked loadouts', 'Current competitive classes by gun and by role, with perks and equipment, checked against the Ranked and CMG rules every day.', 'See builds') +
 		feature('warzone', 'drop', ' d2', 'Warzone', 'A ranked Warzone meta built from multiple trackers, with full builds and the newest 2026 maps.', 'Warzone meta') +
 		'</div></div></section>\n\n' +
 		'<section class="section"><div class="container">' + head('Ranked map pool', 'Pick a map. Build the plan.', 'maps', 'All maps') + mapsGrid(r) + '</div></section>\n\n' +
@@ -446,7 +630,7 @@ write('404.html', layout({
 }));
 
 console.log('Built ' + (9 + maps.length) + ' pages, ' + nAssets + ' assets, ' + nImages + ' images -> ' + path.relative(ROOT, OUT) + '/');
-console.log('  maps: ' + maps.length + ', loadouts: ' + loadouts.length + ', warzone maps: ' + wzmaps.length);
+console.log('  maps: ' + maps.length + ', classes: ' + liveBuilds.length + ', warzone weapons: ' + liveWarzone.length + ', warzone maps: ' + wzmaps.length + ', built for ' + TODAY);
 const missing = [];
 for (const f of used) if (!fs.existsSync(path.join(SRC, f))) missing.push(f);
 if (missing.length) console.log('  MISSING IMAGES (' + missing.length + '): ' + missing.join(', '));

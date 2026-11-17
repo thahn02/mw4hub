@@ -1,1769 +1,5 @@
 [
   {
-    "game": "ranked",
-    "kind": "pro",
-    "weapon": "M4",
-    "class": "Assault Rifle",
-    "tier": "",
-    "category": "",
-    "players": [
-      "Dashy"
-    ],
-    "team": "OpTic Texas",
-    "builds": [
-      {
-        "name": "",
-        "attachments": [
-          {
-            "slot": "Flash Hider",
-            "name": "T2L-110 V1"
-          },
-          {
-            "slot": "Angled Grip",
-            "name": "FSS Fireline Grip"
-          },
-          {
-            "slot": "Bright ADS Laser",
-            "name": "SZ Gen.6 PEQ"
-          },
-          {
-            "slot": "Ammunition",
-            "name": "5.56 NATO High Velocity"
-          },
-          {
-            "slot": "Stock",
-            "name": "No Stock"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "Breaking Point",
-      "url": "https://breakingpoint.gg/posts/best-modern-warfare-4-class-setups-day-1-pro-builds"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "pro",
-    "weapon": "HAN 86",
-    "class": "Assault Rifle",
-    "tier": "",
-    "category": "",
-    "players": [
-      "Ghosty"
-    ],
-    "team": "",
-    "builds": [
-      {
-        "name": "",
-        "attachments": [
-          {
-            "slot": "Horizontal Comp",
-            "name": "Corvus LVL-40"
-          },
-          {
-            "slot": "Angled Short Grip",
-            "name": "FSS TAC90 Grip"
-          },
-          {
-            "slot": "Mini Reflex",
-            "name": "Slimline Elite"
-          },
-          {
-            "slot": "Tactical Grip",
-            "name": "XRK Justice II Grip"
-          },
-          {
-            "slot": "Tactical Stock",
-            "name": "FR4 Retractable Stock"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "Breaking Point",
-      "url": "https://breakingpoint.gg/posts/best-modern-warfare-4-class-setups-day-1-pro-builds"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "pro",
-    "weapon": "HAN 86",
-    "class": "Assault Rifle",
-    "tier": "",
-    "category": "",
-    "players": [
-      "Alluka"
-    ],
-    "team": "",
-    "builds": [
-      {
-        "name": "",
-        "attachments": [
-          {
-            "slot": "Balanced Comp",
-            "name": "FTAC Dominion"
-          },
-          {
-            "slot": "Angled Grip",
-            "name": "FSS Fireline Grip"
-          },
-          {
-            "slot": "Mini Reflex",
-            "name": "SZ Prima-4 Dot"
-          },
-          {
-            "slot": "Ammunition",
-            "name": "5.56 NATO High Velocity"
-          },
-          {
-            "slot": "Light Stock",
-            "name": "Meiko L9P-Fold"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "Breaking Point",
-      "url": "https://breakingpoint.gg/posts/best-modern-warfare-4-class-setups-day-1-pro-builds"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "pro",
-    "weapon": "HAN 86",
-    "class": "Assault Rifle",
-    "tier": "",
-    "category": "",
-    "players": [
-      "Drazah"
-    ],
-    "team": "",
-    "builds": [
-      {
-        "name": "",
-        "attachments": [
-          {
-            "slot": "Long Barrel",
-            "name": "SA H86 465MM"
-          },
-          {
-            "slot": "Mini Reflex",
-            "name": "Slimline Elite"
-          },
-          {
-            "slot": "Aim Grip",
-            "name": "FTAC Griplord 80"
-          },
-          {
-            "slot": "Ammunition",
-            "name": "5.56 NATO High Velocity"
-          },
-          {
-            "slot": "Light Stock",
-            "name": "Meiko L9P-Fold"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "Breaking Point",
-      "url": "https://breakingpoint.gg/posts/best-modern-warfare-4-class-setups-day-1-pro-builds"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "pro",
-    "weapon": "HAN 86",
-    "class": "Assault Rifle",
-    "tier": "",
-    "category": "",
-    "players": [
-      "Simp"
-    ],
-    "team": "",
-    "builds": [
-      {
-        "name": "",
-        "attachments": [
-          {
-            "slot": "Horizontal Comp",
-            "name": "Corvus LVL-40"
-          },
-          {
-            "slot": "Long Barrel",
-            "name": "SA H86 465MM"
-          },
-          {
-            "slot": "Mini Reflex",
-            "name": "SZ Prima-4 Dot"
-          },
-          {
-            "slot": "Ammunition",
-            "name": "5.56 NATO High Velocity"
-          },
-          {
-            "slot": "Heavy Stock",
-            "name": "XRK Firewrath Stock"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "Breaking Point",
-      "url": "https://breakingpoint.gg/posts/best-modern-warfare-4-class-setups-day-1-pro-builds"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "pro",
-    "weapon": "HAN 86",
-    "class": "Assault Rifle",
-    "tier": "",
-    "category": "",
-    "players": [
-      "Beans"
-    ],
-    "team": "",
-    "builds": [
-      {
-        "name": "",
-        "attachments": [
-          {
-            "slot": "Flash Hider",
-            "name": "TZL-110 V1"
-          },
-          {
-            "slot": "Angled Short Grip",
-            "name": "FSS TAC90 Grip"
-          },
-          {
-            "slot": "Mini Reflex",
-            "name": "ZLR Type C"
-          },
-          {
-            "slot": "Tactical Grip",
-            "name": "XRK Justice II Grip"
-          },
-          {
-            "slot": "Light Stock",
-            "name": "Meiko L9P-Fold"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "Breaking Point",
-      "url": "https://breakingpoint.gg/posts/best-modern-warfare-4-class-setups-day-1-pro-builds"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "pro",
-    "weapon": "VEL 46",
-    "class": "SMG",
-    "tier": "",
-    "category": "",
-    "players": [
-      "HyDra",
-      "Afro"
-    ],
-    "team": "",
-    "builds": [
-      {
-        "name": "",
-        "attachments": [
-          {
-            "slot": "Long Barrel",
-            "name": "VB-46 Series 11"
-          },
-          {
-            "slot": "Balanced Comp",
-            "name": "TA TACPRO-56"
-          },
-          {
-            "slot": "Angled Short Grip",
-            "name": "FSS TAC90 Grip"
-          },
-          {
-            "slot": "Tactical Stock",
-            "name": "VEL 46 Extended"
-          },
-          {
-            "slot": "Tactical Grip",
-            "name": "LM Combat Grip"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "Breaking Point",
-      "url": "https://breakingpoint.gg/posts/best-modern-warfare-4-class-setups-day-1-pro-builds"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "pro",
-    "weapon": "VEL 46",
-    "class": "SMG",
-    "tier": "",
-    "category": "",
-    "players": [
-      "Simp"
-    ],
-    "team": "",
-    "builds": [
-      {
-        "name": "",
-        "attachments": [
-          {
-            "slot": "Long Barrel",
-            "name": "VB-46 Series 11"
-          },
-          {
-            "slot": "Balanced Comp",
-            "name": "TA TACPRO-56"
-          },
-          {
-            "slot": "Angled Grip",
-            "name": "FSS Fireline Grip"
-          },
-          {
-            "slot": "Tactical Stock",
-            "name": "VEL 46 Extended"
-          },
-          {
-            "slot": "Tactical Grip",
-            "name": "LM Combat Grip"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "Breaking Point",
-      "url": "https://breakingpoint.gg/posts/best-modern-warfare-4-class-setups-day-1-pro-builds"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "pro",
-    "weapon": "ISO Nightshade",
-    "class": "SMG",
-    "tier": "",
-    "category": "",
-    "players": [
-      "Shotzzy"
-    ],
-    "team": "OpTic Texas",
-    "builds": [
-      {
-        "name": "",
-        "attachments": [
-          {
-            "slot": "Long Barrel",
-            "name": "ZLR Carbon-900"
-          },
-          {
-            "slot": "Vertical Comp",
-            "name": "Haebang ORC70"
-          },
-          {
-            "slot": "Angled Short Grip",
-            "name": "FSS TAC90 Grip"
-          },
-          {
-            "slot": "Tactical Stock",
-            "name": "EXP G2-44 Stock"
-          },
-          {
-            "slot": "Assault Grip",
-            "name": "Bruen MOD 3"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "Breaking Point",
-      "url": "https://breakingpoint.gg/posts/best-modern-warfare-4-class-setups-day-1-pro-builds"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "pro",
-    "weapon": "ISO Nightshade",
-    "class": "SMG",
-    "tier": "",
-    "category": "",
-    "players": [
-      "Simp"
-    ],
-    "team": "",
-    "builds": [
-      {
-        "name": "",
-        "attachments": [
-          {
-            "slot": "Long Barrel",
-            "name": "ZLR Carbon-900"
-          },
-          {
-            "slot": "Vertical Comp",
-            "name": "Haebang ORC70"
-          },
-          {
-            "slot": "Angled Grip",
-            "name": "FSS Fireline Grip"
-          },
-          {
-            "slot": "Assault Stock",
-            "name": "G1-80 Milspec Stock"
-          },
-          {
-            "slot": "Tactical Grip",
-            "name": "Demo STP-1"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "Breaking Point",
-      "url": "https://breakingpoint.gg/posts/best-modern-warfare-4-class-setups-day-1-pro-builds"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "pro",
-    "weapon": "ISO Nightshade",
-    "class": "SMG",
-    "tier": "",
-    "category": "",
-    "players": [
-      "HyDra"
-    ],
-    "team": "",
-    "builds": [
-      {
-        "name": "",
-        "attachments": [
-          {
-            "slot": "Long Barrel",
-            "name": "ZLR Carbon-900"
-          },
-          {
-            "slot": "Balanced Comp",
-            "name": "TA TACPRO-56"
-          },
-          {
-            "slot": "Angled Grip",
-            "name": "FSS Fireline Grip"
-          },
-          {
-            "slot": "Stock",
-            "name": "No Stock"
-          },
-          {
-            "slot": "Tactical Grip",
-            "name": "Demo STP-1"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "Breaking Point",
-      "url": "https://breakingpoint.gg/posts/best-modern-warfare-4-class-setups-day-1-pro-builds"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "meta",
-    "weapon": "VEL 46",
-    "class": "SMG",
-    "tier": "S",
-    "category": "Versatile",
-    "players": [],
-    "team": "",
-    "builds": [
-      {
-        "name": "Versatile",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "FSS Crackdown"
-          },
-          {
-            "slot": "Barrel",
-            "name": "VB-46 Series 11"
-          },
-          {
-            "slot": "Underbarrel",
-            "name": "FSS Tac90 Grip"
-          },
-          {
-            "slot": "Rear Grip",
-            "name": "Sakin Rubber Grip"
-          },
-          {
-            "slot": "Apex",
-            "name": "VEL 46 Snap"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "warzoneloadout.games",
-      "url": "https://warzoneloadout.games/mw4"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "meta",
-    "weapon": "Hyeon Burst",
-    "class": "Assault Rifle",
-    "tier": "S",
-    "category": "Versatile",
-    "players": [],
-    "team": "",
-    "builds": [
-      {
-        "name": "Versatile",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "FSS IS40"
-          },
-          {
-            "slot": "Barrel",
-            "name": "Mugi Hwando-Z3 521mm"
-          },
-          {
-            "slot": "Underbarrel",
-            "name": "FSS Tac90 Grip"
-          },
-          {
-            "slot": "Rear Grip",
-            "name": "HYN-Meipeul"
-          },
-          {
-            "slot": "Apex",
-            "name": "Hyeon Hyperburst"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "warzoneloadout.games",
-      "url": "https://warzoneloadout.games/mw4"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "meta",
-    "weapon": "Cronen Osprey",
-    "class": "Assault Rifle",
-    "tier": "S",
-    "category": "Versatile",
-    "players": [],
-    "team": "",
-    "builds": [
-      {
-        "name": "Versatile",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "XRK Mil-Tac Suppressor"
-          },
-          {
-            "slot": "Underbarrel",
-            "name": "FSS Tac90 Grip"
-          },
-          {
-            "slot": "Magazine",
-            "name": "60 Round Mag"
-          },
-          {
-            "slot": "Rear Grip",
-            "name": "Cronen 56"
-          }
-        ]
-      },
-      {
-        "name": "Mobility",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "XRK Mil-Tac Suppressor"
-          },
-          {
-            "slot": "Barrel",
-            "name": "RG5 Hark 10\""
-          },
-          {
-            "slot": "Underbarrel",
-            "name": "FSS Tac90 Grip"
-          },
-          {
-            "slot": "Magazine",
-            "name": "60 Round Mag"
-          },
-          {
-            "slot": "Rear Grip",
-            "name": "Cronen 56"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "warzoneloadout.games",
-      "url": "https://warzoneloadout.games/mw4"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "meta",
-    "weapon": "KG-7 Vulcan",
-    "class": "Sniper",
-    "tier": "S",
-    "category": "Sniper",
-    "players": [],
-    "team": "",
-    "builds": [
-      {
-        "name": "Sniper",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "Ivanov QR600"
-          },
-          {
-            "slot": "Barrel",
-            "name": "TT Baem 12\""
-          },
-          {
-            "slot": "Optic",
-            "name": "Schlager 7x"
-          },
-          {
-            "slot": "Stock",
-            "name": "Bruen KG-7 Mk. IV"
-          },
-          {
-            "slot": "Apex",
-            "name": "KG-7 Drillcharge"
-          }
-        ]
-      },
-      {
-        "name": "Mobility",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "Ivanov QR600"
-          },
-          {
-            "slot": "Barrel",
-            "name": "TT Baem 12\""
-          },
-          {
-            "slot": "Optic",
-            "name": "Schlager 7x"
-          },
-          {
-            "slot": "Stock",
-            "name": "TT G76-RP Stock"
-          },
-          {
-            "slot": "Apex",
-            "name": "KG-7 Drillcharge"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "warzoneloadout.games",
-      "url": "https://warzoneloadout.games/mw4"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "meta",
-    "weapon": "ISO Nightshade",
-    "class": "SMG",
-    "tier": "S",
-    "category": "Versatile",
-    "players": [],
-    "team": "",
-    "builds": [
-      {
-        "name": "Versatile",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "XRK Herder 40"
-          },
-          {
-            "slot": "Stock",
-            "name": "Demo Kilo90 Stock"
-          },
-          {
-            "slot": "Underbarrel",
-            "name": "FSS Tac90 Grip"
-          },
-          {
-            "slot": "Magazine",
-            "name": "40 Round Mag"
-          },
-          {
-            "slot": "Rear Grip",
-            "name": "ZLR Veloci Gen.2"
-          },
-          {
-            "slot": "Apex",
-            "name": "ISO Trace"
-          }
-        ]
-      },
-      {
-        "name": "Mobility",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "XRK Herder 40"
-          },
-          {
-            "slot": "Stock",
-            "name": "No Stock"
-          },
-          {
-            "slot": "Underbarrel",
-            "name": "FSS Fireline Grip"
-          },
-          {
-            "slot": "Magazine",
-            "name": "50 Round Drum Mag"
-          },
-          {
-            "slot": "Laser",
-            "name": "Schlager Visiv-5"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "warzoneloadout.games",
-      "url": "https://warzoneloadout.games/mw4"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "meta",
-    "weapon": "Kastov 762",
-    "class": "Assault Rifle",
-    "tier": "A",
-    "category": "Versatile",
-    "players": [],
-    "team": "",
-    "builds": [
-      {
-        "name": "Versatile",
-        "attachments": [
-          {
-            "slot": "Barrel",
-            "name": "FJX Ghostfire 16.3\""
-          },
-          {
-            "slot": "Underbarrel",
-            "name": "FSS Tac90 Grip"
-          },
-          {
-            "slot": "Magazine",
-            "name": "45 Round Mag 7.62"
-          },
-          {
-            "slot": "Rear Grip",
-            "name": "Hanbit TechGrip"
-          }
-        ]
-      },
-      {
-        "name": "Mobility",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "Ivanov QR600"
-          },
-          {
-            "slot": "Optic",
-            "name": "Cronen Zero-K"
-          },
-          {
-            "slot": "Stock",
-            "name": "Kastov Dogfighter 27"
-          },
-          {
-            "slot": "Magazine",
-            "name": "45 Round Mag 7.62"
-          },
-          {
-            "slot": "Laser",
-            "name": "Schlager Visiv-5"
-          },
-          {
-            "slot": "Apex",
-            "name": "Kastov Arc"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "warzoneloadout.games",
-      "url": "https://warzoneloadout.games/mw4"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "meta",
-    "weapon": "Axion",
-    "class": "Assault Rifle",
-    "tier": "A",
-    "category": "Versatile",
-    "players": [],
-    "team": "",
-    "builds": [
-      {
-        "name": "Versatile",
-        "attachments": [
-          {
-            "slot": "Barrel",
-            "name": "Matuzek S5-Brace"
-          },
-          {
-            "slot": "Underbarrel",
-            "name": "FSS Tac90 Grip"
-          },
-          {
-            "slot": "Magazine",
-            "name": "40 Round Mag"
-          },
-          {
-            "slot": "Rear Grip",
-            "name": "Matuzek Lockgrip"
-          }
-        ]
-      },
-      {
-        "name": "Mobility",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "FSS IS40"
-          },
-          {
-            "slot": "Optic",
-            "name": "ZLR Type C"
-          },
-          {
-            "slot": "Stock",
-            "name": "XRK Relay 7"
-          },
-          {
-            "slot": "Magazine",
-            "name": "40 Round Mag"
-          },
-          {
-            "slot": "Laser",
-            "name": "Schlager Visiv-5"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "warzoneloadout.games",
-      "url": "https://warzoneloadout.games/mw4"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "meta",
-    "weapon": "M4",
-    "class": "Assault Rifle",
-    "tier": "A",
-    "category": "Versatile",
-    "players": [],
-    "team": "",
-    "builds": [
-      {
-        "name": "Versatile",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "FSS IS300"
-          },
-          {
-            "slot": "Barrel",
-            "name": "FT Cannonade 7\""
-          },
-          {
-            "slot": "Underbarrel",
-            "name": "FSS Tac90 Grip"
-          },
-          {
-            "slot": "Rear Grip",
-            "name": "Schlager STB Grip"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "warzoneloadout.games",
-      "url": "https://warzoneloadout.games/mw4"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "meta",
-    "weapon": "Cronen Squall",
-    "class": "Assault Rifle",
-    "tier": "A",
-    "category": "Versatile",
-    "players": [],
-    "team": "",
-    "builds": [
-      {
-        "name": "Versatile",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "ZLR Cold Echo"
-          },
-          {
-            "slot": "Optic",
-            "name": "ZLR Type C"
-          },
-          {
-            "slot": "Underbarrel",
-            "name": "FSS Tac90 Grip"
-          },
-          {
-            "slot": "Magazine",
-            "name": "30 Round Mag"
-          }
-        ]
-      },
-      {
-        "name": "Mobility",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "EXP Undertow Gen. 2"
-          },
-          {
-            "slot": "Optic",
-            "name": "ZLR Type C"
-          },
-          {
-            "slot": "Magazine",
-            "name": "60 Round Drum"
-          },
-          {
-            "slot": "Laser",
-            "name": "SZ Gen.6 PEQ"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "warzoneloadout.games",
-      "url": "https://warzoneloadout.games/mw4"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "meta",
-    "weapon": "Signal 50",
-    "class": "Sniper",
-    "tier": "A",
-    "category": "Sniper",
-    "players": [],
-    "team": "",
-    "builds": [
-      {
-        "name": "Sniper",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "FSS DES-Tac70"
-          },
-          {
-            "slot": "Barrel",
-            "name": "S50-SB Gen.2 22\""
-          },
-          {
-            "slot": "Optic",
-            "name": "Schlager 7x"
-          },
-          {
-            "slot": "Stock",
-            "name": "EXP T50-S Heavy"
-          },
-          {
-            "slot": "Rear Grip",
-            "name": "GL Zero Drop 6"
-          }
-        ]
-      },
-      {
-        "name": "Mobility",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "FSS DES-Tac70"
-          },
-          {
-            "slot": "Optic",
-            "name": "Cronen R808"
-          },
-          {
-            "slot": "Stock",
-            "name": "Cronen SN-Pad50"
-          },
-          {
-            "slot": "Rear Grip",
-            "name": "EXP Trim-54F"
-          },
-          {
-            "slot": "Laser",
-            "name": "XRK Clutch-LS"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "warzoneloadout.games",
-      "url": "https://warzoneloadout.games/mw4"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "meta",
-    "weapon": "Oden",
-    "class": "Assault Rifle",
-    "tier": "A",
-    "category": "Versatile",
-    "players": [],
-    "team": "",
-    "builds": [
-      {
-        "name": "Versatile",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "TV Multical-77"
-          },
-          {
-            "slot": "Underbarrel",
-            "name": "FSS Tac90 Grip"
-          },
-          {
-            "slot": "Magazine",
-            "name": "30 Round Mag"
-          }
-        ]
-      },
-      {
-        "name": "Mobility",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "VLK SH-S12"
-          },
-          {
-            "slot": "Optic",
-            "name": "ZLR Type C"
-          },
-          {
-            "slot": "Stock",
-            "name": "GL HOX-20 Stock"
-          },
-          {
-            "slot": "Magazine",
-            "name": "30 Round Mag"
-          },
-          {
-            "slot": "Laser",
-            "name": "Schlager Visiv-5"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "warzoneloadout.games",
-      "url": "https://warzoneloadout.games/mw4"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "meta",
-    "weapon": "Patriot XMR",
-    "class": "Assault Rifle",
-    "tier": "A",
-    "category": "Versatile",
-    "players": [],
-    "team": "",
-    "builds": [
-      {
-        "name": "Versatile",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "EXP Undertow Gen. 2"
-          },
-          {
-            "slot": "Underbarrel",
-            "name": "FSS Tac90 Grip"
-          },
-          {
-            "slot": "Magazine",
-            "name": "35 Round Mag"
-          },
-          {
-            "slot": "Rear Grip",
-            "name": "EXP TR-Wrap"
-          },
-          {
-            "slot": "Apex",
-            "name": "Patriot XMR Volt"
-          }
-        ]
-      },
-      {
-        "name": "Mobility",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "Meiko 30CAL-SP"
-          },
-          {
-            "slot": "Optic",
-            "name": "ZLR Type C"
-          },
-          {
-            "slot": "Stock",
-            "name": "XRK Ranger D4"
-          },
-          {
-            "slot": "Magazine",
-            "name": "35 Round Mag"
-          },
-          {
-            "slot": "Laser",
-            "name": "SZ Gen.6 PEQ"
-          },
-          {
-            "slot": "Apex",
-            "name": "Patriot XMR Volt"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "warzoneloadout.games",
-      "url": "https://warzoneloadout.games/mw4"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "meta",
-    "weapon": "PPSh-41",
-    "class": "SMG",
-    "tier": "A",
-    "category": "Versatile",
-    "players": [],
-    "team": "",
-    "builds": [
-      {
-        "name": "Versatile",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "Haebang BAM70"
-          },
-          {
-            "slot": "Barrel",
-            "name": "Hanbit RDR-Tiger 50"
-          },
-          {
-            "slot": "Stock",
-            "name": "Hanbit Janggun-H9"
-          },
-          {
-            "slot": "Underbarrel",
-            "name": "FSS Tac90 Grip"
-          }
-        ]
-      },
-      {
-        "name": "Mobility",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "Haebang BAM70"
-          },
-          {
-            "slot": "Barrel",
-            "name": "TT Banseok-24N"
-          },
-          {
-            "slot": "Stock",
-            "name": "MT-L5 Jinhwa"
-          },
-          {
-            "slot": "Underbarrel",
-            "name": "FSS Fireline Grip"
-          },
-          {
-            "slot": "Laser",
-            "name": "Schlager Visiv-5"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "warzoneloadout.games",
-      "url": "https://warzoneloadout.games/mw4"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "meta",
-    "weapon": "WZ.55 Striga",
-    "class": "SMG",
-    "tier": "B",
-    "category": "Versatile",
-    "players": [],
-    "team": "",
-    "builds": [
-      {
-        "name": "Versatile",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "FTAC Silent Recon"
-          },
-          {
-            "slot": "Optic",
-            "name": "ZLR Type C"
-          },
-          {
-            "slot": "Magazine",
-            "name": "35 Round Mag"
-          },
-          {
-            "slot": "Rear Grip",
-            "name": "Striga Wood Grip"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "warzoneloadout.games",
-      "url": "https://warzoneloadout.games/mw4"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "meta",
-    "weapon": "Han 86",
-    "class": "Assault Rifle",
-    "tier": "B",
-    "category": "Versatile",
-    "players": [],
-    "team": "",
-    "builds": [
-      {
-        "name": "Versatile",
-        "attachments": [
-          {
-            "slot": "Barrel",
-            "name": "HAN 86 Silenced 413mm"
-          },
-          {
-            "slot": "Optic",
-            "name": "ZLR Type C"
-          },
-          {
-            "slot": "Underbarrel",
-            "name": "FSS Tac90 Grip"
-          },
-          {
-            "slot": "Rear Grip",
-            "name": "FTAC Griplord 80"
-          }
-        ]
-      },
-      {
-        "name": "Mobility",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "FSS IS40"
-          },
-          {
-            "slot": "Optic",
-            "name": "ZLR Type C"
-          },
-          {
-            "slot": "Stock",
-            "name": "Meiko L9P-Fold"
-          },
-          {
-            "slot": "Magazine",
-            "name": "45 Round Mag"
-          },
-          {
-            "slot": "Laser",
-            "name": "Schlager Visiv-5"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "warzoneloadout.games",
-      "url": "https://warzoneloadout.games/mw4"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "meta",
-    "weapon": "Mosin-Nagant",
-    "class": "Marksman Rifle",
-    "tier": "B",
-    "category": "Versatile",
-    "players": [],
-    "team": "",
-    "builds": [
-      {
-        "name": "Versatile",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "330TC2 Gridlock"
-          },
-          {
-            "slot": "Barrel",
-            "name": "Mosin S762 Barrel"
-          },
-          {
-            "slot": "Optic",
-            "name": "Cronen R808"
-          },
-          {
-            "slot": "Stock",
-            "name": "Lockwood Eagle Stock"
-          }
-        ]
-      },
-      {
-        "name": "Mobility",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "330TC2 Gridlock"
-          },
-          {
-            "slot": "Barrel",
-            "name": "762 Dozor Barrel"
-          },
-          {
-            "slot": "Stock",
-            "name": "No Stock"
-          },
-          {
-            "slot": "Laser",
-            "name": "Schlager Visiv-5"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "warzoneloadout.games",
-      "url": "https://warzoneloadout.games/mw4"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "meta",
-    "weapon": "Krait P68",
-    "class": "Pistol",
-    "tier": "B",
-    "category": "Versatile",
-    "players": [],
-    "team": "",
-    "builds": [
-      {
-        "name": "Versatile",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "Expedite Drill L4"
-          },
-          {
-            "slot": "Barrel",
-            "name": "SA Omni 5.5\""
-          },
-          {
-            "slot": "Rear Grip",
-            "name": "MAGTAC .45"
-          },
-          {
-            "slot": "Apex",
-            "name": "Krait P68 Commando"
-          }
-        ]
-      },
-      {
-        "name": "Mobility",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "Expedite Drill L4"
-          },
-          {
-            "slot": "Barrel",
-            "name": "SA Omni 5.5\""
-          },
-          {
-            "slot": "Rear Grip",
-            "name": "MAGTAC .45"
-          },
-          {
-            "slot": "Apex",
-            "name": "Krait P68 Commando"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "warzoneloadout.games",
-      "url": "https://warzoneloadout.games/mw4"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "meta",
-    "weapon": "Oris 8.6",
-    "class": "Marksman Rifle",
-    "tier": "B",
-    "category": "Versatile",
-    "players": [],
-    "team": "",
-    "builds": [
-      {
-        "name": "Versatile",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "EXP Undertow Gen. 2"
-          },
-          {
-            "slot": "Optic",
-            "name": "Cronen R808"
-          },
-          {
-            "slot": "Stock",
-            "name": "SA Dynamo-90 Stock"
-          },
-          {
-            "slot": "Underbarrel",
-            "name": "FSS Tac90 Grip"
-          },
-          {
-            "slot": "Rear Grip",
-            "name": "Bruen R7-TC Grip"
-          }
-        ]
-      },
-      {
-        "name": "Mobility",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "ZLR Cold Echo"
-          },
-          {
-            "slot": "Barrel",
-            "name": "EXP Crosstac 22\""
-          },
-          {
-            "slot": "Stock",
-            "name": "No Stock"
-          },
-          {
-            "slot": "Laser",
-            "name": "Schlager Visiv-5"
-          },
-          {
-            "slot": "Apex",
-            "name": "Oris 8.6 Razor"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "warzoneloadout.games",
-      "url": "https://warzoneloadout.games/mw4"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "meta",
-    "weapon": "CSG-35",
-    "class": "SMG",
-    "tier": "C",
-    "category": "Mobility",
-    "players": [],
-    "team": "",
-    "builds": [
-      {
-        "name": "Versatile",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "EXP Forage-Tac"
-          },
-          {
-            "slot": "Stock",
-            "name": "RASH-90 Heavy Stock"
-          },
-          {
-            "slot": "Underbarrel",
-            "name": "CQC Stop"
-          },
-          {
-            "slot": "Magazine",
-            "name": "40 Round Mag"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "warzoneloadout.games",
-      "url": "https://warzoneloadout.games/mw4"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "meta",
-    "weapon": "SANG 9mm",
-    "class": "Pistol",
-    "tier": "C",
-    "category": "Versatile",
-    "players": [],
-    "team": "",
-    "builds": [
-      {
-        "name": "Versatile",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "Expedite Drill L4"
-          },
-          {
-            "slot": "Optic",
-            "name": "Z-Dot 9"
-          },
-          {
-            "slot": "Magazine",
-            "name": "17 Round Mag"
-          },
-          {
-            "slot": "Rear Grip",
-            "name": "SANG Wood Grip"
-          },
-          {
-            "slot": "Apex",
-            "name": "Sang Breach"
-          }
-        ]
-      },
-      {
-        "name": "Mobility",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "Expedite Drill L4"
-          },
-          {
-            "slot": "Barrel",
-            "name": "Hanbit SK Elite 9"
-          },
-          {
-            "slot": "Optic",
-            "name": "Z-Dot 9"
-          },
-          {
-            "slot": "Rear Grip",
-            "name": "XRK M-Line Grip"
-          },
-          {
-            "slot": "Apex",
-            "name": "Sang Breach"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "warzoneloadout.games",
-      "url": "https://warzoneloadout.games/mw4"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "meta",
-    "weapon": "MAR-9",
-    "class": "Marksman Rifle",
-    "tier": "C",
-    "category": "Versatile",
-    "players": [],
-    "team": "",
-    "builds": [],
-    "source": {
-      "label": "warzoneloadout.games",
-      "url": "https://warzoneloadout.games/mw4"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "meta",
-    "weapon": "FiNN LMG",
-    "class": "LMG",
-    "tier": "C",
-    "category": "Versatile",
-    "players": [],
-    "team": "",
-    "builds": [],
-    "source": {
-      "label": "warzoneloadout.games",
-      "url": "https://warzoneloadout.games/mw4"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "meta",
-    "weapon": "X-58 Nyx",
-    "class": "SMG",
-    "tier": "C",
-    "category": "Versatile",
-    "players": [],
-    "team": "",
-    "builds": [],
-    "source": {
-      "label": "warzoneloadout.games",
-      "url": "https://warzoneloadout.games/mw4"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "meta",
-    "weapon": "Rezi 12",
-    "class": "Shotgun",
-    "tier": "C",
-    "category": "Versatile",
-    "players": [],
-    "team": "",
-    "builds": [],
-    "source": {
-      "label": "warzoneloadout.games",
-      "url": "https://warzoneloadout.games/mw4"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
-    "game": "ranked",
-    "kind": "meta",
-    "weapon": "Warlord",
-    "class": "Shotgun",
-    "tier": "C",
-    "category": "Versatile",
-    "players": [],
-    "team": "",
-    "builds": [],
-    "source": {
-      "label": "warzoneloadout.games",
-      "url": "https://warzoneloadout.games/mw4"
-    },
-    "verified": "2026-11-06",
-    "video": ""
-  },
-  {
     "game": "warzone",
     "kind": "meta",
     "weapon": "Cronen Osprey",
@@ -1774,7 +10,37 @@
     "team": "",
     "builds": [
       {
-        "name": "Long Range",
+        "name": "Long Range · wzstats",
+        "attachments": [
+          {
+            "slot": "Optic",
+            "name": "Locus PX3 Canted"
+          },
+          {
+            "slot": "Muzzle",
+            "name": "FSS IS300"
+          },
+          {
+            "slot": "Barrel",
+            "name": "IO-556 Tac 18\""
+          },
+          {
+            "slot": "Magazine",
+            "name": "60 Round Mag"
+          },
+          {
+            "slot": "Stock",
+            "name": "XR-9 Tac V2"
+          }
+        ],
+        "source": {
+          "label": "wzstats.gg",
+          "url": "https://wzstats.gg/best-loadouts/cronen-osprey-mw4",
+          "date": "2026-11-17"
+        }
+      },
+      {
+        "name": "Long Range · wzloadout",
         "attachments": [
           {
             "slot": "Optic",
@@ -1796,7 +62,12 @@
             "slot": "Magazine",
             "name": "60 Round Mag"
           }
-        ]
+        ],
+        "source": {
+          "label": "warzoneloadout.games",
+          "url": "https://warzoneloadout.games/warzone-meta",
+          "date": "2026-11-16"
+        }
       },
       {
         "name": "Sniper Support",
@@ -1807,38 +78,43 @@
           },
           {
             "slot": "Barrel",
-            "name": "GKL-700 14\""
+            "name": "IO-556 Tac 18\""
+          },
+          {
+            "slot": "Underbarrel",
+            "name": "FSS Tac90 Grip"
           },
           {
             "slot": "Magazine",
             "name": "60 Round Mag"
           },
           {
-            "slot": "Rear Grip",
-            "name": "A56 Stout"
-          },
-          {
             "slot": "Stock",
             "name": "Fade Tac 9L"
           }
-        ]
+        ],
+        "source": {
+          "label": "wzstats.gg",
+          "url": "https://wzstats.gg/best-loadouts/cronen-osprey-mw4",
+          "date": "2026-11-17"
+        }
       }
     ],
     "source": {
       "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://warzoneloadout.games/"
+      "url": "https://wzstats.gg/"
     },
-    "verified": "",
     "sources_tier": {
-      "warzoneloadout": "S",
-      "wzstats": "META"
+      "wzstats": "META",
+      "warzoneloadout": "S"
     },
+    "verified": "2026-11-17",
     "video": ""
   },
   {
     "game": "warzone",
     "kind": "meta",
-    "weapon": "VEL 46",
+    "weapon": "WZ.55 Striga",
     "class": "SMG",
     "tier": "S",
     "category": "Close Range",
@@ -1846,87 +122,75 @@
     "team": "",
     "builds": [
       {
-        "name": "Close Range",
+        "name": "Close Range · wzstats",
         "attachments": [
           {
             "slot": "Muzzle",
-            "name": "TA TacPro-56"
+            "name": "RX-5 Overstrike"
           },
           {
             "slot": "Barrel",
-            "name": "RV-B v2 Barrel"
-          },
-          {
-            "slot": "Underbarrel",
-            "name": "FSS Fireline Grip"
-          },
-          {
-            "slot": "Stock",
-            "name": "EXP U-Turn Stock"
-          },
-          {
-            "slot": "Ammunition",
-            "name": "4.6x30mm High Velocity"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://warzoneloadout.games/"
-    },
-    "verified": "",
-    "sources_tier": {
-      "warzoneloadout": "S",
-      "wzstats": "META"
-    },
-    "video": ""
-  },
-  {
-    "game": "warzone",
-    "kind": "meta",
-    "weapon": "Han 86",
-    "class": "Assault Rifle",
-    "tier": "S",
-    "category": "Long Range",
-    "players": [],
-    "team": "",
-    "builds": [
-      {
-        "name": "Long Range",
-        "attachments": [
-          {
-            "slot": "Optic",
-            "name": "Cronen R808"
-          },
-          {
-            "slot": "Muzzle",
-            "name": "FSS IS300"
-          },
-          {
-            "slot": "Barrel",
-            "name": "Hanbit Lightning-7 465mm"
+            "name": "GW Sender 500"
           },
           {
             "slot": "Magazine",
-            "name": "45 Round Mag"
+            "name": "50 Round Drum Mag"
           },
           {
-            "slot": "Ammunition",
-            "name": "5.56 NATO High Velocity"
+            "slot": "Rear Grip",
+            "name": "Matuzek 532-L Grip"
+          },
+          {
+            "slot": "Stock",
+            "name": "Wire Stock"
           }
-        ]
+        ],
+        "source": {
+          "label": "wzstats.gg",
+          "url": "https://wzstats.gg/best-loadouts/wz55-striga-mw4",
+          "date": "2026-11-17"
+        }
+      },
+      {
+        "name": "Close Range · wzloadout",
+        "attachments": [
+          {
+            "slot": "Optic",
+            "name": "ZLR Type C"
+          },
+          {
+            "slot": "Muzzle",
+            "name": "FTAC Silent Recon"
+          },
+          {
+            "slot": "Barrel",
+            "name": "GW Sender 500"
+          },
+          {
+            "slot": "Magazine",
+            "name": "50 Round Drum Mag"
+          },
+          {
+            "slot": "Stock",
+            "name": "Wire Stock"
+          }
+        ],
+        "source": {
+          "label": "warzoneloadout.games",
+          "url": "https://warzoneloadout.games/warzone-meta",
+          "date": "2026-11-16"
+        }
       }
     ],
     "source": {
       "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://warzoneloadout.games/"
+      "url": "https://wzstats.gg/"
     },
-    "verified": "",
     "sources_tier": {
-      "warzoneloadout": "A",
-      "wzstats": "META"
+      "wzstats": "META",
+      "warzoneloadout": "S"
     },
+    "verified": "2026-11-17",
     "video": ""
   },
   {
@@ -1940,7 +204,37 @@
     "team": "",
     "builds": [
       {
-        "name": "Close Range",
+        "name": "Close Range · wzstats",
+        "attachments": [
+          {
+            "slot": "Muzzle",
+            "name": "XRK Herder 40"
+          },
+          {
+            "slot": "Barrel",
+            "name": "RT Outride-X 8\""
+          },
+          {
+            "slot": "Underbarrel",
+            "name": "FSS Tac90 Grip"
+          },
+          {
+            "slot": "Magazine",
+            "name": "50 Round Drum Mag"
+          },
+          {
+            "slot": "Laser",
+            "name": "XRK Clutch-LS"
+          }
+        ],
+        "source": {
+          "label": "wzstats.gg",
+          "url": "https://wzstats.gg/best-loadouts/iso-nightshade-mw4",
+          "date": "2026-11-17"
+        }
+      },
+      {
+        "name": "Close Range · wzloadout",
         "attachments": [
           {
             "slot": "Barrel",
@@ -1962,18 +256,158 @@
             "slot": "Ammunition",
             "name": "9mm Parabellum High Velocity"
           }
-        ]
+        ],
+        "source": {
+          "label": "warzoneloadout.games",
+          "url": "https://warzoneloadout.games/warzone-meta",
+          "date": "2026-11-16"
+        }
       }
     ],
     "source": {
       "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://warzoneloadout.games/"
+      "url": "https://wzstats.gg/"
     },
-    "verified": "",
     "sources_tier": {
-      "warzoneloadout": "A",
-      "wzstats": "META"
+      "wzstats": "META",
+      "warzoneloadout": "A"
     },
+    "verified": "2026-11-17",
+    "video": ""
+  },
+  {
+    "game": "warzone",
+    "kind": "meta",
+    "weapon": "HAN 86",
+    "class": "Assault Rifle",
+    "tier": "S",
+    "category": "Long Range",
+    "players": [],
+    "team": "",
+    "builds": [
+      {
+        "name": "Long Range · wzstats",
+        "attachments": [
+          {
+            "slot": "Optic",
+            "name": "Locus PX3 Canted"
+          },
+          {
+            "slot": "Muzzle",
+            "name": "FSS IS300"
+          },
+          {
+            "slot": "Barrel",
+            "name": "Hanbit Lightning-7 465mm"
+          },
+          {
+            "slot": "Magazine",
+            "name": "60 Round Drum"
+          },
+          {
+            "slot": "Ammunition",
+            "name": "5.56 NATO High Velocity"
+          }
+        ],
+        "source": {
+          "label": "wzstats.gg",
+          "url": "https://wzstats.gg/best-loadouts/han-86-mw4",
+          "date": "2026-11-17"
+        }
+      },
+      {
+        "name": "Long Range · wzloadout",
+        "attachments": [
+          {
+            "slot": "Optic",
+            "name": "Cronen R808"
+          },
+          {
+            "slot": "Muzzle",
+            "name": "FSS IS300"
+          },
+          {
+            "slot": "Barrel",
+            "name": "Hanbit Lightning-7 465mm"
+          },
+          {
+            "slot": "Magazine",
+            "name": "45 Round Mag"
+          },
+          {
+            "slot": "Ammunition",
+            "name": "5.56 NATO High Velocity"
+          }
+        ],
+        "source": {
+          "label": "warzoneloadout.games",
+          "url": "https://warzoneloadout.games/warzone-meta",
+          "date": "2026-11-16"
+        }
+      }
+    ],
+    "source": {
+      "label": "wzstats.gg + warzoneloadout.games",
+      "url": "https://wzstats.gg/"
+    },
+    "sources_tier": {
+      "wzstats": "META",
+      "warzoneloadout": "A"
+    },
+    "verified": "2026-11-17",
+    "video": ""
+  },
+  {
+    "game": "warzone",
+    "kind": "meta",
+    "weapon": "Mosin-Nagant",
+    "class": "Marksman Rifle",
+    "tier": "S",
+    "category": "Sniper",
+    "players": [],
+    "team": "",
+    "builds": [
+      {
+        "name": "Long Range",
+        "attachments": [
+          {
+            "slot": "Optic",
+            "name": "Schlager 7x"
+          },
+          {
+            "slot": "Muzzle",
+            "name": "FTAC Silent Recon"
+          },
+          {
+            "slot": "Barrel",
+            "name": "Mosin K025 Barrel"
+          },
+          {
+            "slot": "Laser",
+            "name": "XRK Clutch-LS"
+          },
+          {
+            "slot": "Ammunition",
+            "name": "7.62x54mmR High Velocity"
+          }
+        ],
+        "source": {
+          "label": "wzstats.gg",
+          "url": "https://wzstats.gg/best-loadouts/mosin-nagant-mw4",
+          "date": "2026-11-17"
+        },
+        "both": true
+      }
+    ],
+    "source": {
+      "label": "wzstats.gg + warzoneloadout.games",
+      "url": "https://wzstats.gg/"
+    },
+    "sources_tier": {
+      "wzstats": "META",
+      "warzoneloadout": "A"
+    },
+    "verified": "2026-11-17",
     "video": ""
   },
   {
@@ -1995,7 +429,7 @@
           },
           {
             "slot": "Barrel",
-            "name": "Haebang RMT762 29"
+            "name": "Haebang RMT762 29\""
           },
           {
             "slot": "Stock",
@@ -2003,24 +437,30 @@
           },
           {
             "slot": "Ammunition",
-            "name": "7.62X54MMR High Velocity"
+            "name": "7.62x54mmR High Velocity"
           },
           {
             "slot": "Bolt",
             "name": "KT76 Light Bolt"
           }
-        ]
+        ],
+        "source": {
+          "label": "wzstats.gg",
+          "url": "https://wzstats.gg/best-loadouts/kg-7-vulcan-mw4",
+          "date": "2026-11-17"
+        },
+        "both": true
       }
     ],
     "source": {
       "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://warzoneloadout.games/"
+      "url": "https://wzstats.gg/"
     },
-    "verified": "",
     "sources_tier": {
-      "warzoneloadout": "S",
-      "wzstats": "A"
+      "wzstats": "A",
+      "warzoneloadout": "S"
     },
+    "verified": "2026-11-17",
     "video": ""
   },
   {
@@ -2038,7 +478,7 @@
         "attachments": [
           {
             "slot": "Optic",
-            "name": "Cronen R808"
+            "name": "Locus PX3 Canted"
           },
           {
             "slot": "Muzzle",
@@ -2046,34 +486,69 @@
           },
           {
             "slot": "Barrel",
-            "name": "16 Highmark Barrel"
+            "name": "16\" Highmark Barrel"
           },
           {
             "slot": "Magazine",
-            "name": "45 Round Mag"
+            "name": "60 Round Drum"
           },
           {
-            "slot": "Ammunition",
-            "name": "5.56 NATO High Velocity"
+            "slot": "Stock",
+            "name": "PF1 Fixed Stock"
           }
-        ]
+        ],
+        "source": {
+          "label": "wzstats.gg",
+          "url": "https://wzstats.gg/best-loadouts/m4-mw4",
+          "date": "2026-11-17"
+        }
+      },
+      {
+        "name": "Sniper Support",
+        "attachments": [
+          {
+            "slot": "Optic",
+            "name": "ZLR Type C"
+          },
+          {
+            "slot": "Muzzle",
+            "name": "XRK Mil-Tac Suppressor"
+          },
+          {
+            "slot": "Underbarrel",
+            "name": "Hurricane Grip"
+          },
+          {
+            "slot": "Stock",
+            "name": "Hurricane Stock"
+          },
+          {
+            "slot": "Laser",
+            "name": "SA Laz-500"
+          }
+        ],
+        "source": {
+          "label": "warzoneloadout.games",
+          "url": "https://warzoneloadout.games/warzone-meta",
+          "date": "2026-11-16"
+        }
       }
     ],
     "source": {
       "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://warzoneloadout.games/"
+      "url": "https://wzstats.gg/"
     },
-    "verified": "",
     "sources_tier": {
-      "warzoneloadout": "A",
-      "wzstats": "A"
+      "wzstats": "A",
+      "warzoneloadout": "A"
     },
+    "verified": "2026-11-17",
     "video": ""
   },
   {
     "game": "warzone",
     "kind": "meta",
-    "weapon": "X-58 Nyx",
+    "weapon": "VEL 46",
     "class": "SMG",
     "tier": "A",
     "category": "Close Range",
@@ -2081,87 +556,157 @@
     "team": "",
     "builds": [
       {
-        "name": "Close Range",
+        "name": "Close Range · wzstats",
         "attachments": [
           {
-            "slot": "Barrel",
-            "name": "Doksa 4F 305mm"
+            "slot": "Muzzle",
+            "name": "TA Lightning R3M"
           },
           {
             "slot": "Underbarrel",
-            "name": "Mire-50 Tac Grip"
+            "name": "FSS Tac90 Grip"
           },
           {
             "slot": "Magazine",
-            "name": "60 Round Mag"
-          },
-          {
-            "slot": "Rear Grip",
-            "name": "BOK-980"
+            "name": "60 Round Drum"
           },
           {
             "slot": "Stock",
-            "name": "Mugi HUL-73.M Stock"
+            "name": "EXP U-Turn Stock"
+          },
+          {
+            "slot": "Laser",
+            "name": "XRK Clutch-LS"
           }
-        ]
+        ],
+        "source": {
+          "label": "wzstats.gg",
+          "url": "https://wzstats.gg/best-loadouts/vel-46-mw4",
+          "date": "2026-11-17"
+        }
+      },
+      {
+        "name": "Close Range · wzloadout",
+        "attachments": [
+          {
+            "slot": "Muzzle",
+            "name": "TA TacPro-56"
+          },
+          {
+            "slot": "Barrel",
+            "name": "RV-B v2 Barrel"
+          },
+          {
+            "slot": "Underbarrel",
+            "name": "FSS Fireline Grip"
+          },
+          {
+            "slot": "Stock",
+            "name": "EXP U-Turn Stock"
+          },
+          {
+            "slot": "Ammunition",
+            "name": "4.6x30mm High Velocity"
+          }
+        ],
+        "source": {
+          "label": "warzoneloadout.games",
+          "url": "https://warzoneloadout.games/warzone-meta",
+          "date": "2026-11-16"
+        }
       }
     ],
     "source": {
       "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://warzoneloadout.games/"
+      "url": "https://wzstats.gg/"
     },
-    "verified": "",
     "sources_tier": {
-      "warzoneloadout": "A",
-      "wzstats": "A"
+      "wzstats": "A",
+      "warzoneloadout": "A"
     },
+    "verified": "2026-11-17",
     "video": ""
   },
   {
     "game": "warzone",
     "kind": "meta",
-    "weapon": "Astaroth .57",
-    "class": "Sniper",
+    "weapon": "Kastov 762",
+    "class": "Assault Rifle",
     "tier": "A",
-    "category": "Sniper",
+    "category": "Long Range",
     "players": [],
     "team": "",
     "builds": [
       {
-        "name": "Sniper",
+        "name": "Long Range · wzstats",
         "attachments": [
           {
+            "slot": "Optic",
+            "name": "Locus PX3 Canted"
+          },
+          {
             "slot": "Muzzle",
-            "name": "Usenko 900 BL-X"
+            "name": "Gauge-12 Mono"
           },
           {
             "slot": "Barrel",
-            "name": "FTAC Harbinger 45"
+            "name": "Haebang MT-414mm"
+          },
+          {
+            "slot": "Magazine",
+            "name": "45 Round Mag 7.62"
           },
           {
             "slot": "Stock",
-            "name": "Usenko V8-LKR"
-          },
-          {
-            "slot": "Laser",
-            "name": "XRK Clutch-LS"
-          },
-          {
-            "slot": "Ammunition",
-            "name": ".57 Cal High Velocity"
+            "name": "Hanbit Blitz v.9"
           }
-        ]
+        ],
+        "source": {
+          "label": "wzstats.gg",
+          "url": "https://wzstats.gg/best-loadouts/kastov-762-mw4",
+          "date": "2026-11-17"
+        }
+      },
+      {
+        "name": "Long Range · wzloadout",
+        "attachments": [
+          {
+            "slot": "Optic",
+            "name": "Cronen R808"
+          },
+          {
+            "slot": "Muzzle",
+            "name": "Gauge-12 Mono"
+          },
+          {
+            "slot": "Barrel",
+            "name": "BCS-K 589mm Barrel"
+          },
+          {
+            "slot": "Magazine",
+            "name": "45 Round Mag 7.62"
+          },
+          {
+            "slot": "Stock",
+            "name": "Hanbit Blitz v.9"
+          }
+        ],
+        "source": {
+          "label": "warzoneloadout.games",
+          "url": "https://warzoneloadout.games/warzone-meta",
+          "date": "2026-11-16"
+        }
       }
     ],
     "source": {
       "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://warzoneloadout.games/"
+      "url": "https://wzstats.gg/"
     },
-    "verified": "",
     "sources_tier": {
-      "warzoneloadout": "B",
-      "wzstats": "A"
+      "wzstats": "A",
+      "warzoneloadout": "B"
     },
+    "verified": "2026-11-17",
     "video": ""
   },
   {
@@ -2175,7 +720,37 @@
     "team": "",
     "builds": [
       {
-        "name": "Long Range",
+        "name": "Long Range · wzstats",
+        "attachments": [
+          {
+            "slot": "Optic",
+            "name": "Locus PX3 Canted"
+          },
+          {
+            "slot": "Muzzle",
+            "name": "FSS IS300"
+          },
+          {
+            "slot": "Barrel",
+            "name": "Cronen DC-Forge 40"
+          },
+          {
+            "slot": "Underbarrel",
+            "name": "FSS Tac90 Grip"
+          },
+          {
+            "slot": "Magazine",
+            "name": "40 Round Mag"
+          }
+        ],
+        "source": {
+          "label": "wzstats.gg",
+          "url": "https://wzstats.gg/best-loadouts/axion-mw4",
+          "date": "2026-11-17"
+        }
+      },
+      {
+        "name": "Long Range · wzloadout",
         "attachments": [
           {
             "slot": "Optic",
@@ -2197,86 +772,157 @@
             "slot": "Stock",
             "name": "TA Harrow Stock"
           }
-        ]
+        ],
+        "source": {
+          "label": "warzoneloadout.games",
+          "url": "https://warzoneloadout.games/warzone-meta",
+          "date": "2026-11-16"
+        }
       }
     ],
     "source": {
       "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://warzoneloadout.games/"
+      "url": "https://wzstats.gg/"
     },
-    "verified": "",
     "sources_tier": {
-      "warzoneloadout": "B",
-      "wzstats": "A"
+      "wzstats": "A",
+      "warzoneloadout": "B"
     },
+    "verified": "2026-11-17",
     "video": ""
   },
   {
     "game": "warzone",
     "kind": "meta",
-    "weapon": "Hyeon Burst",
-    "class": "Assault Rifle",
+    "weapon": "CSG-35",
+    "class": "SMG",
     "tier": "A",
-    "category": "Long Range",
-    "players": [],
-    "team": "",
-    "builds": [],
-    "source": {
-      "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://warzoneloadout.games/"
-    },
-    "verified": "",
-    "sources_tier": {
-      "warzoneloadout": "B",
-      "wzstats": "A"
-    },
-    "video": ""
-  },
-  {
-    "game": "warzone",
-    "kind": "meta",
-    "weapon": "Mosin-Nagant",
-    "class": "Marksman Rifle",
-    "tier": "A",
-    "category": "Sniper",
+    "category": "Close Range",
     "players": [],
     "team": "",
     "builds": [
       {
-        "name": "Sniper",
+        "name": "Close Range · wzstats",
         "attachments": [
           {
-            "slot": "Optic",
-            "name": "VLK Rize-40"
-          },
-          {
             "slot": "Muzzle",
-            "name": "FTAC Silent Recon"
+            "name": "EXP Forage-Hvy"
           },
           {
-            "slot": "Barrel",
-            "name": "Mosin K025 Barrel"
+            "slot": "Underbarrel",
+            "name": "CQC Stop"
+          },
+          {
+            "slot": "Magazine",
+            "name": "40 Round Mag"
           },
           {
             "slot": "Stock",
-            "name": "Usenko Shturm 76"
+            "name": "XRK Slight Stock"
+          },
+          {
+            "slot": "Laser",
+            "name": "SA Laz-500"
+          }
+        ],
+        "source": {
+          "label": "wzstats.gg",
+          "url": "https://wzstats.gg/best-loadouts/csg-35-mw4",
+          "date": "2026-11-17"
+        }
+      },
+      {
+        "name": "Close Range · wzloadout",
+        "attachments": [
+          {
+            "slot": "Muzzle",
+            "name": "RTR-8 Pro"
+          },
+          {
+            "slot": "Magazine",
+            "name": "40 Round Mag"
+          },
+          {
+            "slot": "Rear Grip",
+            "name": "Matuzek Fire-Pro"
+          },
+          {
+            "slot": "Stock",
+            "name": "XRK Slight Stock"
           },
           {
             "slot": "Ammunition",
-            "name": "7.62X54MMR High Velocity"
+            "name": "9mm Parabellum High Velocity"
           }
-        ]
+        ],
+        "source": {
+          "label": "warzoneloadout.games",
+          "url": "https://warzoneloadout.games/warzone-meta",
+          "date": "2026-11-16"
+        }
       }
     ],
     "source": {
       "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://warzoneloadout.games/"
+      "url": "https://wzstats.gg/"
     },
-    "verified": "",
     "sources_tier": {
-      "warzoneloadout": "C",
-      "wzstats": "META"
+      "wzstats": "A",
+      "warzoneloadout": "B"
     },
+    "verified": "2026-11-17",
+    "video": ""
+  },
+  {
+    "game": "warzone",
+    "kind": "meta",
+    "weapon": "X-58 Nyx",
+    "class": "SMG",
+    "tier": "A",
+    "category": "Close Range",
+    "players": [],
+    "team": "",
+    "builds": [
+      {
+        "name": "Close Range",
+        "attachments": [
+          {
+            "slot": "Barrel",
+            "name": "Doksa 4F 304.8mm"
+          },
+          {
+            "slot": "Underbarrel",
+            "name": "Mire-50 Tac Grip"
+          },
+          {
+            "slot": "Magazine",
+            "name": "60 Round Mag"
+          },
+          {
+            "slot": "Rear Grip",
+            "name": "BOK-980"
+          },
+          {
+            "slot": "Stock",
+            "name": "Mugi HUL-73.M Stock"
+          }
+        ],
+        "source": {
+          "label": "wzstats.gg",
+          "url": "https://wzstats.gg/best-loadouts/x-58-nyx-mw4",
+          "date": "2026-11-17"
+        }
+      }
+    ],
+    "source": {
+      "label": "wzstats.gg + warzoneloadout.games",
+      "url": "https://wzstats.gg/"
+    },
+    "sources_tier": {
+      "wzstats": "A",
+      "warzoneloadout": "B"
+    },
+    "verified": "2026-11-17",
     "video": ""
   },
   {
@@ -2312,112 +958,106 @@
             "slot": "Stock",
             "name": "MT-L5 Jinhwa"
           }
-        ]
+        ],
+        "source": {
+          "label": "wzstats.gg",
+          "url": "https://wzstats.gg/best-loadouts/ppsh-41-mw4",
+          "date": "2026-11-17"
+        },
+        "both": true
       }
     ],
     "source": {
       "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://warzoneloadout.games/"
+      "url": "https://wzstats.gg/"
     },
-    "verified": "",
     "sources_tier": {
-      "warzoneloadout": "B",
-      "wzstats": "A"
+      "wzstats": "A",
+      "warzoneloadout": "B"
     },
+    "verified": "2026-11-17",
     "video": ""
   },
   {
     "game": "warzone",
     "kind": "meta",
-    "weapon": "Rezi 12",
-    "class": "Shotgun",
-    "tier": "A",
-    "category": "Close Range",
+    "weapon": "Astaroth .57",
+    "class": "Sniper",
+    "tier": "B",
+    "category": "Sniper",
     "players": [],
     "team": "",
     "builds": [
       {
-        "name": "Close Range",
+        "name": "Sniper · wzstats",
         "attachments": [
           {
             "slot": "Muzzle",
-            "name": "Haebang Bulsae-10"
+            "name": "Usenko 900 BL-X"
           },
           {
             "slot": "Barrel",
-            "name": "Haebang 635R-7"
+            "name": "FTAC Harbinger 45\""
           },
           {
             "slot": "Stock",
-            "name": "No Stock"
+            "name": "Usenko V8-LKR"
           },
           {
             "slot": "Laser",
-            "name": "Pulse-MW Laser"
+            "name": "XRK Clutch-LS"
           },
           {
             "slot": "Ammunition",
-            "name": "12 Gauge Short Slug"
+            "name": ".57 Cal High Velocity"
           }
-        ]
-      }
-    ],
-    "source": {
-      "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://warzoneloadout.games/"
-    },
-    "verified": "",
-    "sources_tier": {
-      "warzoneloadout": "B",
-      "wzstats": "A"
-    },
-    "video": ""
-  },
-  {
-    "game": "warzone",
-    "kind": "meta",
-    "weapon": "Warlord",
-    "class": "Shotgun",
-    "tier": "A",
-    "category": "Close Range",
-    "players": [],
-    "team": "",
-    "builds": [
+        ],
+        "source": {
+          "label": "wzstats.gg",
+          "url": "https://wzstats.gg/best-loadouts/astaroth-57-mw4",
+          "date": "2026-11-17"
+        }
+      },
       {
-        "name": "Close Range",
+        "name": "Sniper · wzloadout",
         "attachments": [
           {
             "slot": "Muzzle",
-            "name": "WX-600 Choke"
+            "name": "Usenko 900 BL-X"
           },
           {
             "slot": "Barrel",
-            "name": "NK Gangta-12G"
+            "name": "FTAC Harbinger 45\""
           },
           {
-            "slot": "Underbarrel",
-            "name": "Mire-50 Tac Grip"
+            "slot": "Stock",
+            "name": "Usenko V8-LKR"
           },
           {
             "slot": "Laser",
-            "name": "Bruen 22-LPW"
+            "name": "Schlager Visiv-5"
           },
           {
             "slot": "Ammunition",
-            "name": "12 Gauge Short Slug"
+            "name": ".57 Cal High Velocity"
           }
-        ]
+        ],
+        "source": {
+          "label": "warzoneloadout.games",
+          "url": "https://warzoneloadout.games/warzone-meta",
+          "date": "2026-11-16"
+        }
       }
     ],
     "source": {
       "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://warzoneloadout.games/"
+      "url": "https://wzstats.gg/"
     },
-    "verified": "",
     "sources_tier": {
-      "warzoneloadout": "B",
-      "wzstats": "A"
+      "wzstats": "A",
+      "warzoneloadout": "C"
     },
+    "verified": "2026-11-17",
     "video": ""
   },
   {
@@ -2443,7 +1083,7 @@
           },
           {
             "slot": "Barrel",
-            "name": "FJX Sypher 27"
+            "name": "FJX Sypher 27\""
           },
           {
             "slot": "Magazine",
@@ -2453,18 +1093,73 @@
             "slot": "Ammunition",
             "name": "6.8 Wrath High Velocity"
           }
-        ]
+        ],
+        "source": {
+          "label": "warzoneloadout.games",
+          "url": "https://warzoneloadout.games/warzone-meta",
+          "date": "2026-11-16"
+        }
       }
     ],
     "source": {
-      "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://warzoneloadout.games/"
+      "label": "warzoneloadout.games",
+      "url": "https://warzoneloadout.games/warzone-meta"
     },
-    "verified": "",
     "sources_tier": {
-      "warzoneloadout": "C",
-      "wzstats": "A"
+      "warzoneloadout": "B"
     },
+    "verified": "2026-11-17",
+    "video": ""
+  },
+  {
+    "game": "warzone",
+    "kind": "meta",
+    "weapon": "Hyeon Burst",
+    "class": "Assault Rifle",
+    "tier": "B",
+    "category": "Long Range",
+    "players": [],
+    "team": "",
+    "builds": [
+      {
+        "name": "Long Range",
+        "attachments": [
+          {
+            "slot": "Optic",
+            "name": "Cronen R808"
+          },
+          {
+            "slot": "Muzzle",
+            "name": "FSS IS300"
+          },
+          {
+            "slot": "Barrel",
+            "name": "Mugi Seungri-0P 609mm"
+          },
+          {
+            "slot": "Rear Grip",
+            "name": "HYN-Meipeul"
+          },
+          {
+            "slot": "Ammunition",
+            "name": "6.8x43mm High Velocity"
+          }
+        ],
+        "source": {
+          "label": "warzoneloadout.games",
+          "url": "https://warzoneloadout.games/warzone-meta",
+          "date": "2026-11-16"
+        }
+      }
+    ],
+    "source": {
+      "label": "warzoneloadout.games",
+      "url": "https://warzoneloadout.games/warzone-meta"
+    },
+    "sources_tier": {
+      "warzoneloadout": "B"
+    },
+    "verified": "2026-11-17",
     "video": ""
   },
   {
@@ -2500,133 +1195,73 @@
             "slot": "Ammunition",
             "name": "5.56 NATO High Velocity"
           }
-        ]
+        ],
+        "source": {
+          "label": "warzoneloadout.games",
+          "url": "https://warzoneloadout.games/warzone-meta",
+          "date": "2026-11-16"
+        }
       }
     ],
     "source": {
-      "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://warzoneloadout.games/"
+      "label": "warzoneloadout.games",
+      "url": "https://warzoneloadout.games/warzone-meta"
     },
-    "verified": "",
     "sources_tier": {
-      "warzoneloadout": "C",
-      "wzstats": "A"
+      "warzoneloadout": "B"
     },
+    "verified": "2026-11-17",
     "video": ""
   },
   {
     "game": "warzone",
     "kind": "meta",
-    "weapon": "Kastov 762",
-    "class": "Assault Rifle",
-    "tier": "B",
-    "category": "Long Range",
-    "players": [],
-    "team": "",
-    "builds": [
-      {
-        "name": "Long Range",
-        "attachments": [
-          {
-            "slot": "Optic",
-            "name": "Cronen R808"
-          },
-          {
-            "slot": "Muzzle",
-            "name": "Gauge-12 Mono"
-          },
-          {
-            "slot": "Barrel",
-            "name": "BCS-K 589mm Barrel"
-          },
-          {
-            "slot": "Magazine",
-            "name": "45 Round Mag 7.62"
-          },
-          {
-            "slot": "Stock",
-            "name": "Hanbit Blitz v.9"
-          }
-        ]
-      }
-    ],
-    "source": {
-      "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://warzoneloadout.games/"
-    },
-    "verified": "",
-    "sources_tier": {
-      "warzoneloadout": "C",
-      "wzstats": "A"
-    },
-    "video": ""
-  },
-  {
-    "game": "warzone",
-    "kind": "meta",
-    "weapon": "Krait P68",
+    "weapon": ".50 GS",
     "class": "Pistol",
     "tier": "B",
     "category": "Close Range",
     "players": [],
     "team": "",
-    "builds": [],
-    "source": {
-      "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://warzoneloadout.games/"
-    },
-    "verified": "",
-    "sources_tier": {
-      "warzoneloadout": "C",
-      "wzstats": "A"
-    },
-    "video": ""
-  },
-  {
-    "game": "warzone",
-    "kind": "meta",
-    "weapon": "Oden",
-    "class": "Assault Rifle",
-    "tier": "B",
-    "category": "Long Range",
-    "players": [],
-    "team": "",
     "builds": [
       {
-        "name": "Long Range",
+        "name": "Close Range",
         "attachments": [
           {
             "slot": "Optic",
-            "name": "SZ Lonewolf Holo"
+            "name": "KV Corsac Holo"
           },
           {
             "slot": "Muzzle",
-            "name": "TV Multical-77"
-          },
-          {
-            "slot": "Barrel",
-            "name": "Rockfall-900 Barrel"
+            "name": "Bruen Retort .50"
           },
           {
             "slot": "Magazine",
-            "name": "30 Round Mag"
+            "name": "25 Round Drum Mag"
           },
           {
-            "slot": "Ammunition",
-            "name": "12.7x55mm High Velocity"
+            "slot": "Rear Grip",
+            "name": "TT Iron Guard Kit"
+          },
+          {
+            "slot": "Laser",
+            "name": "Corvus Aves-3"
           }
-        ]
+        ],
+        "source": {
+          "label": "warzoneloadout.games",
+          "url": "https://warzoneloadout.games/warzone-meta",
+          "date": "2026-11-16"
+        }
       }
     ],
     "source": {
-      "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://warzoneloadout.games/"
+      "label": "warzoneloadout.games",
+      "url": "https://warzoneloadout.games/warzone-meta"
     },
-    "verified": "",
     "sources_tier": {
-      "warzoneloadout": "C",
-      "wzstats": "A"
+      "warzoneloadout": "B"
     },
+    "verified": "2026-11-17",
     "video": ""
   },
   {
@@ -2634,7 +1269,7 @@
     "kind": "meta",
     "weapon": "Patriot XMR",
     "class": "Assault Rifle",
-    "tier": "B",
+    "tier": "C",
     "category": "Long Range",
     "players": [],
     "team": "",
@@ -2652,7 +1287,7 @@
           },
           {
             "slot": "Barrel",
-            "name": "SO 898F 19"
+            "name": "SO 898F 19\""
           },
           {
             "slot": "Magazine",
@@ -2662,149 +1297,73 @@
             "slot": "Stock",
             "name": "Hanbit B56T-L9"
           }
-        ]
+        ],
+        "source": {
+          "label": "warzoneloadout.games",
+          "url": "https://warzoneloadout.games/warzone-meta",
+          "date": "2026-11-16"
+        }
       }
     ],
     "source": {
-      "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://warzoneloadout.games/"
+      "label": "warzoneloadout.games",
+      "url": "https://warzoneloadout.games/warzone-meta"
     },
-    "verified": "",
     "sources_tier": {
-      "warzoneloadout": "C",
-      "wzstats": "A"
+      "warzoneloadout": "C"
     },
+    "verified": "2026-11-17",
     "video": ""
   },
   {
     "game": "warzone",
     "kind": "meta",
-    "weapon": "Signal 50",
-    "class": "Sniper",
-    "tier": "B",
-    "category": "Sniper",
+    "weapon": "Type 73",
+    "class": "LMG",
+    "tier": "C",
+    "category": "Long Range",
     "players": [],
     "team": "",
     "builds": [
       {
-        "name": "Sniper",
+        "name": "Long Range",
         "attachments": [
           {
+            "slot": "Optic",
+            "name": "SZ Helios Holo"
+          },
+          {
             "slot": "Muzzle",
-            "name": "FSS HOC-30"
+            "name": "Gauge-12 Mono"
           },
           {
             "slot": "Barrel",
-            "name": "MR50 Tyrant 29"
+            "name": "Haebang ET-9D 772mm"
           },
           {
             "slot": "Rear Grip",
-            "name": "EXP Trim-54F"
+            "name": "Assault-L5 Grip"
           },
           {
             "slot": "Stock",
-            "name": "Cronen SN-Pad50"
-          },
-          {
-            "slot": "Ammunition",
-            "name": ".50 Cal High Velocity"
+            "name": "FTAC RZR0 Stock"
           }
-        ]
+        ],
+        "source": {
+          "label": "warzoneloadout.games",
+          "url": "https://warzoneloadout.games/warzone-meta",
+          "date": "2026-11-16"
+        }
       }
     ],
     "source": {
-      "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://warzoneloadout.games/"
+      "label": "warzoneloadout.games",
+      "url": "https://warzoneloadout.games/warzone-meta"
     },
-    "verified": "",
     "sources_tier": {
-      "warzoneloadout": "C",
-      "wzstats": "A"
+      "warzoneloadout": "C"
     },
-    "video": ""
-  },
-  {
-    "game": "warzone",
-    "kind": "meta",
-    "weapon": "WZ.55 Striga",
-    "class": "SMG",
-    "tier": "B",
-    "category": "Close Range",
-    "players": [],
-    "team": "",
-    "builds": [],
-    "source": {
-      "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://warzoneloadout.games/"
-    },
-    "verified": "",
-    "sources_tier": {
-      "warzoneloadout": "C",
-      "wzstats": "A"
-    },
-    "video": ""
-  },
-  {
-    "game": "warzone",
-    "kind": "meta",
-    "weapon": "SANG 9mm",
-    "class": "Pistol",
-    "tier": "C",
-    "category": "Close Range",
-    "players": [],
-    "team": "",
-    "builds": [],
-    "source": {
-      "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://warzoneloadout.games/"
-    },
-    "verified": "",
-    "sources_tier": {
-      "warzoneloadout": "C",
-      "wzstats": "-"
-    },
-    "video": ""
-  },
-  {
-    "game": "warzone",
-    "kind": "meta",
-    "weapon": "MAR-9",
-    "class": "Marksman Rifle",
-    "tier": "C",
-    "category": "Long Range",
-    "players": [],
-    "team": "",
-    "builds": [],
-    "source": {
-      "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://warzoneloadout.games/"
-    },
-    "verified": "",
-    "sources_tier": {
-      "warzoneloadout": "D",
-      "wzstats": "-"
-    },
-    "video": ""
-  },
-  {
-    "game": "warzone",
-    "kind": "meta",
-    "weapon": "Oris 8.6",
-    "class": "Marksman Rifle",
-    "tier": "C",
-    "category": "Long Range",
-    "players": [],
-    "team": "",
-    "builds": [],
-    "source": {
-      "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://warzoneloadout.games/"
-    },
-    "verified": "",
-    "sources_tier": {
-      "warzoneloadout": "D",
-      "wzstats": "-"
-    },
+    "verified": "2026-11-17",
     "video": ""
   }
 ]

@@ -7,10 +7,12 @@ Ranked game plans, pro loadouts and interactive maps for Modern Warfare 4. A sta
 | Path | What it holds |
 | --- | --- |
 | `data/maps.json` | Maps: which modes each is played on, hardpoints, S&D sites, bomb spawn, bomb-site photos, official intel, sources |
-| `data/loadouts.json` | Every build: ranked pro builds, ranked meta tiers, Warzone meta tiers |
+| `data/loadouts.json` | Warzone meta: tier and builds per weapon from the two trackers, re-read daily |
 | `data/warzone-maps.json` | Warzone map cards |
 | `data/roster.json`, `data/roles.json` | Pro roster, the four roles and general coaching |
 | `data/role-guide.json` | The in-depth role guide shown on the Roles page, with its sources |
+| `data/classes.json`, `data/rules.json`, `data/weapons.json` | Competitive classes by gun and role, the Ranked and CMG rule sets they are checked against, and the gun list |
+| `tools/DAILY-LOADOUTS.md` | Runbook for the daily loadout refresh |
 | `data/map-extras.json` | Callout names, hill callouts and map notes per map (RankKD) |
 | `tools/tacmap-official.json`, `tools/import-tacmap.js` | Official tac-map markers and the script that registers them onto the minimaps |
 | `data/pages.json`, `data/site.json` | Page titles and intros, site name |

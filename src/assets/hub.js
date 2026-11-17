@@ -39,6 +39,28 @@
 			});
 	}
 
+	// Freshness: say how long ago each list was checked, and if the daily refresh has stopped, hide the list
+	// instead of showing old builds as if they were current.
+	function daysSince(iso) {
+		var t = Date.parse(iso + 'T00:00:00Z');
+		return isNaN(t) ? null : Math.floor((Date.now() - t) / 86400000);
+	}
+	Array.prototype.forEach.call(document.querySelectorAll('[data-ago]'), function (el) {
+		var d = daysSince(el.getAttribute('data-ago'));
+		if (d === null) return;
+		el.textContent = (d <= 0 ? 'today' : (d === 1 ? 'yesterday' : d + ' days ago')) + ' (' + el.textContent + ')';
+	});
+	Array.prototype.forEach.call(document.querySelectorAll('[data-lo-app][data-checked]'), function (app) {
+		var d = daysSince(app.getAttribute('data-checked')), max = +app.getAttribute('data-max-age') || 0;
+		if (d === null || !max || d <= max) return;
+		var bar = document.createElement('div');
+		bar.className = 'lo-stale';
+		bar.innerHTML = '<p><b>These loadouts are out of date.</b> They were last checked ' + d + ' days ago, so they are hidden until the next refresh.</p><button type="button" class="btn btn-sm">Show them anyway</button>';
+		app.classList.add('is-stale');
+		app.insertBefore(bar, app.firstChild);
+		bar.querySelector('button').addEventListener('click', function () { app.classList.remove('is-stale'); bar.querySelector('button').remove(); });
+	});
+
 	// Loadout apps: tabs, filters, search.
 	Array.prototype.forEach.call(document.querySelectorAll('[data-lo-app]'), function (app) {
 		var seg = app.querySelector('[data-seg]');

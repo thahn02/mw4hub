@@ -49,15 +49,37 @@ const server = http.createServer((req, res) => {
 	for (const href of seen) { const r = await ctx.request.get(href); if (r.status() !== 200) problems.push('broken link ' + href); }
 
 	await go('ranked-loadouts/');
-	const pro = await page.locator('[data-panel=pro] .lo-card').count();
-	expect(pro > 0, 'pro cards');
-	await page.click('[data-seg] [data-tab=meta]');
-	expect(await page.locator('[data-panel=meta]').isVisible(), 'meta panel shows');
+	const guns = await page.locator('[data-panel=guns] .cls-gun').count();
+	expect(guns > 0, 'competitive gun cards');
+	expect(await page.locator('.cls-kit .cls-slots > div').count() === 8, 'class kit lists secondary, melee, tactical, lethal, field upgrade and three perks');
+	expect(await page.locator('[data-panel=guns] .lo-build').count() === await page.locator('[data-panel=guns] .lo-build .chip-ok').count() / 2, 'every build shows Ranked and CMG legal');
+	expect(await page.locator('.lo-stale').count() === 0, 'loadouts are not flagged stale on a fresh build');
+	await page.click('[data-seg] [data-tab=roles]');
+	expect(await page.locator('[data-panel=roles]').isVisible() && await page.locator('.cls-rolecard').count() === 4, 'four role classes');
+	expect(await page.locator('.cls-rolecard .lo-copy').first().getAttribute('data-copy').then((t) => /Perk 1: /.test(t) && /Tactical: /.test(t)), 'copy text carries the whole class');
+	await page.click('[data-seg] [data-tab=rules]');
+	expect(await page.locator('[data-panel=rules] .rl-row').count() > 20 && await page.locator('.rl-card').count() === 2, 'rules panel: gun check and both rule sets');
+	await page.click('[data-seg] [data-tab=guns]');
 	await page.fill('[data-filter-search]', 'zzzz-nothing');
 	expect(await page.locator('.lo-none').isVisible(), 'empty filter message');
 	await page.fill('[data-filter-search]', '');
-	await shot('loadouts-meta', true);
+	await shot('loadouts-guns', true);
+	// If the daily refresh stops, old loadouts are hidden rather than shown as current.
+	{
+		const late = await browser.newContext();
+		const lp = await late.newPage();
+		await lp.clock.install({ time: new Date(Date.now() + 40 * 86400000) });
+		await lp.goto(base + 'ranked-loadouts/', { waitUntil: 'networkidle' });
+		expect(await lp.locator('.lo-stale').count() === 1 && !(await lp.locator('.cls-gun').first().isVisible()), 'stale loadouts are hidden');
+		await lp.click('.lo-stale button');
+		expect(await lp.locator('.cls-gun').first().isVisible(), 'stale loadouts can be shown on request');
+		await lp.goto(base + 'warzone/', { waitUntil: 'networkidle' });
+		expect(await lp.locator('.lo-stale').count() === 1, 'stale Warzone builds are flagged');
+		await late.close();
+	}
 
+	await go('warzone/');
+	expect(await page.locator('[data-panel=meta] .lo-card').count() > 0 && await page.locator('.lo-stale').count() === 0, 'warzone builds listed and current');
 	await go('roles/');
 	expect(await page.locator('.role-deep').count() === 4, 'role guide: four roles');
 	expect(await page.locator('.rg-mode').count() === 3, 'role guide: three modes');

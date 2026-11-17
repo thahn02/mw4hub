@@ -1,0 +1,497 @@
+{
+  "_about": "Competitive multiplayer classes. Every build here must pass both rule sets in data/rules.json or the site will not build. `verified` is the date of the newest source that shows the build in use; builds older than the cut-off in build.js are hidden automatically. `kind`: pro = a named pro's or the pros' current build, creator = a creator's own variant. Attachment `type` is the in-game category (Long Barrel, Balanced Comp, Mini Reflex...) and is what the CMG category bans are checked against.",
+  "updated": "2026-11-17",
+  "summary": "The HAN 86 and VEL 46 are still the two guns pros run. On Nov 16 the pros agreed to drop the VEL 46 long barrel, so the current VEL build uses the light barrel. A few pros started testing the ISO Nightshade the same day.",
+  "kit": {
+    "secondary": {
+      "name": "Sang 9mm",
+      "note": "No attachments. Pistol attachments are banned in CMG Arena and pros do not run them."
+    },
+    "melee": {
+      "name": "Knife"
+    },
+    "tactical": {
+      "name": "Concussion Grenade",
+      "note": "The only tactical that is legal in both rule sets for respawn. Flash is restricted in the CDL ruleset. Smoke is legal for Search & Destroy (CMG Arena: one per team)."
+    },
+    "lethal": {
+      "name": "Semtex",
+      "alt": [
+        "Frag Grenade"
+      ],
+      "note": "Semtex or Frag. Nothing else is legal in CMG Arena."
+    },
+    "fieldUpgrade": {
+      "name": "Trophy System",
+      "note": "The only field upgrade CMG Arena allows."
+    },
+    "perk1": {
+      "name": "Kill Chain",
+      "note": "The only Perk 1 legal in both rule sets."
+    },
+    "perk2": {
+      "name": "Ninja",
+      "alt": [
+        "Blood Rush",
+        "Fast Hands",
+        "Bomb Squad"
+      ],
+      "note": "Ninja is the default while Tactical Sprint is on. Blood Rush is the aggressive SMG and Search & Destroy pick."
+    },
+    "perk3": {
+      "name": "Battle Hardened",
+      "note": "The only Perk 3 CMG Arena allows."
+    },
+    "sources": [
+      {
+        "label": "BoomKid: Every Pro MW4 Ranked Class After GA's",
+        "url": "https://www.youtube.com/watch?v=LP-1qApCG3s",
+        "kind": "YouTube",
+        "date": "2026-11-17"
+      },
+      {
+        "label": "Apathy: Best Pro Player Class Setups in MW4",
+        "url": "https://www.youtube.com/watch?v=MvF9RxBI6R0",
+        "kind": "YouTube",
+        "date": "2026-11-11"
+      }
+    ]
+  },
+  "roles": {
+    "ar": {
+      "guns": [
+        "HAN 86"
+      ],
+      "builds": [
+        "han86-dashy",
+        "han86-pros"
+      ],
+      "perk2": "Ninja",
+      "lethal": "Frag Grenade",
+      "note": "Run the HAN 86 on every map. Put the Trophy System on your head glitch: grenades are how teams move a rifle off a power position."
+    },
+    "flex": {
+      "guns": [
+        "HAN 86",
+        "VEL 46"
+      ],
+      "builds": [
+        "han86-pros",
+        "vel46-pro"
+      ],
+      "perk2": "Ninja",
+      "lethal": "Semtex",
+      "note": "HAN 86 on most maps, VEL 46 where the map is tight. Keep both classes ready and swap by map and hill."
+    },
+    "entry": {
+      "guns": [
+        "VEL 46"
+      ],
+      "builds": [
+        "vel46-pro",
+        "vel46-long"
+      ],
+      "perk2": "Blood Rush",
+      "perk2Alt": "Ninja",
+      "lethal": "Semtex",
+      "note": "Blood Rush suits the first player in, in respawn and on Search & Destroy rush routes. Switch to Ninja when you need quiet footsteps."
+    },
+    "sub": {
+      "guns": [
+        "VEL 46",
+        "ISO Nightshade"
+      ],
+      "builds": [
+        "vel46-pro",
+        "iso-pro"
+      ],
+      "perk2": "Ninja",
+      "lethal": "Semtex",
+      "note": "Drop the Trophy System inside the hill as soon as you are in. The ISO Nightshade is the option if you want more range from the objective."
+    }
+  },
+  "builds": [
+    {
+      "id": "han86-dashy",
+      "weapon": "HAN 86",
+      "class": "Assault Rifle",
+      "label": "Dashy's build",
+      "kind": "pro",
+      "players": [
+        "Dashy"
+      ],
+      "team": "OpTic Texas",
+      "attachments": [
+        {
+          "slot": "Barrel",
+          "name": "SA H86 465mm",
+          "type": "Long Barrel"
+        },
+        {
+          "slot": "Optic",
+          "name": "Slimline Elite",
+          "type": "Mini Reflex"
+        },
+        {
+          "slot": "Stock",
+          "name": "FR4 Retractable Stock",
+          "type": "Tactical Stock"
+        },
+        {
+          "slot": "Rear Grip",
+          "name": "FTAC Griplord 80",
+          "type": "Aim Grip"
+        },
+        {
+          "slot": "Underbarrel",
+          "name": "FSS TAC90 Grip",
+          "type": "Angled Short Grip"
+        }
+      ],
+      "note": "Fast to aim, less recoil control. Any 1x sight works in the optic slot.",
+      "verified": "2026-11-17",
+      "sources": [
+        {
+          "label": "BoomKid: Every Pro MW4 Ranked Class After GA's",
+          "url": "https://www.youtube.com/watch?v=LP-1qApCG3s",
+          "kind": "YouTube",
+          "date": "2026-11-17"
+        },
+        {
+          "label": "Harrz: I Tested Pro Classes in MW4",
+          "url": "https://www.youtube.com/watch?v=L0ratHMUGx4",
+          "kind": "YouTube",
+          "date": "2026-11-11"
+        }
+      ]
+    },
+    {
+      "id": "han86-pros",
+      "weapon": "HAN 86",
+      "class": "Assault Rifle",
+      "label": "Other pros",
+      "kind": "pro",
+      "players": [],
+      "team": "",
+      "attachments": [
+        {
+          "slot": "Barrel",
+          "name": "SA H86 465mm",
+          "type": "Long Barrel"
+        },
+        {
+          "slot": "Optic",
+          "name": "Slimline Elite",
+          "type": "Mini Reflex"
+        },
+        {
+          "slot": "Stock",
+          "name": "Meiko L9P-Fold",
+          "type": "Light Stock"
+        },
+        {
+          "slot": "Rear Grip",
+          "name": "FTAC Griplord 80",
+          "type": "Aim Grip"
+        },
+        {
+          "slot": "Ammunition",
+          "name": "5.56 NATO High Velocity",
+          "type": "High Velocity"
+        }
+      ],
+      "note": "Light stock for strafe speed and high velocity rounds for longer fights.",
+      "verified": "2026-11-17",
+      "sources": [
+        {
+          "label": "BoomKid: Every Pro MW4 Ranked Class After GA's",
+          "url": "https://www.youtube.com/watch?v=LP-1qApCG3s",
+          "kind": "YouTube",
+          "date": "2026-11-17"
+        }
+      ]
+    },
+    {
+      "id": "han86-comp",
+      "weapon": "HAN 86",
+      "class": "Assault Rifle",
+      "label": "More recoil control",
+      "kind": "creator",
+      "players": [],
+      "team": "",
+      "attachments": [
+        {
+          "slot": "Barrel",
+          "name": "SA H86 465mm",
+          "type": "Long Barrel"
+        },
+        {
+          "slot": "Muzzle",
+          "name": "FTAC Dominion",
+          "type": "Balanced Comp"
+        },
+        {
+          "slot": "Optic",
+          "name": "Slimline Elite",
+          "type": "Mini Reflex"
+        },
+        {
+          "slot": "Stock",
+          "name": "Meiko L9P-Fold",
+          "type": "Light Stock"
+        },
+        {
+          "slot": "Rear Grip",
+          "name": "FTAC Griplord 80",
+          "type": "Aim Grip"
+        }
+      ],
+      "note": "BoomKid's own build: swaps the ammunition for a comp. Easier to keep on target.",
+      "verified": "2026-11-17",
+      "sources": [
+        {
+          "label": "BoomKid: Every Pro MW4 Ranked Class After GA's",
+          "url": "https://www.youtube.com/watch?v=LP-1qApCG3s",
+          "kind": "YouTube",
+          "date": "2026-11-17"
+        }
+      ]
+    },
+    {
+      "id": "vel46-pro",
+      "weapon": "VEL 46",
+      "class": "SMG",
+      "label": "Pro build",
+      "kind": "pro",
+      "players": [],
+      "team": "",
+      "attachments": [
+        {
+          "slot": "Barrel",
+          "name": "RV-B V2",
+          "type": "Light Barrel"
+        },
+        {
+          "slot": "Stock",
+          "name": "EXP U-Turn Stock",
+          "type": "Light Stock"
+        },
+        {
+          "slot": "Rear Grip",
+          "name": "Sakin Rubber Grip",
+          "type": "Rubber Grip"
+        },
+        {
+          "slot": "Magazine",
+          "name": "30 Round Mag",
+          "type": "Magazine"
+        },
+        {
+          "slot": "Underbarrel",
+          "name": "FSS TAC90 Grip",
+          "type": "Angled Short Grip"
+        }
+      ],
+      "note": "What pros moved to after agreeing to drop the long barrel on Nov 16.",
+      "verified": "2026-11-17",
+      "sources": [
+        {
+          "label": "BoomKid: Every Pro MW4 Ranked Class After GA's",
+          "url": "https://www.youtube.com/watch?v=LP-1qApCG3s",
+          "kind": "YouTube",
+          "date": "2026-11-17"
+        }
+      ]
+    },
+    {
+      "id": "vel46-long",
+      "weapon": "VEL 46",
+      "class": "SMG",
+      "label": "Long barrel",
+      "kind": "pro",
+      "players": [],
+      "team": "",
+      "attachments": [
+        {
+          "slot": "Barrel",
+          "name": "VB-46 Series 11",
+          "type": "Long Barrel"
+        },
+        {
+          "slot": "Stock",
+          "name": "EXP U-Turn Stock",
+          "type": "Light Stock"
+        },
+        {
+          "slot": "Rear Grip",
+          "name": "Sakin Rubber Grip",
+          "type": "Rubber Grip"
+        },
+        {
+          "slot": "Magazine",
+          "name": "30 Round Mag",
+          "type": "Magazine"
+        },
+        {
+          "slot": "Underbarrel",
+          "name": "FSS TAC90 Grip",
+          "type": "Angled Short Grip"
+        }
+      ],
+      "note": "The strongest VEL build and still legal as the rules are written. Pros stopped using the barrel on Nov 16.",
+      "verified": "2026-11-17",
+      "sources": [
+        {
+          "label": "BoomKid: Every Pro MW4 Ranked Class After GA's",
+          "url": "https://www.youtube.com/watch?v=LP-1qApCG3s",
+          "kind": "YouTube",
+          "date": "2026-11-17"
+        },
+        {
+          "label": "Apathy: Best Pro Player Class Setups in MW4",
+          "url": "https://www.youtube.com/watch?v=MvF9RxBI6R0",
+          "kind": "YouTube",
+          "date": "2026-11-11"
+        }
+      ]
+    },
+    {
+      "id": "vel46-comp",
+      "weapon": "VEL 46",
+      "class": "SMG",
+      "label": "More recoil control",
+      "kind": "creator",
+      "players": [],
+      "team": "",
+      "attachments": [
+        {
+          "slot": "Barrel",
+          "name": "RV-B V2",
+          "type": "Light Barrel"
+        },
+        {
+          "slot": "Muzzle",
+          "name": "TA Tacpro-56",
+          "type": "Balanced Comp"
+        },
+        {
+          "slot": "Stock",
+          "name": "EXP U-Turn Stock",
+          "type": "Light Stock"
+        },
+        {
+          "slot": "Rear Grip",
+          "name": "LM Combat Grip",
+          "type": "Tactical Grip"
+        },
+        {
+          "slot": "Magazine",
+          "name": "30 Round Mag",
+          "type": "Magazine"
+        }
+      ],
+      "note": "BoomKid's own build: a comp instead of the underbarrel, with a faster aiming rear grip to make up for it.",
+      "verified": "2026-11-17",
+      "sources": [
+        {
+          "label": "BoomKid: Every Pro MW4 Ranked Class After GA's",
+          "url": "https://www.youtube.com/watch?v=LP-1qApCG3s",
+          "kind": "YouTube",
+          "date": "2026-11-17"
+        }
+      ]
+    },
+    {
+      "id": "iso-pro",
+      "weapon": "ISO Nightshade",
+      "class": "SMG",
+      "label": "Pro build",
+      "kind": "pro",
+      "players": [],
+      "team": "",
+      "attachments": [
+        {
+          "slot": "Muzzle",
+          "name": "TA Tacpro-56",
+          "type": "Balanced Comp"
+        },
+        {
+          "slot": "Underbarrel",
+          "name": "FSS TAC90 Grip",
+          "type": "Angled Short Grip"
+        },
+        {
+          "slot": "Rear Grip",
+          "name": "ZLR Veloci Gen.2",
+          "type": "Rear Grip"
+        },
+        {
+          "slot": "Ammunition",
+          "name": "9mm Parabellum High Velocity",
+          "type": "High Velocity"
+        },
+        {
+          "slot": "Stock",
+          "name": "No Stock",
+          "type": "No Stock"
+        }
+      ],
+      "note": "Some pros began testing this on Nov 16. Better than the VEL in a straight fight at medium range.",
+      "verified": "2026-11-17",
+      "sources": [
+        {
+          "label": "BoomKid: Every Pro MW4 Ranked Class After GA's",
+          "url": "https://www.youtube.com/watch?v=LP-1qApCG3s",
+          "kind": "YouTube",
+          "date": "2026-11-17"
+        }
+      ]
+    },
+    {
+      "id": "m4-apathy",
+      "weapon": "M4",
+      "class": "Assault Rifle",
+      "label": "Second AR",
+      "kind": "pro",
+      "players": [],
+      "team": "",
+      "attachments": [
+        {
+          "slot": "Muzzle",
+          "name": "",
+          "type": "Horizontal Comp"
+        },
+        {
+          "slot": "Underbarrel",
+          "name": "FSS Fireline Grip",
+          "type": "Angled Grip"
+        },
+        {
+          "slot": "Ammunition",
+          "name": "5.56 NATO High Velocity",
+          "type": "High Velocity"
+        },
+        {
+          "slot": "Rear Grip",
+          "name": "Schlager STB Grip",
+          "type": "Rear Grip"
+        },
+        {
+          "slot": "Stock",
+          "name": "",
+          "type": "Light Stock"
+        }
+      ],
+      "note": "No optic: the M4 iron sight is clean. The source did not name the comp or the stock, so those two show the category only.",
+      "verified": "2026-11-11",
+      "sources": [
+        {
+          "label": "Apathy: Best Pro Player Class Setups in MW4",
+          "url": "https://www.youtube.com/watch?v=MvF9RxBI6R0",
+          "kind": "YouTube",
+          "date": "2026-11-11"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+[
+  {
+    "name": "HAN 86",
+    "class": "Assault Rifle"
+  },
+  {
+    "name": "M4",
+    "class": "Assault Rifle"
+  },
+  {
+    "name": "Hyeon Burst",
+    "class": "Assault Rifle"
+  },
+  {
+    "name": "Kastov 762",
+    "class": "Assault Rifle"
+  },
+  {
+    "name": "Axion",
+    "class": "Assault Rifle"
+  },
+  {
+    "name": "Patriot XMR",
+    "class": "Assault Rifle"
+  },
+  {
+    "name": "Cronen Osprey",
+    "class": "Assault Rifle",
+    "battlePass": true
+  },
+  {
+    "name": "Cronen Squall",
+    "class": "Assault Rifle"
+  },
+  {
+    "name": "Oden",
+    "class": "Assault Rifle"
+  },
+  {
+    "name": "VEL 46",
+    "class": "SMG"
+  },
+  {
+    "name": "ISO Nightshade",
+    "class": "SMG"
+  },
+  {
+    "name": "WZ.55 Striga",
+    "class": "SMG"
+  },
+  {
+    "name": "PPSh-41",
+    "class": "SMG"
+  },
+  {
+    "name": "CSG-35",
+    "class": "SMG",
+    "battlePass": true
+  },
+  {
+    "name": "X-58 Nyx",
+    "class": "SMG"
+  },
+  {
+    "name": "KG-7 Vulcan",
+    "class": "Sniper"
+  },
+  {
+    "name": "Astaroth .57",
+    "class": "Sniper"
+  },
+  {
+    "name": "Signal 50",
+    "class": "Sniper"
+  },
+  {
+    "name": "Mosin-Nagant",
+    "class": "Marksman Rifle"
+  },
+  {
+    "name": "Oris 8.6",
+    "class": "Marksman Rifle"
+  },
+  {
+    "name": "MAR-9",
+    "class": "Marksman Rifle"
+  },
+  {
+    "name": "FiNN LMG",
+    "class": "LMG"
+  },
+  {
+    "name": "Type 73",
+    "class": "LMG"
+  },
+  {
+    "name": "Rezi 12",
+    "class": "Shotgun"
+  },
+  {
+    "name": "Warlord",
+    "class": "Shotgun"
+  },
+  {
+    "name": "Sang 9mm",
+    "class": "Pistol"
+  },
+  {
+    "name": "Krait P68",
+    "class": "Pistol"
+  },
+  {
+    "name": ".50 GS",
+    "class": "Pistol"
+  },
+  {
+    "name": "Mojave .357",
+    "class": "Pistol"
+  }
+]

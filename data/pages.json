@@ -6,13 +6,13 @@
   },
   "ranked-loadouts": {
     "title": "Ranked Loadouts",
-    "eyebrow": "Modern Warfare 4 · Ranked Play",
-    "lead": "Builds pros are running right now, plus the current multiplayer meta by tier."
+    "eyebrow": "Modern Warfare 4 · Ranked & CMG",
+    "lead": "The classes pros are running now, by gun and by role, with perks and equipment. Every one is checked against the Ranked and CMG rules, and refreshed daily."
   },
   "warzone": {
     "title": "Warzone",
     "eyebrow": "Warzone · Meta",
-    "lead": "The best Warzone loadouts ranked by tier, plus the newest 2026 maps."
+    "lead": "Today's Warzone meta from wzstats.gg and warzoneloadout.games, plus the newest 2026 maps. Refreshed daily."
   },
   "roles": {
     "title": "Team Roles",

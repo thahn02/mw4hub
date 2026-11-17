@@ -1,0 +1,271 @@
+{
+  "_about": "Rule sets every multiplayer class on the site is checked against at build time (build.js, legality()). cdl = the league's Competitive Settings, which Ranked Play follows. cmg = Checkmate Gaming's MW4 Arena rules. ga = gentlemen's agreements between pros: not written rules, shown as warnings. Update `checked` whenever the source pages are re-read, and copy any change into `changes`.",
+  "checked": "2026-11-17",
+  "cdl": {
+    "name": "Ranked / CDL",
+    "title": "CDL Competitive Settings v1.0",
+    "source": {
+      "label": "Call of Duty League: Competitive Settings",
+      "url": "https://callofdutyleague.com/en-us/competitive-settings"
+    },
+    "published": "2026-11-11",
+    "note": "Ranked Play has not launched in MW4 yet. When it does it uses the league's ruleset, so this is the list to build for.",
+    "weaponClasses": [
+      "LMG",
+      "Marksman Rifle",
+      "Shotgun",
+      "Launcher"
+    ],
+    "weapons": [
+      "Astaroth .57",
+      "Signal 50"
+    ],
+    "attachmentSlots": [
+      "Apex",
+      "Laser"
+    ],
+    "attachments": {
+      "Muzzle": [
+        "FTAC Lonestar",
+        "Expedite Drill L4",
+        "SFO Proto-33",
+        "Demo Ironshade",
+        "XRK Herder 40",
+        "FSS Crackdown",
+        "FSS IS40",
+        "XRK Mil-Tac Suppressor",
+        "FSS IS300",
+        "Ivanov QR600",
+        "DS RKT-90",
+        "Gauge-12 Mono",
+        "TT Solgae F7"
+      ],
+      "Optic": [
+        "Bruen THRM-60 Optic",
+        "Schlager Night View Pro",
+        "RVX9 Thermo",
+        "Luca Stormwatch",
+        "Bruen Maestro"
+      ],
+      "Underbarrel": [
+        "Miri 40mm",
+        "TV Judicator"
+      ],
+      "Rear Grip": [
+        "Akimbo"
+      ],
+      "Barrel": [
+        "Han 86 Silenced 413mm"
+      ]
+    },
+    "banned": {
+      "tactical": [
+        "Flash Grenade",
+        "Snapshot Grenade",
+        "Heartbeat Sensor",
+        "Shock Stick",
+        "Decoy Grenade",
+        "Stim",
+        "Screamer Mine"
+      ],
+      "lethal": [
+        "Drill Charge",
+        "Proximity Mine",
+        "Zip Gun",
+        "Trip Wire",
+        "Thermite",
+        "Molotov Cocktail",
+        "Claymore",
+        "C4",
+        "Throwing Knife"
+      ],
+      "fieldUpgrade": [
+        "Portable Radar",
+        "DDOS",
+        "Munitions Box",
+        "Sam Airburst Turret",
+        "Riot Shield",
+        "Seeker Drone",
+        "Inflatable Decoy",
+        "Recon Drone",
+        "Razor Wire Trap",
+        "Tactical Insertion"
+      ],
+      "perk1": [
+        "Quick Fix",
+        "Overkill",
+        "High Alert",
+        "Ghost",
+        "Resupply"
+      ],
+      "perk2": [
+        "Hardline",
+        "Birds Eye"
+      ],
+      "perk3": [
+        "Lethal Reach",
+        "Combat Grid",
+        "Scavenger",
+        "Tracker",
+        "Cold-Blooded"
+      ],
+      "killstreaks": [
+        "UAV",
+        "Bomb Glider",
+        "Care Package",
+        "Impact Warhead",
+        "Artillery Beacon",
+        "Crossfire",
+        "Combat Drone",
+        "Counter UAV",
+        "Wheelson",
+        "Railgun Sentry",
+        "Attack Helicopter",
+        "Deathstalker",
+        "Advanced UAV",
+        "Argonaut",
+        "Gunship",
+        "Air Lockdown"
+      ]
+    }
+  },
+  "cmg": {
+    "name": "CMG Arena",
+    "title": "CMG MW4 Arena Rules",
+    "source": {
+      "label": "Checkmate Gaming: MW4 Arena Rules",
+      "url": "https://www.checkmategaming.com/cmg-arena/ladders/01a169a6-4c72-7a28-85a7-4e633f8baefc/rules"
+    },
+    "note": "These are CMG's Arena rules, which CMG says are built to mirror Ranked Play. CMG tournaments and cash matches post their own rules on each event page, so check the event before you play.",
+    "weaponClasses": [
+      "Shotgun",
+      "LMG",
+      "Sniper",
+      "Marksman Rifle",
+      "Launcher"
+    ],
+    "weapons": [
+      "Cronen Squall",
+      "Oden",
+      "X-58 Nyx",
+      ".50 GS",
+      "Mojave .357"
+    ],
+    "battlePassBanned": true,
+    "attachmentSlots": [
+      "Apex",
+      "Laser"
+    ],
+    "attachmentRules": [
+      "All optics with magnification (anything above 1.0x)",
+      "All launcher underbarrels",
+      "All lasers",
+      "All silencers",
+      "All headshot multiplier barrels",
+      "All rapid fire attachments",
+      "All Apex attachments",
+      "Akimbo",
+      "Armor Piercing, Frangible, Hollow Point and Overpressured ammunition",
+      "All pistol attachments"
+    ],
+    "bannedAmmo": [
+      "Armor Piercing",
+      "Frangible",
+      "Hollow Point",
+      "Overpressured"
+    ],
+    "optics1x": [
+      "Slimline Elite",
+      "ZLR Type C",
+      "SZ Prima-4 Dot"
+    ],
+    "allowed": {
+      "melee": [
+        "Knife"
+      ],
+      "lethal": [
+        "Frag Grenade",
+        "Semtex"
+      ],
+      "tactical": [
+        "Flash Grenade",
+        "Concussion Grenade",
+        "Smoke Grenade"
+      ],
+      "fieldUpgrade": [
+        "Trophy System"
+      ],
+      "perk1": [
+        "Kill Chain"
+      ],
+      "perk2": [
+        "Blood Rush",
+        "Bomb Squad",
+        "Fast Hands",
+        "Ninja"
+      ],
+      "perk3": [
+        "Battle Hardened"
+      ],
+      "killstreaks": []
+    },
+    "conditions": {
+      "Smoke Grenade": "Search & Destroy only, one per team. Banned in respawn modes."
+    },
+    "notes": [
+      "Killstreaks are switched off.",
+      "Controller and mouse & keyboard are both allowed in Arena."
+    ],
+    "changes": [
+      {
+        "date": "2026-11-14",
+        "text": "Hardpoint respawn delay set to 2.5 seconds."
+      },
+      {
+        "date": "2026-11-13",
+        "text": "Smokes banned in respawn modes."
+      },
+      {
+        "date": "2026-11-06",
+        "text": "Killstreaks off and Tactical Sprint on in all modes. Silkworm removed from Hardpoint."
+      },
+      {
+        "date": "2026-11-02",
+        "text": "Mumbai removed from Search & Destroy. Coal and Mumbai removed from Hardpoint; Lithium and Sentry added."
+      },
+      {
+        "date": "2026-10-22",
+        "text": "All pistol attachments banned. Friendly fire set to Punish."
+      }
+    ]
+  },
+  "ga": {
+    "name": "Pro agreements (GAs)",
+    "note": "Gentlemen's agreements are deals between pro teams, not written rules. They are not enforced in Ranked or CMG Arena, but they are usually the first sign of what gets restricted next, and tournament lobbies often expect you to follow them.",
+    "items": [
+      {
+        "match": {
+          "weapon": "VEL 46",
+          "attachment": "VB-46 Series 11"
+        },
+        "text": "VEL 46 long barrel (VB-46 Series 11): pros agreed to stop using it on Nov 16.",
+        "date": "2026-11-16",
+        "source": {
+          "label": "BoomKid (YouTube)",
+          "url": "https://www.youtube.com/watch?v=LP-1qApCG3s"
+        }
+      },
+      {
+        "match": {
+          "secondaryAttachments": true
+        },
+        "text": "Pistol attachments: pros run the Sang 9mm bare.",
+        "date": "2026-11-11",
+        "source": {
+          "label": "Apathy (YouTube)",
+          "url": "https://www.youtube.com/watch?v=MvF9RxBI6R0"
+        }
+      }
+    ]
+  }
+}
