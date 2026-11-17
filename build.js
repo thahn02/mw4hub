@@ -39,6 +39,7 @@ const TODAY = process.env.TODAY || new Date().toISOString().slice(0, 10);
 const MAX_AGE = { classes: 14, warzone: 3 };
 const ageDays = (iso) => (iso ? Math.floor((Date.parse(TODAY) - Date.parse(iso)) / 86400000) : 9999);
 const pages = read('pages.json');
+const changelog = read('changelog.json');
 
 // ---------- helpers ----------
 const esc = (s) => String(s === null || s === undefined ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[c]));
@@ -68,7 +69,7 @@ function copyDir(from, to) {
 }
 const jsonForScript = (o) => JSON.stringify(o).replace(/</g, '\\u003C').replace(/>/g, '\\u003E').replace(/&/g, '\\u0026');
 
-const NAV = [['maps', 'Maps'], ['bomb-sites', 'Bomb Sites'], ['ranked-loadouts', 'Ranked Loadouts'], ['warzone', 'Warzone'], ['roles', 'Roles']];
+const NAV = [['maps', 'Maps'], ['match', 'Match Night'], ['bomb-sites', 'Bomb Sites'], ['ranked-loadouts', 'Loadouts'], ['warzone', 'Warzone'], ['roles', 'Roles']];
 const LOGO = '<svg viewBox="0 0 24 24" fill="none" stroke="#d8a94b" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="7.5"/><path d="M12 1.5v5M12 17.5v5M1.5 12h5M17.5 12h5"/><circle cx="12" cy="12" r="1.6" fill="#d8a94b" stroke="none"/></svg>';
 const ICO = {
 	map: '<path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/>',
@@ -95,6 +96,7 @@ function layout(o) {
 	const brand = '<span class="brand-mark">' + LOGO + '</span><span class="brand-word">MW4<span>HUB</span></span>';
 	return '<!doctype html>\n<html lang="en-US" class="no-js">\n<head>\n<meta charset="UTF-8">\n' +
 		'<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n<meta name="theme-color" content="#07090a">\n<meta name="color-scheme" content="dark">\n' +
+		'<link rel="manifest" href="' + r + 'manifest.webmanifest">\n<link rel="apple-touch-icon" href="' + r + 'images/icons/apple-touch-icon.png">\n<meta name="mobile-web-app-capable" content="yes">\n<meta name="apple-mobile-web-app-capable" content="yes">\n<meta name="apple-mobile-web-app-title" content="MW4 Hub">\n<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">\n' +
 		"<script>document.documentElement.classList.remove('no-js');document.documentElement.classList.add('js');</script>\n" +
 		'<title>' + esc(o.title) + '</title>\n' + (o.description ? '<meta name="description" content="' + esc(o.description) + '">\n' : '') +
 		'<link rel="icon" href="data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="#12160c"/>' + LOGO.replace(/^<svg[^>]*>|<\/svg>$/g, '').replace('<circle cx="12" cy="12" r="7.5"/>', '<circle cx="12" cy="12" r="7.5" fill="none" stroke="#d8a94b" stroke-width="2"/>').replace('<path d="M12 1.5v5M12 17.5v5M1.5 12h5M17.5 12h5"/>', '<path d="M12 1.5v5M12 17.5v5M1.5 12h5M17.5 12h5" stroke="#d8a94b" stroke-width="2" stroke-linecap="round"/>') + '</svg>') + '">\n' +
@@ -103,10 +105,10 @@ function layout(o) {
 		'<header class="site-header" id="top">\n\t<div class="header-inner">\n\t\t<a class="brand" href="' + url('') + '" aria-label="MW4 Hub home">' + brand + '</a>\n' +
 		'\t\t<nav class="main-nav" aria-label="Primary"><ul>' + nav(true) + '</ul></nav>\n' +
 		'\t\t<div class="header-actions"><a class="btn btn-ghost btn-sm" href="' + url('my-plans') + '">My Plans</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Menu"><span></span><span></span></button></div>\n\t</div>\n' +
-		'\t<div class="mobile-nav" id="mobile-nav" hidden><ul>' + nav(false) + '<li><a href="' + url('my-plans') + '">My Plans</a></li></ul></div>\n</header>\n' +
+		'\t<div class="mobile-nav" id="mobile-nav" hidden><ul>' + nav(false) + '<li><a href="' + url('squad') + '">Squad</a></li><li><a href="' + url('my-plans') + '">My Plans</a></li></ul></div>\n</header>\n' +
 		'<main id="main" class="site-main">\n' + o.content + '\n</main>\n' +
 		'<footer class="site-footer">\n\t<div class="container footer-inner">\n\t\t<div class="footer-brand"><a class="brand" href="' + url('') + '">' + brand + '</a><p>Ranked game plans, pro loadouts and interactive maps for Modern Warfare 4. Built for 4v4.</p></div>\n' +
-		'\t\t<nav class="footer-links" aria-label="Footer">' + NAV.map(([slug, label]) => '<a href="' + url(slug) + '">' + esc(label) + '</a>').join('') + '<a href="' + url('my-plans') + '">My Plans</a><a href="' + url('credits') + '">Sources &amp; Credits</a></nav>\n' +
+		'\t\t<nav class="footer-links" aria-label="Footer">' + NAV.map(([slug, label]) => '<a href="' + url(slug) + '">' + esc(label) + '</a>').join('') + '<a href="' + url('squad') + '">Squad</a><a href="' + url('my-plans') + '">My Plans</a><a href="' + url('credits') + '">Sources &amp; Credits</a></nav>\n' +
 		'\t\t<p class="disclaimer">MW4 Hub is an independent fan site. It is not affiliated with or endorsed by Activision. Call of Duty and Modern Warfare are trademarks of Activision Publishing, Inc. Map imagery and game data belong to their respective owners; see Sources &amp; Credits.</p>\n\t</div>\n</footer>\n' +
 		'<script>var MW4HUB = {"rest":"","nonce":""};</script>\n' +
 		'<script src="' + r + 'assets/hub.js?v=' + assetVer('hub.js') + '" defer></script>\n' +
@@ -139,57 +141,6 @@ function ytLite(id) {
 	if (!/^[A-Za-z0-9_-]{11}$/.test(id || '')) return '';
 	return '<button type="button" class="yt-lite" data-id="' + esc(id) + '" aria-label="Play video" style="background-image:url(https://i.ytimg.com/vi/' + esc(id) + '/hqdefault.jpg)"><span class="yt-play" aria-hidden="true"></span></button>';
 }
-function loadoutCard(d, showTier) {
-	const builds = d.builds || [], players = d.players || [];
-	const search = [d.weapon || '', d.class || '', d.category || '', d.team || ''].concat(players).join(' ').toLowerCase();
-	let h = '<article class="lo-card card" data-class="' + esc(d.class || '') + '" data-search="' + esc(search) + '">';
-	h += '<header class="lo-head"><div class="lo-title"><h3 class="lo-weapon">' + esc(d.weapon || '') + '</h3><div class="lo-meta">';
-	if (d.class) h += '<span class="chip">' + esc(d.class) + '</span>';
-	if (d.category && !players.length) h += '<span class="chip chip-sage">' + esc(d.category) + '</span>';
-	if (players.length) h += '<span class="chip chip-brass">' + esc(players.join(' & ')) + '</span>';
-	if (d.team) h += '<span class="chip chip-optic">' + esc(d.team) + '</span>';
-	h += '</div></div>';
-	if (showTier && d.tier) h += '<span class="tier tier-' + esc(d.tier) + '" title="Tier ' + esc(d.tier) + '">' + esc(d.tier) + '</span>';
-	h += '</header>';
-	if (builds.length > 1) {
-		h += '<div class="lo-tabs" role="tablist">' + builds.map((b, i) => '<button type="button" role="tab" data-b="' + i + '" class="' + (i === 0 ? 'is-on' : '') + '" aria-selected="' + (i === 0 ? 'true' : 'false') + '">' + esc(b.name || ('Build ' + (i + 1))) + '</button>').join('') + '</div>';
-	}
-	builds.forEach((b, i) => {
-		h += '<div class="lo-build" data-b="' + i + '"' + (i ? ' hidden' : '') + '>';
-		if (builds.length === 1 && b.name && (b.name !== (d.category || '') || players.length)) h += '<div class="lo-bname">' + esc(b.name) + '</div>';
-		h += '<ol class="lo-atts">' + (b.attachments || []).map((a) => '<li><span class="lo-slot">' + esc(a.slot || '') + '</span><span class="lo-att">' + esc(a.name || '') + '</span></li>').join('');
-		h += '</ol>';
-		if (b.source && b.source.url) h += '<a class="lo-bsrc" href="' + esc(b.source.url) + '" target="_blank" rel="noopener nofollow">' + esc((b.both ? 'Same build on both trackers \u00b7 ' : '') + b.source.label) + '</a>';
-		h += '<button class="btn btn-sm lo-copy" type="button" data-copy="' + esc(buildCopyText(d, b)) + '">Copy build</button></div>';
-	});
-	if (!builds.length) h += '<p class="muted lo-empty">Full build not published by our sources yet.</p>';
-	if (d.video) h += ytLite(d.video);
-	h += '<footer class="lo-foot">';
-	if (d.source && d.source.url) h += '<a class="lo-src" href="' + esc(d.source.url) + '" target="_blank" rel="noopener nofollow">' + esc('Source: ' + (d.source.label || 'link')) + '</a>';
-	const st = d.sources_tier && Object.keys(d.sources_tier);
-	if (st && st.length) h += '<span class="lo-date" title="Tier on each source site">' + esc(st.map((k) => k + ' ' + d.sources_tier[k]).join(' \u00b7 ')) + '</span>';
-	if (d.verified) h += '<span class="lo-date">' + esc('Checked ' + fmtDate(d.verified)) + '</span>';
-	return h + '</footer></article>';
-}
-function tierSections(items, labels) {
-	let h = '';
-	for (const t of ['S', 'A', 'B', 'C', 'D']) {
-		const list = items.filter((d) => (d.tier || 'C') === t);
-		if (!list.length) continue;
-		h += '<div class="tier-block"><div class="tier-head"><span class="tier tier-' + t + '">' + t + '</span><div><h3>' + esc(labels[t] || '') + '</h3><span class="muted">' + list.length + (list.length === 1 ? ' weapon' : ' weapons') + '</span></div></div><div class="grid lo-grid">' + list.map((d) => loadoutCard(d, true)).join('') + '</div></div>';
-	}
-	return h;
-}
-function filtersBar(items, tabs) {
-	const classes = [];
-	items.forEach((d) => { if (d.class && classes.indexOf(d.class) < 0) classes.push(d.class); });
-	return '<div class="lo-toolbar"><div class="seg" role="tablist" data-seg>' +
-		tabs.map(([key, label, n], i) => '<button type="button" role="tab" data-tab="' + key + '" class="' + (i === 0 ? 'is-on' : '') + '" aria-selected="' + (i === 0 ? 'true' : 'false') + '">' + esc(label) + ' <span>' + n + '</span></button>').join('') +
-		'</div><div class="lo-filters" data-filters><div class="chips" data-filter-class><button type="button" class="chip is-on" data-v="">All</button>' +
-		classes.map((c) => '<button type="button" class="chip" data-v="' + esc(c) + '">' + esc(c) + '</button>').join('') +
-		'</div><input type="search" placeholder="Search weapon or player" data-filter-search aria-label="Search builds"></div></div>';
-}
-const NONE = '<p class="lo-none muted" hidden>No builds match that filter.</p></div>';
 // ---------- competitive classes: legality against the Ranked (CDL) and CMG rule sets ----------
 const same = (x, y) => String(x || '').toLowerCase() === String(y || '').toLowerCase();
 const inList = (list, v) => (list || []).some((x) => same(x, v));
@@ -401,16 +352,65 @@ function rankedLoadouts() {
 	h += '<section data-panel="rules" hidden><p class="lo-note">The two rule sets every class is checked against. Rules were last read on ' + esc(fmtDate(rules.checked)) + '.</p>' + rulesPanel() + '</section>';
 	return h + '</div>';
 }
+// Warzone: the same class-screen layout as Ranked Loadouts, one view per weapon, listed by tier or by range.
+const WZ_TIERS = { S: 'Meta', A: 'Strong picks', B: 'Viable', C: 'Situational', D: 'Off meta' };
+function warzoneView(id, d, first) {
+	const builds = d.builds || [], st = d.sources_tier || {};
+	const tierChips = Object.keys(st).map((k) => '<span class="chip">' + esc(k + ' ' + st[k]) + '</span>').join('');
+	let h = '<article class="card ld-view wz-view" data-ld-view="' + esc(id) + '"' + (first ? '' : ' hidden') + '>';
+	h += '<header class="ld-head"><div class="ld-title"><span class="tier tier-' + esc(d.tier || 'C') + '" title="Tier ' + esc(d.tier || 'C') + '">' + esc(d.tier || 'C') + '</span><div><span class="ld-eyebrow">' + esc((WZ_TIERS[d.tier] || 'Tier ' + d.tier) + (d.category ? ' · ' + d.category : '')) + '</span><h2>' + esc(d.weapon) + '</h2></div></div>' +
+		'<div class="ld-actions"><div class="cls-legal">' + tierChips + '</div></div></header>';
+	h += '<div class="ld-stack">' + gunSlot('Primary', d.weapon, d.class, Math.min(MAX_ATTACHMENTS, ((builds[0] || {}).attachments || []).length), 'ld-primary') +
+		'<div class="ld-slot ld-row"><div><span class="ld-k">Best at</span><b class="ld-n">' + esc(d.category || 'All ranges') + '</b></div></div>' +
+		'<div class="ld-slot ld-row"><div><span class="ld-k">Tier on each tracker</span><b class="ld-n">' + esc(Object.keys(st).map((k) => st[k]).join(' / ') || d.tier || '') + '</b><span class="ld-s">' + esc(Object.keys(st).join(' / ')) + '</span></div><span class="tier tier-' + esc(d.tier || 'C') + '">' + esc(d.tier || 'C') + '</span></div>' +
+		'<div class="ld-slot ld-row"><div><span class="ld-k">Checked</span><b class="ld-n">' + esc(fmtDate(d.verified)) + '</b></div></div></div>';
+	const hero = gunPic(d.weapon, 'gun-hero');
+	h += '<div class="ld-detail"><section class="ld-sec ld-gunsmith"><div class="ld-hero' + (hero ? '' : ' ld-hero-bare') + '">' + hero + '<div class="ld-hero-name"><span class="ld-s">' + esc(d.class || '') + '</span><b>' + esc(d.weapon) + '</b></div>' + (hero ? '<span class="ld-credit">Image: ' + esc(gunImages.credit) + '</span>' : '') + '</div>';
+	if (builds.length > 1) h += '<div class="lo-tabs" role="tablist">' + builds.map((b, i) => '<button type="button" role="tab" data-b="' + i + '" class="' + (i === 0 ? 'is-on' : '') + '" aria-selected="' + (i === 0 ? 'true' : 'false') + '">' + esc(b.name || ('Build ' + (i + 1))) + '</button>').join('') + '</div>';
+	builds.forEach((b, i) => {
+		const atts = b.attachments || [];
+		h += '<div class="lo-build" data-b="' + i + '"' + (i ? ' hidden' : '') + '><h3>Attachments <span>' + atts.length + '</span>' + (builds.length === 1 && b.name ? ' <em>' + esc(b.name) + '</em>' : '') + '</h3><ol class="ld-atts">' +
+			atts.map((a) => '<li class="ld-att"><span class="ld-k">' + esc(a.slot || 'Attachment') + '</span><b class="ld-n">' + esc(a.name || '') + '</b><span class="ld-s"></span></li>').join('') + '</ol>' +
+			'<div class="ld-foot"><button class="btn btn-sm lo-copy" type="button" data-copy="' + esc(buildCopyText(d, b)) + '">Copy build</button>' +
+			(b.source && b.source.url ? '<a class="lo-bsrc" href="' + esc(b.source.url) + '" target="_blank" rel="noopener nofollow">' + esc((b.both ? 'Same build on both trackers · ' : '') + b.source.label) + '</a>' : '') + '</div></div>';
+	});
+	if (!builds.length) h += '<p class="muted lo-empty">Full build not published by our sources yet.</p>';
+	h += '</section>' + (d.video ? ytLite(d.video) : '');
+	if (d.source && d.source.url) h += '<footer class="ld-foot"><a class="lo-src" href="' + esc(d.source.url) + '" target="_blank" rel="noopener nofollow">' + esc('Source: ' + (d.source.label || 'link')) + '</a></footer>';
+	return h + '</div></article>';
+}
+function warzoneScreen(wz) {
+	const two = (n) => (n < 10 ? '0' : '') + n, idOf = (d) => 'w-' + String(d.weapon).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+	const item = (d, n, sub, on) => '<button type="button" class="ld-item' + (on ? ' is-on' : '') + '" data-ld-open="' + esc(idOf(d)) + '"' + (on ? ' aria-current="true"' : '') + '><span class="ld-num">' + two(n) + '</span><b>' + esc(d.weapon) + '</b><span>' + esc(sub) + '</span></button>';
+	const ordered = [];
+	let tierList = '', rangeList = '', n = 0;
+	for (const t of ['S', 'A', 'B', 'C', 'D']) {
+		const list = wz.filter((d) => (d.tier || 'C') === t);
+		if (!list.length) continue;
+		tierList += '<div class="ld-group"><div class="ld-gh"><b><span class="tier tier-sm tier-' + t + '">' + t + '</span>' + esc(WZ_TIERS[t]) + '</b><span>' + list.length + '</span></div><div class="ld-items">' + list.map((d) => { ordered.push(d); return item(d, ++n, [d.class, d.category].filter(Boolean).join(' · '), n === 1); }).join('') + '</div></div>';
+	}
+	const cats = [];
+	wz.forEach((d) => { const c = d.category || 'Other'; if (cats.indexOf(c) < 0) cats.push(c); });
+	n = 0;
+	cats.forEach((c) => {
+		const list = ordered.filter((d) => (d.category || 'Other') === c);
+		rangeList += '<div class="ld-group"><div class="ld-gh"><b>' + esc(c) + '</b><span>' + list.length + '</span></div><div class="ld-items">' + list.map((d) => item(d, ++n, 'Tier ' + (d.tier || 'C') + (d.class ? ' · ' + d.class : ''), false)).join('') + '</div></div>';
+	});
+	return '<div class="ld" data-ld><aside class="ld-side" aria-label="Warzone weapons"><div class="seg ld-sw" role="tablist"><button type="button" role="tab" class="is-on" aria-selected="true" data-ld-group="tier">By tier</button><button type="button" role="tab" aria-selected="false" data-ld-group="range">By range</button></div>' +
+		'<nav class="ld-list" data-ld-list="tier">' + tierList + '</nav><nav class="ld-list" data-ld-list="range" hidden>' + rangeList + '</nav></aside>' +
+		'<div class="ld-main">' + ordered.map((d, i) => warzoneView(idOf(d), d, i === 0)).join('') + '</div></div>';
+}
 function warzone(r) {
 	const wz = liveWarzone;
 	const wzChecked = wz.map((d) => d.verified).sort().pop() || '';
 	const long = wz.find((d) => d.tier === 'S' && d.category === 'Long Range');
 	const close = wz.find((d) => d.tier === 'S' && d.category === 'Close Range');
-	let h = '<div class="lo-app" data-lo-app data-checked="' + esc(wzChecked) + '" data-max-age="' + MAX_AGE.warzone + '">' + filtersBar(wz, [['meta', 'Meta loadouts', wz.length], ['maps', 'Newest maps', wzmaps.length]]) + '<section data-panel="meta">';
+	let h = '<div class="lo-app" data-lo-app data-checked="' + esc(wzChecked) + '" data-max-age="' + MAX_AGE.warzone + '">' +
+		'<div class="lo-toolbar"><div class="seg" role="tablist" data-seg><button type="button" role="tab" data-tab="meta" class="is-on" aria-selected="true">Meta loadouts <span>' + wz.length + '</span></button><button type="button" role="tab" data-tab="maps" aria-selected="false">Newest maps <span>' + wzmaps.length + '</span></button></div>' +
+		'<span class="ld-checked">Checked <b data-ago="' + esc(wzChecked) + '">' + esc(fmtDate(wzChecked)) + '</b></span></div><section data-panel="meta">';
 	if (long && close) h += '<div class="wz-pair card"><span class="eyebrow">Meta pairing</span><div class="wz-pair-row"><div><b>' + esc(long.weapon) + '</b><span class="muted">Long range primary</span></div><span class="wz-plus">+</span><div><b>' + esc(close.weapon) + '</b><span class="muted">Close range secondary</span></div></div></div>';
-	h += '<p class="lo-note">Checked <b data-ago="' + esc(wzChecked) + '">' + esc(fmtDate(wzChecked)) + '</b>. Tiers combine today\u2019s rankings from wzstats.gg and warzoneloadout.games: weapons rated highly on both rank highest, and each card shows the tier on each site. Where the two sites build a gun differently you get both builds. Anything not re-checked for ' + MAX_AGE.warzone + ' days is taken off the page.</p>';
-	if (!wz.length) h += '<p class="lo-empty muted">No Warzone builds have been re-checked in the last ' + MAX_AGE.warzone + ' days, so none are shown. They return after the next refresh.</p>';
-	h += tierSections(wz, { S: 'Meta: top of the two trackers', A: 'Strong picks', B: 'Viable', C: 'Situational' });
+	h += wz.length ? warzoneScreen(wz) : '<p class="lo-empty muted">No Warzone builds have been re-checked in the last ' + MAX_AGE.warzone + ' days, so none are shown. They return after the next refresh.</p>';
+	h += '<p class="lo-note wz-note">Tiers combine today’s rankings from wzstats.gg and warzoneloadout.games: weapons rated highly on both rank highest, and each weapon shows its tier on each site. Where the two sites build a gun differently you get both builds. Anything not re-checked for ' + MAX_AGE.warzone + ' days is taken off the page.</p>';
 	h += '</section><section data-panel="maps" hidden><div class="grid grid-3 wz-maps">';
 	for (const m of wzmaps) {
 		h += '<article class="card wz-map"><div class="wz-thumb">' + (m.image ? '<img src="' + r + esc(m.image) + '" alt="' + esc(m.name + ' map') + '" loading="lazy" decoding="async">' : '<div class="wz-thumb-empty">' + esc(m.name) + '</div>');
@@ -419,7 +419,7 @@ function warzone(r) {
 		if (m.url) h += '<a class="lo-src" href="' + esc(m.url) + '" target="_blank" rel="noopener nofollow">Full map layout and POIs on GamesAtlas</a>';
 		h += '</div></article>';
 	}
-	return h + '</div></section>' + NONE;
+	return h + '</div></section></div>';
 }
 function mapsGrid(r) {
 	if (!maps.length) return '<p class="muted">Maps are being added.</p>';
@@ -555,6 +555,39 @@ function myPlans() {
 		'<section class="plans-list"><h3>My plans <span class="muted" data-plan-count>0</span></h3><div class="plans-rows" data-plan-rows><p class="muted">Nothing saved yet. Open a map and draw your plan; it is saved here as you go.</p></div></section>' +
 		'</div>\n<script type="application/json" id="mw4-maps">' + jsonForScript(maps.map((m) => ({ slug: m.slug, name: m.name, modes: m.modes }))) + '</script>';
 }
+// ---------- what changed (data/changelog.json; the daily refresh adds an entry per run) ----------
+function whatChanged() {
+	const entries = (changelog.entries || []).slice().sort((a, b) => (a.date < b.date ? 1 : -1)).slice(0, 5);
+	if (!entries.length) return '';
+	return '<div class="chg card" data-refresh="' + esc(entries[0].date) + '" data-max-age="2"><div class="chg-head"><div><span class="eyebrow">What changed</span><h2>Checked <span data-ago="' + esc(entries[0].date) + '">' + esc(fmtDate(entries[0].date)) + '</span></h2></div>' +
+		'<p class="muted">Loadouts and rules are re-read every morning. Anything that moved shows up here.</p></div><ol class="chg-list">' +
+		entries.map((e) => '<li><time datetime="' + esc(e.date) + '">' + esc(fmtDate(e.date)) + '</time><ul>' + (e.items || []).map((it) => '<li><span class="chip chg-' + esc(String(it.area || 'site').toLowerCase()) + '">' + esc(it.area || 'Site') + '</span>' + esc(it.text) + '</li>').join('') + '</ul></li>').join('') + '</ol></div>';
+}
+// ---------- squad and match night (rendered in the browser by squad.js from this data; player names never leave the device) ----------
+const MODE_NAMES = { hp: 'Hardpoint', snd: 'Search & Destroy', hj: 'Hijack' };
+function teamData() {
+	return {
+		modes: MODE_NAMES,
+		roles: roleData.roles.map((r) => {
+			const g = (guide.roles || {})[r.key] || {}, cfg = classData.roles[r.key];
+			return { key: r.key, name: r.name, short: r.short, color: r.color, tag: r.tag, summary: r.summary, jobs: { hp: g.hp || r.hp || [], snd: g.snd || r.snd || [], hj: g.hj || [] },
+				cls: cfg ? { guns: cfg.guns, note: cfg.note, builds: rolePicks(r.key).map((b) => ({ id: 'r-' + r.key + '-' + b.id, weapon: b.weapon, label: b.label })), kit: KIT_SLOTS.filter(([k]) => kitFor(r.key)[k]).map(([k, label]) => [label, kitFor(r.key)[k].name]) } : null };
+		}),
+		rules: (guide.modes || []).reduce((o, m) => { o[m.key] = { rules: m.rules, jobs: (m.jobs || []).map((j) => ({ job: j.job, who: j.who || [], what: j.what })) }; return o; }, {}),
+		coaching: roleData.coaching || {},
+		maps: maps.map((m) => {
+			const ex = extras[m.slug] || {}, calls = ex.hillCalls || {};
+			return { slug: m.slug, name: m.name, modes: m.modes, img: (m.image && m.image.file) || '', hills: has(m, 'hp') ? ((m.hp && m.hp.hills) || []).map((h) => ({ n: h.n, name: h.name, call: calls[h.n] || '' })) : [], names: ex.names || [], tips: ex.tips || [], src: ex.source || null };
+		}),
+	};
+}
+const teamDataScript = () => '\n<script type="application/json" id="mw4-team-data">' + jsonForScript(teamData()) + '</script>';
+function squadPage() {
+	return '<div class="sq" data-squad><noscript><p class="muted">Turn on JavaScript to set up your squad.</p></noscript></div>' + teamDataScript();
+}
+function matchPage() {
+	return '<div class="mt" data-match><noscript><p class="muted">Turn on JavaScript to use Match Night.</p></noscript></div>' + teamDataScript();
+}
 // Default callouts for a map: the official tac-map area names, plus the short name players use for
 // each Hardpoint hill (placed just above the hill marker). A team can replace these in the planner.
 function defaultCallouts(m) {
@@ -618,13 +651,14 @@ function home() {
 	return '<section class="hero">\n\t<div class="hero-art" aria-hidden="true"><div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="sweep"></div><div class="cross"></div><span class="blip" style="left:62%;top:34%"></span><span class="blip b2" style="left:30%;top:58%"></span><span class="blip b3" style="left:70%;top:68%"></span></div>\n' +
 		'\t<div class="container">\n\t\t<span class="eyebrow reveal">Modern Warfare 4 \u00b7 Ranked 4v4</span>\n\t\t<h1 class="reveal d1">Game-plan Ranked <em>like the pros.</em></h1>\n' +
 		'\t\t<p class="lead reveal d2">Interactive maps with every hardpoint and bomb site, a planner for routes and setups, pro-sourced loadouts and the current Warzone meta, all in one place.</p>\n' +
-		'\t\t<div class="hero-actions reveal d3"><a class="btn btn-primary" href="' + r + 'maps/">' + ico('map') + ' Open the map planner</a><a class="btn" href="' + r + 'ranked-loadouts/">Pro loadouts</a></div>\n' +
+		'\t\t<div class="hero-actions reveal d3"><a class="btn btn-primary" href="' + r + 'maps/">' + ico('map') + ' Open the map planner</a><a class="btn" href="' + r + 'match/">Match Night</a><a class="btn" href="' + r + 'ranked-loadouts/">Pro loadouts</a></div>\n' +
 		'\t\t<div class="stats reveal">' + stats.map((s) => '<div class="stat"><b>' + esc(s[0]) + '</b><span>' + esc(s[1]) + '</span></div>').join('') + '</div>\n\t</div>\n</section>\n\n' +
 		'<section class="section"><div class="container"><div class="grid grid-3">' +
 		feature('maps', 'map', '', 'Interactive maps', 'Zoom into every Ranked Play map. See hardpoint rotations, S&D bomb sites and bomb spawns, then draw routes, strong points and enemy paths for your team of four.', 'Plan a map') +
 		feature('ranked-loadouts', 'gun', ' d1', 'Ranked loadouts', 'Current competitive classes by gun and by role, with perks and equipment, checked against the Ranked and CMG rules every day.', 'See builds') +
 		feature('warzone', 'drop', ' d2', 'Warzone', 'A ranked Warzone meta built from multiple trackers, with full builds and the newest 2026 maps.', 'Warzone meta') +
 		'</div></div></section>\n\n' +
+		'<section class="section section-tight"><div class="container"><div data-continue hidden></div>' + whatChanged() + '<p class="install muted" data-install hidden></p></div></section>\n\n' +
 		'<section class="section"><div class="container">' + head('Ranked map pool', 'Pick a map. Build the plan.', 'maps', 'All maps') + mapsGrid(r) + '</div></section>\n\n' +
 		'<section class="section"><div class="container">' + head('Pro structure', 'Four players. Four jobs.', 'roles', 'Role guide') + rolesBlock(true) + '</div></section>\n\n' +
 		'<section class="section"><div class="container"><div class="cta reveal"><span class="eyebrow">Squad up</span><h2>Save plans and share them with your team.</h2>' +
@@ -642,6 +676,7 @@ for (const m of maps) {
 	if (fs.existsSync(path.join(SRC, 'images/maps/' + m.slug + '-map-900.webp'))) used.add('images/maps/' + m.slug + '-map-900.webp');
 }
 for (const m of wzmaps) if (m.image) used.add(m.image);
+for (const f of fs.readdirSync(path.join(SRC, 'images/icons'))) used.add('images/icons/' + f);
 let nImages = 0;
 for (const f of used) {
 	if (!fs.existsSync(path.join(SRC, f))) continue;
@@ -660,10 +695,31 @@ write('warzone/index.html', standardPage('warzone', warzone('../')));
 write('roles/index.html', standardPage('roles', rolesGuide()));
 write('my-plans/index.html', standardPage('my-plans', myPlans(), { scripts: ['plans-local.js'] }));
 write('credits/index.html', standardPage('credits', credits()));
+// Installable on a phone: manifest and a small offline fallback. The service worker always asks the network
+// first, so a visitor who is online never sees an old copy; the cache is only used when there is no connection.
+write('manifest.webmanifest', JSON.stringify({
+	name: site.name, short_name: site.name, description: site.tagline, start_url: './?source=app', scope: './', display: 'standalone', background_color: '#07090a', theme_color: '#07090a',
+	icons: [{ src: 'images/icons/icon-192.png', sizes: '192x192', type: 'image/png' }, { src: 'images/icons/icon-512.png', sizes: '512x512', type: 'image/png' }, { src: 'images/icons/icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }],
+	shortcuts: [{ name: 'Match Night', url: './match/' }, { name: 'Maps', url: './maps/' }, { name: 'Loadouts', url: './ranked-loadouts/' }],
+}, null, 1));
+write('sw.js', "/* MW4 Hub offline fallback. Network first; the cache is only read when the network fails. */\n" +
+	"var CACHE = 'mw4hub-v1';\n" +
+	"self.addEventListener('install', function () { self.skipWaiting(); });\n" +
+	"self.addEventListener('activate', function (e) { e.waitUntil(caches.keys().then(function (ks) { return Promise.all(ks.filter(function (k) { return k !== CACHE; }).map(function (k) { return caches.delete(k); })); }).then(function () { return self.clients.claim(); })); });\n" +
+	"self.addEventListener('fetch', function (e) {\n" +
+	"\tvar req = e.request;\n" +
+	"\tif (req.method !== 'GET' || new URL(req.url).origin !== self.location.origin) return;\n" +
+	"\te.respondWith(fetch(req).then(function (res) {\n" +
+	"\t\tif (res && res.ok && res.type === 'basic') { var copy = res.clone(); caches.open(CACHE).then(function (c) { c.put(req, copy); }); }\n" +
+	"\t\treturn res;\n" +
+	"\t}).catch(function () { return caches.match(req, { ignoreSearch: req.mode === 'navigate' }).then(function (hit) { return hit || Response.error(); }); }));\n" +
+	"});\n");
+write('match/index.html', standardPage('match', matchPage(), { scripts: ['squad.js'] }));
+write('squad/index.html', standardPage('squad', squadPage(), { scripts: ['squad.js'] }));
 for (const m of maps) {
 	write('maps/' + m.slug + '/index.html', layout({
 		depth: 2, active: 'maps', bodyClass: 'is-planner', planner: true, scripts: ['planner.js'],
-		title: m.name + ' Map Planner: Hardpoint & S&D \u2013 ' + site.name, description: m.description, content: planner(m, '../../'),
+		title: m.name + ' Map Planner: ' + m.modes.map((k) => ({ hp: 'Hardpoint', snd: 'S&D', hj: 'Hijack' })[k]).join(', ') + ' \u2013 ' + site.name, description: m.description, content: planner(m, '../../'),
 	}));
 }
 write('404.html', layout({

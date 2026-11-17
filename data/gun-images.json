@@ -1,26 +1,70 @@
 {
   "note": "Official weapon graphics from the Activision launch blog, shown by link (not copied into this site). Each graphic is 1920x1080 with the weapon in the upper part; crop is [x, y, width, height] as fractions of the graphic and picks out just the weapon. 'checked' means the crop was looked at in a browser. Weapons without a checked crop use defaultCrop.",
-  "source": { "label": "Call of Duty blog: Ready for Launch, Weapons Detail", "url": "https://www.callofduty.com/blog/2026/10/call-of-duty-modern-warfare-4-launch-multiplayer-operators-weapons-equipment-create-a-class" },
+  "source": {
+    "label": "Call of Duty blog: Ready for Launch, Weapons Detail",
+    "url": "https://www.callofduty.com/blog/2026/10/call-of-duty-modern-warfare-4-launch-multiplayer-operators-weapons-equipment-create-a-class"
+  },
   "credit": "Activision",
   "base": "https://imgs.callofduty.com/content/dam/atvi/callofduty/cod-touchui/blog/body/mw4/rfl-ops-and-weapons/MW4-RFL-OPS-WEAPONS-",
   "ext": ".webp",
-  "size": [1920, 1080],
-  "defaultCrop": [0.1, 0.1, 0.8, 0.5],
+  "size": [
+    1920,
+    1080
+  ],
+  "defaultCrop": [0.04, 0.09, 0.92, 0.5],
   "checkedOn": "2026-11-17",
   "images": {
-    "HAN 86": { "file": "009", "crop": [0.09, 0.11, 0.82, 0.48], "checked": true },
-    "M4": { "file": "010", "crop": [0.095, 0.09, 0.795, 0.52], "checked": true },
+    "HAN 86": {
+      "file": "009",
+      "crop": [0.09, 0.11, 0.82, 0.48],
+      "checked": true
+    },
+    "M4": {
+      "file": "010",
+      "crop": [0.095, 0.09, 0.795, 0.52],
+      "checked": true
+    },
     "Hyeon Burst": { "file": "011" },
     "Patriot XMR": { "file": "012" },
     "Kastov 762": { "file": "013" },
     "Oden": { "file": "014" },
     "Axion": { "file": "015" },
-    "ISO Nightshade": { "file": "017", "crop": [0.165, 0.075, 0.685, 0.545], "checked": true },
-    "VEL 46": { "file": "018", "crop": [0.245, 0.04, 0.515, 0.55], "checked": true },
+    "ISO Nightshade": {
+      "file": "017",
+      "crop": [0.165, 0.075, 0.685, 0.545],
+      "checked": true
+    },
+    "VEL 46": {
+      "file": "018",
+      "crop": [0.245, 0.04, 0.515, 0.55],
+      "checked": true
+    },
     "WZ.55 Striga": { "file": "019" },
     "PPSh-41": { "file": "020" },
     "X-58 Nyx": { "file": "021" },
-    "Sang 9mm": { "file": "033", "crop": [0.335, 0.07, 0.38, 0.52], "checked": true },
-    "Knife": { "file": "041", "crop": [0.275, 0.2, 0.475, 0.28], "checked": true, "name": "FSS Carbon Edge 1095" }
+    "Sang 9mm": {
+      "file": "033",
+      "crop": [0.335, 0.07, 0.38, 0.52],
+      "checked": true
+    },
+    "Knife": {
+      "file": "041",
+      "crop": [0.275, 0.2, 0.475, 0.28],
+      "checked": true,
+      "name": "FSS Carbon Edge 1095"
+    },
+    "Rezi 12": { "file": "022" },
+    "Warlord": { "file": "023" },
+    "FiNN LMG": { "file": "024" },
+    "Type 73": { "file": "025" },
+    "MAR-9": { "file": "027" },
+    "Oris 8.6": { "file": "028" },
+    "Mosin-Nagant": { "file": "029" },
+    "KG-7 Vulcan": { "file": "030" },
+    "Astaroth .57": { "file": "031" },
+    "Signal 50": { "file": "032" },
+    "Krait P68": { "file": "034" },
+    ".50 GS": { "file": "035" },
+    "Mojave .357": { "file": "036" }
   }
 }

@@ -34,7 +34,7 @@ const server = http.createServer((req, res) => {
 		await sp.close();
 	}
 	const newContext = browser.newContext.bind(browser);
-	browser.newContext = async (o) => { const c = await newContext(o); await c.route(GUN_HOST, (r) => r.fulfill({ status: 200, contentType: 'image/png', body: standIn })); return c; };
+	browser.newContext = async (o) => { const c = await newContext(Object.assign({ serviceWorkers: 'block' }, o)); await c.route(GUN_HOST, (r) => r.fulfill({ status: 200, contentType: 'image/png', body: standIn })); return c; };
 	const problems = [];
 	const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
 	const page = await ctx.newPage();
@@ -50,10 +50,13 @@ const server = http.createServer((req, res) => {
 	await go('');
 	expect(await page.locator('.map-card').count() === maps.length, 'home map cards');
 	expect(await page.locator('.role-card').count() === 4, 'home role cards');
+	expect(await page.locator('.chg .chg-list > li').count() > 0 && await page.locator('.chg-warn').count() === 0, 'home: what-changed list, no stale warning on a fresh build');
+	expect(await page.locator('[data-continue]').isHidden(), 'home: no continue card before any map was opened');
+	expect((await ctx.request.get(base + 'manifest.webmanifest')).status() === 200 && (await ctx.request.get(base + 'sw.js')).status() === 200 && (await ctx.request.get(base + 'images/icons/icon-192.png')).status() === 200, 'install files are published');
 	await shot('home', true);
 	// Every internal link on every top page resolves.
 	const seen = new Set();
-	for (const p of ['', 'maps/', 'bomb-sites/', 'ranked-loadouts/', 'warzone/', 'roles/', 'my-plans/', 'credits/']) {
+	for (const p of ['', 'maps/', 'match/', 'squad/', 'bomb-sites/', 'ranked-loadouts/', 'warzone/', 'roles/', 'my-plans/', 'credits/']) {
 		await go(p);
 		for (const href of await page.$$eval('a[href]', (as) => as.map((a) => a.href))) if (href.startsWith(base)) seen.add(href.split('#')[0]);
 		await shot(p.replace(/\//g, '') || 'index', true);
@@ -99,6 +102,64 @@ const server = http.createServer((req, res) => {
 	expect(await page.locator('[data-panel=rules] .rl-row').count() > 20 && await page.locator('.rl-card').count() === 2 && !(await page.locator('.ld').isVisible()), 'rules panel: gun check and both rule sets');
 	await page.click('[data-seg] [data-tab=loadouts]');
 	expect(await page.locator('.ld-view:visible').count() === 1, 'back to the loadout screen');
+	// Squad: names live on the device, each named player gets a card, and the squad travels by link.
+	{
+		const sc = await browser.newContext({ viewport: { width: 1360, height: 900 } });
+		const sp = await sc.newPage();
+		sp.on('pageerror', (e) => problems.push('squad: error: ' + e.message));
+		await sp.goto(base + 'squad/', { waitUntil: 'networkidle' });
+		expect(await sp.locator('[data-sq-n]').count() === 4 && await sp.locator('.sq-card').count() === 0, 'squad: four empty rows to start');
+		const names = ['Alpha', 'Bravo', 'Charlie', 'Delta'];
+		for (let i = 0; i < 4; i++) await sp.fill('[data-sq-n="' + i + '"]', names[i]);
+		await sp.waitForFunction(() => document.querySelectorAll('.sq-card').length === 4);
+		expect(await sp.locator('.sq-card .sq-guns a').count() >= 4 && await sp.locator('.sq-card .sq-jobs li').count() >= 8, 'squad: each player card has a class and jobs');
+		await sp.locator('.sq-card').first().locator('[data-sq-mode=snd]').click();
+		expect(await sp.locator('.sq-card').first().locator('[data-sq-mode=snd].is-on').count() === 1, 'squad: mode tabs switch the jobs');
+		await sp.selectOption('[data-sq-r="0"]', 'entry');
+		expect((await sp.locator('.sq-card').first().innerText()).includes('Entry SMG'), 'squad: changing a role updates the card');
+		await sp.reload({ waitUntil: 'networkidle' });
+		expect(await sp.inputValue('[data-sq-n="2"]') === 'Charlie', 'squad: saved on the device');
+		const link = await sp.evaluate(() => { const s = JSON.parse(localStorage.getItem('mw4hub:squad')); const b = new TextEncoder().encode(JSON.stringify(s)); let bin = ''; b.forEach((x) => { bin += String.fromCharCode(x); }); return location.pathname + '#s=' + btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); });
+		if (SHOTS) await sp.screenshot({ path: path.join(SHOTS, 'squad.png'), fullPage: true });
+		// Match Night picks up the squad and the map that was open last.
+		await sp.goto(base + 'maps/' + maps[1].slug + '/', { waitUntil: 'networkidle' });
+		await sp.goto(base + 'match/', { waitUntil: 'networkidle' });
+		expect((await sp.locator('.mt-plan h3').innerText()).startsWith(maps[1].name), 'match night opens on the map used last');
+		expect(await sp.locator('.mt-role').count() === 4 && (await sp.locator('.mt-who').innerText()).includes('Bravo'), 'match night shows the squad against the roles');
+		expect(await sp.locator('.mt-frame iframe').count() === 1 && /view=brief/.test(await sp.locator('.mt-frame iframe').getAttribute('src')), 'match night embeds the briefing');
+		const frame = sp.frameLocator('.mt-frame iframe');
+		await frame.locator('.mw4-planner.is-ready').waitFor({ timeout: 15000 }).catch(() => problems.push('match night: briefing did not load'));
+		const other = maps.find((m) => m.slug !== maps[1].slug && m.modes.length > 1) || maps[0];
+		await sp.click('[data-mt-map="' + other.slug + '"]');
+		await sp.click('[data-mt-mode="' + other.modes[1] + '"]');
+		expect(sp.url().includes('map=' + other.slug) && sp.url().includes('mode=' + other.modes[1]) && (await sp.locator('.mt-plan h3').innerText()).startsWith(other.name), 'match night: map and mode switch and are kept in the address');
+		expect(await sp.locator('.mt-role .mt-class').count() === 4, 'match night links each role to its class');
+		if (SHOTS) await sp.screenshot({ path: path.join(SHOTS, 'match.png'), fullPage: true });
+		await sp.goto(base, { waitUntil: 'networkidle' });
+		expect(await sp.locator('.continue').isVisible() && (await sp.locator('.continue b').innerText()).includes(maps[1].name), 'home offers the map used last');
+		// A second device opens the squad link.
+		const sc2 = await browser.newContext();
+		const sp2 = await sc2.newPage();
+		await sp2.goto(base.replace(/\/$/, '') + link.replace(PREFIX, ''), { waitUntil: 'networkidle' });
+		expect(await sp2.locator('.sq-card').count() === 4 && await sp2.inputValue('[data-sq-n="3"]') === 'Delta', 'squad link carries the line-up to another device');
+		await sc2.close(); await sc.close();
+	}
+	// Installed copy: pages already seen still open with no connection.
+	{
+		const oc = await newContext({ viewport: { width: 390, height: 844 } });
+		await oc.route(GUN_HOST, (r) => r.abort());
+		const op = await oc.newPage();
+		await op.goto(base, { waitUntil: 'networkidle' });
+		await op.evaluate(() => navigator.serviceWorker.ready);
+		await op.reload({ waitUntil: 'networkidle' });
+		await op.goto(base + 'match/', { waitUntil: 'networkidle' });
+		await oc.setOffline(true);
+		const ok = await op.goto(base, { waitUntil: 'load' }).then((r) => !!r && r.ok()).catch(() => false);
+		expect(ok && await op.locator('.chg').count() === 1, 'offline: the home page opens from the saved copy');
+		const ok2 = await op.goto(base + 'match/', { waitUntil: 'load' }).then((r) => !!r && r.ok()).catch(() => false);
+		expect(ok2 && await op.locator('.mt-role').count() === 4, 'offline: match night opens from the saved copy');
+		await oc.close();
+	}
 	// If the weapon pictures cannot be loaded, the slots still show the names.
 	{
 		const bare = await newContext({ viewport: { width: 1280, height: 800 } });
@@ -124,7 +185,25 @@ const server = http.createServer((req, res) => {
 	}
 
 	await go('warzone/');
-	expect(await page.locator('[data-panel=meta] .lo-card').count() > 0 && await page.locator('.lo-stale').count() === 0, 'warzone builds listed and current');
+	const wzViews = await page.locator('[data-panel=meta] .ld-view').count();
+	expect(wzViews > 0 && await page.locator('.lo-stale').count() === 0, 'warzone builds listed and current');
+	expect(await page.locator('[data-ld-list=tier] .ld-item').count() === wzViews && await page.locator('[data-ld-list=range] .ld-item').count() === wzViews, 'warzone: every weapon is in both lists');
+	expect(await page.locator('.ld-view:visible').count() === 1 && await page.locator('.ld-view:visible .ld-att').count() > 0 && await page.locator('.ld-view:visible .lo-copy:visible').count() === 1, 'warzone: one weapon shown with its attachments and a copy button');
+	{
+		const third = page.locator('[data-ld-list=tier] .ld-item').nth(2), id = await third.getAttribute('data-ld-open');
+		await third.click();
+		expect(await page.locator('.ld-view:visible').getAttribute('data-ld-view') === id, 'warzone: picking a weapon opens it');
+		await page.click('[data-ld-group=range]');
+		expect(await page.locator('[data-ld-list=range]').isVisible() && await page.locator('.ld-view:visible').getAttribute('data-ld-view') === id && await page.locator('[data-ld-list=range] .ld-item.is-on').getAttribute('data-ld-open') === id, 'warzone: switching to by range keeps the same weapon open');
+		const multi = page.locator('.ld-view:has(.lo-tabs)').first();
+		if (await multi.count()) {
+			await page.click('[data-ld-list=range] .ld-item[data-ld-open="' + await multi.getAttribute('data-ld-view') + '"]');
+			const before = await page.locator('.ld-view:visible .lo-build:visible .lo-copy').getAttribute('data-copy');
+			await page.locator('.ld-view:visible .lo-tabs button').nth(1).click();
+			expect(await page.locator('.ld-view:visible .lo-build:visible').count() === 1 && await page.locator('.ld-view:visible .lo-build:visible .lo-copy').getAttribute('data-copy') !== before, 'warzone: build tabs switch the build');
+		}
+		await shot('warzone', true);
+	}
 	await go('roles/');
 	expect(await page.locator('.role-deep').count() === 4, 'role guide: four roles');
 	expect(await page.locator('.rg-mode').count() === 3, 'role guide: three modes');
@@ -281,7 +360,7 @@ const server = http.createServer((req, res) => {
 	if (await mp.$$eval('.ld-view:not([hidden]) .ld-slot, .ld-view:not([hidden]) .ld-att', (ts) => ts.filter((t) => t.scrollWidth > t.clientWidth + 1).length)) problems.push('a slot overflows on a phone');
 	if (SHOTS) await mp.screenshot({ path: path.join(SHOTS, 'mobile-loadouts.png'), fullPage: true });
 	await browser.close(); server.close();
-	console.log('Checked ' + (10 + maps.length) + ' pages and ' + seen.size + ' internal links at ' + (PREFIX || '/'));
+	console.log('Checked ' + (12 + maps.length) + ' pages and ' + seen.size + ' internal links at ' + (PREFIX || '/'));
 	console.log(problems.length ? 'PROBLEMS (' + problems.length + '):\n  ' + [...new Set(problems)].join('\n  ') : 'All checks passed.');
 	process.exit(problems.length ? 1 : 0);
 })().catch((e) => { console.error(e); process.exit(2); });

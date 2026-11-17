@@ -1,0 +1,20 @@
+{
+  "_about": "What changed, newest first. The daily refresh adds one entry per run (see tools/DAILY-LOADOUTS.md), even when nothing changed, so the home page can show when the site was last checked. area is one of Loadouts, Warzone, Rules, Maps, Site. Keep each line short and plain. Keep the newest 30 entries.",
+  "entries": [
+    { "date": "2026-11-17", "items": [
+      { "area": "Loadouts", "text": "Ranked classes rebuilt from what pros are running now: HAN 86, VEL 46, ISO Nightshade and M4, each checked against the Ranked and CMG rules." },
+      { "area": "Warzone", "text": "Tiers and builds re-read from wzstats.gg and warzoneloadout.games: 20 weapons." },
+      { "area": "Site", "text": "New Match Night and Squad pages, and the loadout pages now look like the in-game class screen." }
+    ] },
+    { "date": "2026-11-16", "items": [
+      { "area": "Loadouts", "text": "Pros agreed to stop using the VEL 46 long barrel. The pro VEL 46 build now uses the light barrel." },
+      { "area": "Loadouts", "text": "A few pros started testing the ISO Nightshade." }
+    ] },
+    { "date": "2026-11-14", "items": [
+      { "area": "Rules", "text": "CMG Arena: Hardpoint respawn delay set to 2.5 seconds." }
+    ] },
+    { "date": "2026-11-13", "items": [
+      { "area": "Rules", "text": "CMG Arena: smokes banned in respawn modes." }
+    ] }
+  ]
+}

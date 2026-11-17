@@ -54,7 +54,16 @@ Then:
 - `kit` is the rest of the class (secondary, melee, tactical, lethal, field upgrade, three perks). `roles` maps the four team roles to guns, builds (by `id`) and perk picks. Update both when the sources change, and keep every `roles.*.builds` id pointing at a build that exists.
 - Set `updated` to today and rewrite `summary`: two or three plain sentences on what pros are running and what changed since yesterday. If nothing changed, say so.
 
-## 4. Check and publish
+## 4. Write what changed (`data/changelog.json`)
+
+Every run adds one entry for today at the top of `entries`, even when nothing moved. The home page shows the newest entries and warns visitors when the newest one is more than two days old, so a missing entry looks like a stalled refresh.
+
+- One item per real change, in plain words a player would use: a tier that moved, a build that changed, a new or dropped gun, a rule change, a pro agreement. Set `area` to `Loadouts`, `Warzone`, `Rules`, `Maps` or `Site`.
+- If nothing changed, write a single item: `{ "area": "Loadouts", "text": "Re-checked. No changes." }`.
+- If a source could not be read, say so in an item (for example "wzstats.gg could not be read today; Warzone tiers are from yesterday").
+- If today already has an entry, add to it instead of making a second one. Keep the newest 30 entries.
+
+## 5. Check and publish
 
 ```
 node build.js && node tools/check-site.js
@@ -65,6 +74,6 @@ node build.js && node tools/check-site.js
 - Commit as `Daily loadout refresh YYYY-MM-DD: <what changed>` (list any source you could not read) and push to `main`. The site deploys itself.
 - If the checks fail and you cannot fix the cause, do not push. Leave the site as it is: it hides stale loadouts on its own.
 
-## 5. Report
+## 6. Report
 
 End with three or four lines: what changed in Warzone, what changed in the competitive classes or rules, and anything you could not read today.

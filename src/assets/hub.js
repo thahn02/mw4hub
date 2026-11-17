@@ -2,6 +2,28 @@
 (function () {
 	'use strict';
 	var CFG = window.MW4HUB || {};
+	var ROOT = '';
+	try { ROOT = new URL('../', document.currentScript.src).href; } catch (e0) { /* ignore */ }
+
+	// Installable: offline fallback, and an install hint on the home page.
+	if (ROOT && 'serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+		window.addEventListener('load', function () { navigator.serviceWorker.register(ROOT + 'sw.js', { scope: ROOT }).catch(function () { /* not available */ }); });
+	}
+	var installEl = document.querySelector('[data-install]');
+	if (installEl) {
+		var isStandalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
+		if (!isStandalone && /iphone|ipad|ipod/i.test(navigator.userAgent)) {
+			installEl.textContent = 'Put MW4 Hub on your home screen: tap Share, then Add to Home Screen.';
+			installEl.hidden = false;
+		}
+		window.addEventListener('beforeinstallprompt', function (e) {
+			e.preventDefault();
+			installEl.innerHTML = 'Use it like an app. <button type="button" class="btn btn-sm">Install MW4 Hub</button>';
+			installEl.hidden = false;
+			installEl.querySelector('button').addEventListener('click', function () { e.prompt(); installEl.hidden = true; });
+		});
+		window.addEventListener('appinstalled', function () { installEl.hidden = true; });
+	}
 
 	function toast(msg) {
 		var t = document.querySelector('.hub-toast');
@@ -60,6 +82,47 @@
 		app.insertBefore(bar, app.firstChild);
 		bar.querySelector('button').addEventListener('click', function () { app.classList.remove('is-stale'); bar.querySelector('button').remove(); });
 	});
+
+	// Home: warn if the daily refresh has stopped, and offer the map that was open last.
+	Array.prototype.forEach.call(document.querySelectorAll('[data-refresh]'), function (box) {
+		var d = daysSince(box.getAttribute('data-refresh')), max = +box.getAttribute('data-max-age') || 2;
+		if (d === null || d <= max) return;
+		var w = document.createElement('p');
+		w.className = 'chg-warn';
+		w.textContent = 'The daily refresh has not run for ' + d + ' days, so loadouts and rules may be behind.';
+		box.insertBefore(w, box.querySelector('.chg-list'));
+	});
+	var LAST_KEY = 'mw4hub:last', MODES = { hp: 'Hardpoint', snd: 'Search & Destroy', hj: 'Hijack' };
+	function readLast() { try { var v = JSON.parse(localStorage.getItem(LAST_KEY) || 'null'); return v && /^[a-z0-9-]+$/.test(v.slug || '') && MODES[v.mode] ? v : null; } catch (e) { return null; } }
+	var plannerEl = document.getElementById('mw4-planner');
+	if (plannerEl && window.self === window.top) { // not when embedded as the Match Night briefing
+		var slug = location.pathname.replace(/\/+$/, '').split('/').pop();
+		var remember = function (mode) {
+			if (!MODES[mode]) return;
+			try { localStorage.setItem(LAST_KEY, JSON.stringify({ slug: slug, mode: mode, name: document.title.split(/ Map Planner| \u2013 /)[0], t: Date.now() })); } catch (e) { /* private mode */ }
+		};
+		var prev = readLast();
+		remember(new URLSearchParams(location.search).get('mode') || (prev && prev.slug === slug ? prev.mode : '') || 'hp');
+		plannerEl.addEventListener('click', function (e) { var b = e.target.closest('.pl-modes [data-mode]'); if (b) remember(b.getAttribute('data-mode')); });
+	}
+	var cont = document.querySelector('[data-continue]'), last = readLast();
+	if (cont && last) {
+		var standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
+		var target = 'maps/' + last.slug + '/?mode=' + last.mode;
+		// Opened from the home-screen icon: go straight back to the last map, once per launch.
+		if (standalone && /[?&]source=app/.test(location.search) && !sessionStorage.getItem('mw4hub:launched')) {
+			try { sessionStorage.setItem('mw4hub:launched', '1'); } catch (e) { /* ignore */ }
+			location.replace(target);
+		} else {
+			cont.className = 'continue';
+			cont.innerHTML = '<div><span class="eyebrow">Pick up where you left off</span><b></b></div><div class="hero-actions"><a class="btn btn-primary btn-sm">Open the planner</a><a class="btn btn-sm">Match Night</a></div>';
+			cont.querySelector('b').textContent = (last.name || last.slug) + ' \u00b7 ' + MODES[last.mode];
+			var links = cont.querySelectorAll('a');
+			links[0].href = target;
+			links[1].href = 'match/?map=' + encodeURIComponent(last.slug) + '&mode=' + last.mode;
+			cont.hidden = false;
+		}
+	}
 
 	// Loadout apps: tabs, filters, search.
 	Array.prototype.forEach.call(document.querySelectorAll('[data-lo-app]'), function (app) {
@@ -130,7 +193,11 @@
 	// so a link to it can be shared.
 	Array.prototype.forEach.call(document.querySelectorAll('[data-ld]'), function (ld) {
 		var last = {};
-		function groupOf(id) { return id.charAt(0) === 'r' ? 'role' : 'gun'; }
+		function item(id, list) { return (list || ld).querySelector('.ld-item[data-ld-open="' + id + '"]'); }
+		function listEl(key) { return ld.querySelector('[data-ld-list="' + key + '"]'); }
+		function shown() { var l = ld.querySelector('[data-ld-list]:not([hidden])'); return l ? l.getAttribute('data-ld-list') : ''; }
+		// A loadout can sit in more than one list (Warzone: by tier and by range). Stay in the list being shown if it has it.
+		function groupOf(id) { var cur = shown(); if (cur && item(id, listEl(cur))) return cur; var it = item(id); return it ? it.closest('[data-ld-list]').getAttribute('data-ld-list') : cur; }
 		function setGroup(g) {
 			Array.prototype.forEach.call(ld.querySelectorAll('[data-ld-group]'), function (b) {
 				var on = b.getAttribute('data-ld-group') === g;
@@ -139,26 +206,32 @@
 			});
 			Array.prototype.forEach.call(ld.querySelectorAll('[data-ld-list]'), function (l) { l.hidden = l.getAttribute('data-ld-list') !== g; });
 		}
-		function open(id, remember) {
-			var view = id && ld.querySelector('[data-ld-view="' + id.replace(/[^a-z0-9-]/gi, '') + '"]');
+		function current() { var v = ld.querySelector('[data-ld-view]:not([hidden])'); return v ? v.getAttribute('data-ld-view') : ''; }
+		function open(id, remember, group) {
+			id = String(id || '').replace(/[^a-z0-9-]/gi, '');
+			var view = id && ld.querySelector('[data-ld-view="' + id + '"]');
 			if (!view) return false;
+			if (group) setGroup(group);
+			var g = groupOf(id);
+			setGroup(g);
 			Array.prototype.forEach.call(ld.querySelectorAll('[data-ld-view]'), function (v) { v.hidden = v !== view; });
 			Array.prototype.forEach.call(ld.querySelectorAll('.ld-item'), function (b) {
 				var on = b.getAttribute('data-ld-open') === id;
 				b.classList.toggle('is-on', on);
 				if (on) { b.setAttribute('aria-current', 'true'); if (b.scrollIntoView && b.offsetParent) b.scrollIntoView({ block: 'nearest', inline: 'nearest' }); } else b.removeAttribute('aria-current');
 			});
-			setGroup(groupOf(id));
-			last[groupOf(id)] = id;
+			last[g] = id;
 			if (remember && window.history && history.replaceState) { try { history.replaceState(null, '', '#' + id); } catch (e) { /* ignore */ } }
 			return true;
 		}
 		ld.addEventListener('click', function (e) {
 			var g = e.target.closest('[data-ld-group]');
 			if (g) {
-				var key = g.getAttribute('data-ld-group');
-				var first = ld.querySelector('[data-ld-list="' + key + '"] .ld-item');
-				if (!open(last[key] || (first && first.getAttribute('data-ld-open')), true)) setGroup(key);
+				var key = g.getAttribute('data-ld-group'), list = listEl(key), cur = current();
+				var first = list && list.querySelector('.ld-item');
+				// Same loadout if the other list has it, else the one last open there, else its first.
+				var want = (item(cur, list) && cur) || last[key] || (first && first.getAttribute('data-ld-open'));
+				if (!open(want, true, key)) setGroup(key);
 				return;
 			}
 			var b = e.target.closest('[data-ld-open]');
@@ -189,7 +262,7 @@
 		// Build variant tabs inside a card.
 		var tab = e.target.closest('.lo-tabs button[data-b]');
 		if (tab) {
-			var card = tab.closest('.lo-card');
+			var card = tab.closest('.lo-card, .ld-view');
 			Array.prototype.forEach.call(card.querySelectorAll('.lo-tabs button'), function (x) {
 				x.classList.toggle('is-on', x === tab);
 				x.setAttribute('aria-selected', x === tab ? 'true' : 'false');

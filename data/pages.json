@@ -1,37 +1,47 @@
 {
-  "maps": {
-    "title": "Interactive Maps",
-    "eyebrow": "Modern Warfare 4 · Map planner",
-    "lead": "Every Ranked Play map with its hardpoint rotation, Search & Destroy bomb sites and a planner for routes, strong points and enemy paths."
-  },
-  "ranked-loadouts": {
-    "title": "Ranked Loadouts",
-    "eyebrow": "Modern Warfare 4 · Ranked & CMG",
-    "lead": "The classes pros are running now, by gun and by role, with perks and equipment. Every one is checked against the Ranked and CMG rules, and refreshed daily."
-  },
-  "warzone": {
-    "title": "Warzone",
-    "eyebrow": "Warzone · Meta",
-    "lead": "Today's Warzone meta from wzstats.gg and warzoneloadout.games, plus the newest 2026 maps. Refreshed daily."
-  },
-  "roles": {
-    "title": "Team Roles",
-    "eyebrow": "Role guide · 4v4",
-    "lead": "Who does what on a 4v4 team: the four roles in depth, the jobs in Hardpoint, Search & Destroy and Hijack, and how to hand them out in your squad."
-  },
-  "my-plans": {
-    "title": "My Plans",
-    "eyebrow": "Planner",
-    "lead": "Your saved game plans, kept on this device."
-  },
-  "credits": {
-    "title": "Sources & Credits",
-    "eyebrow": "About",
-    "lead": "Where our map, loadout and roster data comes from."
-  },
-  "bomb-sites": {
-    "title": "Bomb Sites",
-    "eyebrow": "Search & Destroy · Ranked maps",
-    "lead": "Where A, B and the bomb spawn sit on every Ranked Search & Destroy map, with site photos as they are added."
-  }
+ "maps": {
+  "title": "Interactive Maps",
+  "eyebrow": "Modern Warfare 4 · Map planner",
+  "lead": "Every Ranked Play map with its hardpoint rotation, Search & Destroy bomb sites and a planner for routes, strong points and enemy paths."
+ },
+ "ranked-loadouts": {
+  "title": "Ranked Loadouts",
+  "eyebrow": "Modern Warfare 4 · Ranked & CMG",
+  "lead": "The classes pros are running now, by gun and by role, with perks and equipment. Every one is checked against the Ranked and CMG rules, and refreshed daily."
+ },
+ "warzone": {
+  "title": "Warzone",
+  "eyebrow": "Warzone · Meta",
+  "lead": "Today's Warzone meta from wzstats.gg and warzoneloadout.games, plus the newest 2026 maps. Refreshed daily."
+ },
+ "roles": {
+  "title": "Team Roles",
+  "eyebrow": "Role guide · 4v4",
+  "lead": "Who does what on a 4v4 team: the four roles in depth, the jobs in Hardpoint, Search & Destroy and Hijack, and how to hand them out in your squad."
+ },
+ "my-plans": {
+  "title": "My Plans",
+  "eyebrow": "Planner",
+  "lead": "Your saved game plans, kept on this device."
+ },
+ "credits": {
+  "title": "Sources & Credits",
+  "eyebrow": "About",
+  "lead": "Where our map, loadout and roster data comes from."
+ },
+ "bomb-sites": {
+  "title": "Bomb Sites",
+  "eyebrow": "Search & Destroy · Ranked maps",
+  "lead": "Where A, B and the bomb spawn sit on every Ranked Search & Destroy map, with site photos as they are added."
+ },
+ "match": {
+  "title": "Match Night",
+  "eyebrow": "One screen before you queue",
+  "lead": "Pick the map and mode. See your plan, the callouts, who does what and the class each player should run."
+ },
+ "squad": {
+  "title": "Squad",
+  "eyebrow": "Your four players",
+  "lead": "Put your players against the four roles. Each one gets their class, their job in every mode and the plans that involve them."
+ }
 }
