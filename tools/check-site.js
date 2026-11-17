@@ -58,6 +58,14 @@ const server = http.createServer((req, res) => {
 	await page.fill('[data-filter-search]', '');
 	await shot('loadouts-meta', true);
 
+	await go('roles/');
+	expect(await page.locator('.role-deep').count() === 4, 'role guide: four roles');
+	expect(await page.locator('.rg-mode').count() === 3, 'role guide: three modes');
+	expect(await page.locator('.rg-sources ol li').count() >= 15, 'role guide: sources listed');
+	const refTargets = await page.$$eval('.rg a[href^="#"]', (as) => as.map((x) => x.getAttribute('href').slice(1)).filter((id) => !document.getElementById(id)));
+	expect(refTargets.length === 0, 'role guide: in-page links resolve ' + refTargets.join());
+	await shot('roles-guide', true);
+
 	await go('warzone/');
 	await page.click('[data-seg] [data-tab=maps]');
 	expect(await page.locator('.wz-map').first().isVisible(), 'warzone maps panel');
@@ -67,6 +75,8 @@ const server = http.createServer((req, res) => {
 	for (const m of maps) {
 		await go('maps/' + m.slug + '/');
 		expect(await page.locator('.mw4-planner.is-ready').count() === 1, 'planner ready');
+		expect(await page.locator('[data-tab=roles], [data-pane=roles]').count() === 0, 'planner has no roles tab');
+		expect(await page.locator('.pl-tabs [data-tab]').count() === 2, 'planner tabs are Intel and Plan');
 		expect(await page.locator('.pl-title').innerText() === m.name, 'planner title');
 		expect(await page.evaluate(() => { const i = document.getElementById('pl-img'); return !!i && i.naturalWidth > 0; }), 'map image loaded');
 		const btns = await page.$$eval('.pl-modes [data-mode]', (bs) => bs.map((b) => b.getAttribute('data-mode')));

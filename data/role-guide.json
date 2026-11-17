@@ -1,0 +1,334 @@
+{
+  "updated": "2026-11-17",
+  "summary": {
+    "lead": "A Ranked team is two pairs: a rifle pair that holds the map and an SMG pair that takes it. The four role names tell you where each player starts. The job each player is doing changes every time someone dies or the spawns move.",
+    "points": [
+      { "t": "Two rifles, two subs is the default shape.", "d": "The Main AR and the Flex hold lanes and spawns. The Entry SMG and the Second SMG break hills and live on the objective. Tight maps can pull the Flex onto an SMG.", "src": [1, 2, 9] },
+      { "t": "Roles are starting positions, not fences.", "d": "MW4 guides describe Hardpoint as four jobs (hill, overlook, lane, anchor) that somebody has to be doing at all times, whoever happens to be alive.", "src": [6, 8] },
+      { "t": "The dedicated anchor is gone.", "d": "Every player anchors when they are the one furthest back. The two rifles still do most of it.", "src": [1, 2] },
+      { "t": "Judge players against their job.", "d": "The Main AR gives up hill time to hold spawns and rotate early. The Entry gives up K/D to open the hill. The scoreboard does not show either.", "src": [10, 15] },
+      { "t": "Hill time should be shared.", "d": "On pro teams the main objective player finishes only about 20 to 30 seconds ahead of the next teammate. One player with four minutes while the rest have none means the roles are too rigid.", "src": [2] },
+      { "t": "Search & Destroy flattens the roles.", "d": "The first kill matters most, so the entry and the trade partner carry the round and everyone else sets that fight up.", "src": [2, 14, 16] },
+      { "t": "Hijack has no pro playbook yet.", "d": "The working split is carrier, lead forward, escort and anchor. Treat the Hijack parts of this page as an early read.", "src": [5, 7] }
+    ]
+  },
+  "pairs": [
+    { "name": "The rifle pair", "roles": ["ar", "flex"], "text": "They sit furthest back, so they see the most. They hold the power positions, call spawns and rotations, and take turns blocking the back of the map. The Flex plays a step faster and closer to the subs than the Main AR." },
+    { "name": "The SMG pair", "roles": ["entry", "sub"], "text": "They work as one unit. One opens the fight, the other trades it and takes the time. Either can go first on a given life. What matters is that the second player is close enough to trade." }
+  ],
+  "roles": {
+    "ar": {
+      "aka": ["Anchor", "Turret", "Often the caller"],
+      "job": "Holds the strongest long-range position on the map so the enemy cannot move freely and your SMGs can. Sits furthest back, sees the most, and turns that view into calls. Expect less hill time and fewer kills than the subs. The value is in lanes denied, spawns kept, and winning a one-on-one at the moment it decides a hill.",
+      "hp": [
+        "Set up on the power position that overlooks the hill or the main lane into it. You do not need to step on the hill every life.",
+        "Own the spawn behind your team. Stand about as far back as your furthest teammate is forward, so the enemy cannot spawn behind you.",
+        "Often the first to leave. Start the rotation and lock the far spawn of the next hill before it goes live.",
+        "Stop the late push through the back that would flip the spawns as the hill changes.",
+        "Put a Trophy System on your head glitch. Grenades are how teams move a rifle off a power position."
+      ],
+      "snd": [
+        "Watch the long lane and the flank while the SMGs make first contact. You are the information and the trade, not the entry.",
+        "On defense, anchor a site and hold a crossfire with one teammate. Slow the push until the rotate arrives.",
+        "Late in the round, play the bomb and the clock instead of hunting."
+      ],
+      "hj": [
+        "Anchor. Stay between the middle and your own Comm Station so you can cut off their carrier.",
+        "When your team plants, hold the long entrance to the plant from range instead of standing on the Spike.",
+        "When the Spike resets to the middle you usually have the best view of it. Call who gets there first."
+      ],
+      "traits": [
+        "Positioning: only takes fights they are set up to win.",
+        "Knows the spawns on every hill of every map.",
+        "Short, fast callouts. The subs are playing off this voice.",
+        "A dependable shot at range.",
+        "Patient without going static."
+      ],
+      "comms": [
+        "Where the enemy is spawning, every wave.",
+        "Which lane is open and which is closed.",
+        "\"Rotate\", and who goes first.",
+        "Flank and back-push warnings, early."
+      ],
+      "mistakes": [
+        "Playing stiff: never leaving the spot even after the spawns have moved.",
+        "Pushing for kills and becoming a third slayer, which leaves the back open.",
+        "Taking fights off the head glitch that the team did not need.",
+        "Going quiet. A rifle that does not call wastes the best view on the team."
+      ],
+      "practice": [
+        "Watch one pro Main AR's point of view on one map and copy one or two of their spots per hill.",
+        "Learn spawns in a private match with a bot on the maps you play most.",
+        "Play public matches with your ranked rifle only, until the recoil is automatic."
+      ],
+      "measure": "Low deaths, spawns that hold, first to the next hill, and winning the one-on-ones that decide a hill. Not hill time.",
+      "src": [1, 2, 6, 8, 10, 11, 12]
+    },
+    "flex": {
+      "aka": ["Second AR", "Route man", "Support"],
+      "job": "The connector between the two pairs. Runs the second rifle on most maps and an SMG where the map is tight, plays faster and further forward than the Main AR, and does whichever job is missing: the early rotation, hill time on a long-sightline hill, blocking spawns, or trading a sub.",
+      "hp": [
+        "Usually the route player. Head for the next hill with roughly 25 to 30 seconds left, earlier when the rotation is long.",
+        "Take the hill time when the hill has long sightlines that suit a rifle, or when both subs are out pushing.",
+        "Trade the subs. Set up the bait and switch: a sub slides across to draw fire and you kill whoever shoots.",
+        "Split the anchor job with the Main AR, and say out loud who is blocking spawns.",
+        "If you are the last one back, your job becomes backing up and blocking, not pushing."
+      ],
+      "snd": [
+        "The player whose class changes most: rifle on open maps, SMG for tight sites, or the team's sniper when the plan needs one. Pro teams settled on one sniper per team.",
+        "Lurk or hold the off-angle and catch the rotation.",
+        "Stay ready to trade either pair, and take over the calls if the caller dies."
+      ],
+      "hj": [
+        "Escort. Move on the side the carrier is heading toward, not right next to them, and trade anyone who peeks.",
+        "Pick the Spike up the moment the carrier goes down, before it resets.",
+        "Be the open teammate for the pass."
+      ],
+      "traits": [
+        "Comfortable on both a rifle and an SMG.",
+        "Strong comms and a share of the shot-calling.",
+        "Willing to do the scrappy work that does not show on the scoreboard.",
+        "Reads which job is empty before being told."
+      ],
+      "comms": [
+        "\"I've got spawns\" or \"I'll take time\".",
+        "Lanes nobody is watching and where the enemy will rotate.",
+        "When to regroup and when to wait."
+      ],
+      "mistakes": [
+        "Playing as a second Main AR, too far back to trade the subs.",
+        "Only being comfortable on one gun.",
+        "Rotating early but arriving without fighting for the hill.",
+        "Filling the gap late. By then the spawn has already flipped."
+      ],
+      "practice": [
+        "Practice your rifle and your SMG equally.",
+        "Watch a pro flex and note the second on the clock when they leave each hill.",
+        "Review your own games for the moment a job was empty and nobody took it."
+      ],
+      "measure": "Whether the gaps got filled: rotations won, trades landed, and the right gun on the right map.",
+      "src": [1, 2, 8, 9, 11, 13]
+    },
+    "entry": {
+      "aka": ["Main SMG", "Slayer", "Pressure sub"],
+      "job": "First through the door. Starts the fight that breaks a held hill or opens a round, then takes space past the objective so the enemy has to deal with them before they can deal with the hill. Has the least vision on the team, so plays off teammates' calls.",
+      "hp": [
+        "First into a held hill. The aim is to pull attention and open the break, not to top the scoreboard.",
+        "Once the hill is yours, push out and lock down a lane instead of standing in it.",
+        "After a kill, keep going. Pushing through decisively moves the enemy spawn back. Stopping to look around gives it away.",
+        "Roam the edges of the hill, catch players on the rotation and play for the next spawns.",
+        "Late in a hill, only take kills that move you forward. Kills that drag you backwards hand the enemy the spawn you wanted to deny."
+      ],
+      "snd": [
+        "Take the opening fight. An analysis of the first CDL season put the first-blood team's win rate at about 69%.",
+        "Say where you are hitting before you go, so your trade partner is with you.",
+        "Use utility first. Never dry peek a held angle.",
+        "Often carries the bomb on tight sites, because an SMG can fight in the enclosed spaces where bombs get planted."
+      ],
+      "hj": [
+        "Lead forward. Get to the enemy Comm Station ahead of the Spike and win that fight before the carrier arrives.",
+        "Clear the lane in front of the carrier and make the defenders fight you instead.",
+        "After the plant, hold an entrance, not the Spike."
+      ],
+      "traits": [
+        "Gun skill, including recoil control at ranges an SMG is not supposed to win.",
+        "Movement and fast reactions.",
+        "A good listener: reacts to a call without needing to see it.",
+        "Decides quickly off spawn. There is a right play every time you spawn.",
+        "Stays close enough to be traded."
+      ],
+      "comms": [
+        "\"Hitting left\" before moving, not after.",
+        "First contact and how many.",
+        "Push, hold or reset."
+      ],
+      "mistakes": [
+        "Entering silently, so nobody can trade the death.",
+        "Running the same route every life. Good lobbies watch for it.",
+        "Getting a kill and freezing instead of pushing through.",
+        "Going in alone, one door at a time.",
+        "Peeking again before health has come back."
+      ],
+      "practice": [
+        "Watch a pro SMG's point of view and track where they go straight after each kill.",
+        "Drill your SMG's recoil at range.",
+        "Off every spawn, read the minimap: where is my team, so where will they spawn?"
+      ],
+      "measure": "Hills broken, opening kills, and how often the death got traded. Round and hill wins say more than K/D.",
+      "src": [1, 2, 3, 4, 6, 9, 12, 14, 15, 16]
+    },
+    "sub": {
+      "aka": ["Objective", "OBJ", "Support SMG", "Trade"],
+      "job": "The player who turns the entry's fight into points. Follows the entry in, trades the kill, then stays on or next to the objective. Keeps the win condition in everyone's head: hill time, the bomb, the Spike.",
+      "hp": [
+        "Follow the entry into the hill and trade. When they push out, you stay.",
+        "Take the time on small indoor hills, where an SMG holds best.",
+        "Drop the Trophy System inside the hill as soon as you are in.",
+        "One player in the hill is enough. If you have it, tell the others to hold the entries instead of stacking.",
+        "In a close game, stay for the last 5 to 10 seconds of a hill while the rest rotate."
+      ],
+      "snd": [
+        "Trade partner. Close enough to punish whoever kills the entry, not so close that one spray takes both of you.",
+        "Carry or cover the bomb, get the plant down, and hold the post-plant.",
+        "On defense, hold site with the Main AR and call the plant."
+      ],
+      "hj": [
+        "Carrier. Decide who carries before the round starts. Take the Spike forward and pass it before you die with it.",
+        "You lose your lethal while carrying, because that button throws the Spike. Rely on teammates' utility.",
+        "After the plant, play the defuse: watch the Spike from cover and stop the tap."
+      ],
+      "traits": [
+        "Discipline: stays on the objective when the fight looks more fun.",
+        "Survives in awkward spots.",
+        "Good trade timing and spacing.",
+        "Always knows the score and the clock."
+      ],
+      "comms": [
+        "\"With you\" or \"not with you yet\".",
+        "Hill status: \"I'm in, you can push out\".",
+        "Time and score when a fight gets messy.",
+        "Bomb or Spike status."
+      ],
+      "mistakes": [
+        "Trading late after watching from too far away.",
+        "Chasing kills off the hill while nobody is scoring.",
+        "Dying with the bomb or the Spike somewhere the team cannot recover it.",
+        "Being the only player who ever touches the hill."
+      ],
+      "practice": [
+        "After a match, compare hill time per player. Pro teams keep it close to even.",
+        "Practice trade spacing with your entry in private matches.",
+        "Learn where the Trophy System covers the most of each hill."
+      ],
+      "measure": "Hill time, trades, plants and defuses. Usually the most objective time on the team, but only by a little.",
+      "src": [1, 2, 7, 12, 14, 17, 18]
+    }
+  },
+  "modes": [
+    {
+      "key": "hp",
+      "name": "Hardpoint",
+      "rules": "First to 250 points in a five-minute match. The hill moves every 60 seconds in a fixed order. One player inside is enough to score, and only while no enemy is in it with them.",
+      "jobs": [
+        { "job": "Hill", "who": ["sub"], "alt": "Flex on long-sightline hills", "what": "One player inside. A second body in the hill is wasted." },
+        { "job": "Overlook", "who": ["ar"], "what": "The power position watching the hill and the main lane into it." },
+        { "job": "Lane", "who": ["entry"], "what": "Pushed out past the hill, closing one approach." },
+        { "job": "Anchor", "who": ["ar", "flex"], "alt": "whoever is furthest back", "what": "Watches the back and stops the late push that flips the spawns." },
+        { "job": "Route", "who": ["flex", "ar"], "what": "First to the next hill. Start planning with 25 seconds left and leave at about 20, earlier on long rotations." }
+      ],
+      "notes": [
+        "Spawn rule of thumb: picture a line through the middle of the hill. If more of your team is past it than behind it, expect the enemy to spawn behind you.",
+        "Winning the fight on the rotation matters more than arriving first.",
+        "If you cannot break a hill, stop feeding it and set up on the next one.",
+        "Kills do not score. Only time in the hill does."
+      ],
+      "src": [2, 6, 8, 10, 19]
+    },
+    {
+      "key": "snd",
+      "name": "Search & Destroy",
+      "rules": "One life per round, two-minute rounds, first to six. Teams swap between attack and defense.",
+      "jobs": [
+        { "job": "Entry", "who": ["entry"], "what": "First contact and the opening pick." },
+        { "job": "Trade", "who": ["sub"], "what": "One step behind the entry. Kills whoever kills them." },
+        { "job": "Bomb", "who": ["sub", "entry"], "what": "Carries and plants. Needs an escort to the site." },
+        { "job": "Flank or lurk", "who": ["flex"], "what": "Watches the flank on attack or lurks for the rotation. Swaps to a sniper or an SMG when the plan needs it." },
+        { "job": "Long lane or site", "who": ["ar"], "what": "Holds the long sightline on attack, anchors a site on defense, and plays the clock late." }
+      ],
+      "notes": [
+        "Roles matter less here than in respawn. The team moves as one unit around the first fight.",
+        "Classes change from round to round. Pick the gun for the plan, not for your role name.",
+        "Dead players keep calling. Position calls from the dead are how the last player wins the clutch.",
+        "In earlier titles SMG players ran Dead Silence here and a Trophy System in respawn, while a rifle that was holding kept the Trophy. Check what the MW4 ruleset allows before copying that."
+      ],
+      "src": [2, 9, 10, 11, 14, 16]
+    },
+    {
+      "key": "hj",
+      "name": "Hijack",
+      "rules": "Four-minute rounds, first to 300, sides swap between rounds. One Data Spike starts near the middle. Carry, throw or pass it to the enemy Comm Station and plant it. It scores while it stays planted, with a bonus if the upload finishes. A defuse, or a dropped Spike nobody picks up, sends it back to the middle.",
+      "jobs": [
+        { "job": "Carrier", "who": ["sub"], "what": "Moves the Spike and passes before dying with it. Has no lethal while carrying." },
+        { "job": "Lead forward", "who": ["entry"], "what": "Reaches the enemy Comm Station first and wins the fight before the Spike shows up." },
+        { "job": "Escort", "who": ["flex"], "what": "Off to the side the carrier is heading. Trades, and picks up the Spike if the carrier falls." },
+        { "job": "Anchor", "who": ["ar"], "what": "Holds the middle and your own Comm Station. Cuts off their carrier." }
+      ],
+      "notes": [
+        "Do not send everyone at the Spike. Win the fights around the middle first, then take it.",
+        "A pass to an open teammate beats walking the carrier into three guns. Throws are short, so only throw when the receiver is clear.",
+        "On defense, get in front of their carrier. Chasing from behind is usually too late.",
+        "After a defuse the Spike is back in the middle. Be ready for the next race straight away.",
+        "Sources disagree on who should carry: one says the fastest SMG, another says the player with the most utility left. Pick one before the round and call it."
+      ],
+      "habits": [
+        "Name the carrier before the round starts.",
+        "Call \"carrier\" and \"Spike down\" every time, with a location.",
+        "Spread out. A group bunched around the carrier or the plant is one grenade from a wipe.",
+        "After the plant, cover the entrances and funnel them into one approach.",
+        "Counterattack from more than one direction at once, and throw utility before you go in.",
+        "If your carrier dies far from home, turn around. They have the Spike now."
+      ],
+      "caveat": "Hijack launched with MW4 and pro teams have only just started playing it on stage. The split above comes from early guides and one creator's stated opinion, not from a pro playbook, and which role fits which job is this site's suggestion. It will be updated as CDL play settles.",
+      "src": [5, 7, 17]
+    }
+  ],
+  "shifts": [
+    { "when": "Your hill player dies", "then": "The nearest player steps in. Do not wait for the Second SMG to run back from spawn." },
+    { "when": "The Main AR dies in the back", "then": "A sub turns around and holds the back until the next wave is in. Losing the back loses the next hill." },
+    { "when": "You are the last one back", "then": "You are the anchor now, whatever your role is. Back up and block." },
+    { "when": "Both subs die on a break", "then": "The Flex takes the time. The Main AR covers the entrance they came through." },
+    { "when": "The carrier goes down in Hijack", "then": "The nearest escort becomes the carrier. The anchor steps up if the Spike is loose near your side." },
+    { "when": "The map is tight", "then": "The Flex moves to an SMG and the team plays three subs. On open maps the second rifle comes back." },
+    { "when": "Your caller dies in S&D", "then": "Whoever has the most vision, usually the Flex, calls until the round ends." }
+  ],
+  "assign": [
+    { "t": "Main AR", "d": "Your most patient player, with the best map sense and the clearest voice. Positioning matters more than raw aim." },
+    { "t": "Entry SMG", "d": "Your fastest, most confident gunfighter, and someone who does not mind dying first for the team." },
+    { "t": "Second SMG", "d": "Your most disciplined player, the one who checks the score. Not your weakest aimer: trading and objective timing take game sense." },
+    { "t": "Flex", "d": "Your most adaptable player, comfortable on both a rifle and an SMG." },
+    { "t": "Hold them", "d": "Keep the roles fixed for 15 to 20 matches before judging them. Swapping every night means nobody learns the spots." },
+    { "t": "Then loosen them", "d": "Once everyone knows their own job, practice covering each other's. That is the difference between an amateur team and a pro one." }
+  ],
+  "mismatches": [
+    "Four slayers and nobody watching the back.",
+    "A caller who dies first every life.",
+    "An anchor who cannot stop pushing.",
+    "Handing the objective role to the weakest player and expecting them to hold a hill alone."
+  ],
+  "teamMistakes": [
+    { "t": "Stacking the hill", "d": "One scorer is enough. Extra bodies inside are one grenade from a wipe. Put them on the entrances." },
+    { "t": "Trickling in", "d": "Going through one door, one at a time, feeds the hold. Break together." },
+    { "t": "Half rotating", "d": "Two players on the old hill and two drifting to the next loses both. Call it and move as pairs." },
+    { "t": "Leaving too early", "d": "If nobody is left to stop the break, you lose the points you were still scoring." },
+    { "t": "Roles as fences", "d": "If a job is empty and you are alive, it is yours. \"Not my role\" loses hills." },
+    { "t": "Judging by K/D", "d": "A Main AR or Second SMG with a quiet scoreboard can be the reason you won." }
+  ],
+  "sources": [
+    { "n": 1, "kind": "Video", "title": "All Roles Explained for Competitive CoD: Main AR, Flex, SMG", "by": "AyKay (YouTube)", "url": "https://www.youtube.com/watch?v=Zuso8FMmrlc", "used": "The 2 AR / 2 SMG shape, each role's job and skills, shared anchoring, entry versus objective subs. Cold War era." },
+    { "n": 2, "kind": "Video", "title": "All the Roles of Competitive CoD: Slayer, OBJ, Main AR and more", "by": "SalvationsElite (YouTube)", "url": "https://www.youtube.com/watch?v=1WsqTpfPiaM", "used": "Entry, slayer, objective and route-man jobs, Trophy placement, and how evenly pro teams share hill time. Modern Warfare (2019) era." },
+    { "n": 3, "kind": "Video", "title": "ZooMaa Explains Important Rules of Competitive CoD (How to Play the SMG Role Better)", "by": "CDL University (YouTube)", "url": "https://www.youtube.com/watch?v=kBYwu4LqkXw", "used": "Pushing through after a kill to flip spawns, deciding quickly off spawn, reading the minimap." },
+    { "n": 4, "kind": "Video", "title": "This is how you play the SMG Role in MW4 ranked", "by": "Compii (YouTube)", "url": "https://www.youtube.com/watch?v=1D-yD22UyeI", "used": "The roaming SMG in MW4 Hardpoint: off the hill, playing for spawns and catching rotations. MW4." },
+    { "n": 5, "kind": "Video", "title": "MW4 Hijack Strategy: Roles, Rotations and Why CDL Pros Start From Zero", "by": "League Lens (YouTube)", "url": "https://www.youtube.com/watch?v=QHxey3GbEV4", "used": "The carrier, escort, lead forward and anchor split. The creator labels it opinion, not a pro playbook. MW4." },
+    { "n": 6, "kind": "Guide", "title": "MW4 Hardpoint Tips: Hill Order, Rotations and Spawns", "by": "RankKD", "url": "https://www.rankkd.com/guides-tools/call-of-duty-modern-warfare-4/guides/hardpoint-tips", "used": "The four Hardpoint jobs, rotation timing, the spawn line and common mistakes. MW4." },
+    { "n": 7, "kind": "Guide", "title": "MW4 Hijack Guide: Rules, Roles and How to Win", "by": "RankKD", "url": "https://www.rankkd.com/guides-tools/call-of-duty-modern-warfare-4/guides/hijack-guide", "used": "Hijack rules, carrier, escort and anchor jobs, attack and defense habits. MW4." },
+    { "n": 8, "kind": "Guide", "title": "Hardpoint Rotations: How to Rotate, Flip Spawns and Win Hills", "by": "RankKD", "url": "https://www.rankkd.com/guides-tools/call-of-duty-black-ops-7/guides/hardpoint-rotations", "used": "Roles as jobs rather than guns, and what flexing means. Black Ops 7." },
+    { "n": 9, "kind": "Article", "title": "Call of Duty Esports 101", "by": "Kakuchopurei", "url": "https://www.kakuchopurei.com/2022/12/call-of-duty-esports-101/", "used": "Main AR, Main SMG, Objective and Flex definitions, and the one-sniper convention in S&D." },
+    { "n": 10, "kind": "Article", "title": "Crimsix explains the Modern Warfare meta for professional teams", "by": "Dexerto", "url": "https://www.dexerto.com/call-of-duty/crimsix-explains-the-modern-warfare-meta-for-professional-teams-1321751/", "used": "The Main AR handles spawns and early rotations and gets less hill time. Stats should be read against a player's role." },
+    { "n": 11, "kind": "Article", "title": "Competitive Call of Duty 101, part 2", "by": "Porkchop Platoon", "url": "https://porkchopplatoon.com/2023/02/competitive-call-of-duty-101-part-2/", "used": "Sub, AR and Flex duties and the usual field upgrades by role. Modern Warfare II." },
+    { "n": 12, "kind": "Article", "title": "CDL standard 4v4 roles", "by": "Hone.gg", "url": "https://hone.gg/blog/call-of-duty-bo7-guns/", "used": "Main AR (anchor), Flex, Entry SMG and Support SMG, and what each needs from a weapon. Black Ops 7." },
+    { "n": 13, "kind": "Article", "title": "Building the best Call of Duty League team", "by": "Sports Illustrated", "url": "https://www.si.com/esports/call-of-duty/building-the-best-call-of-duty-league-team", "used": "How the four roles support each other when a team is built." },
+    { "n": 14, "kind": "Guide", "title": "Team Roles and Callouts for Ranked Wins", "by": "Boosteria", "url": "https://boosteria.org/guides/cod-mobile-team-roles-callouts-ranked-wins", "used": "What each role should say on comms, and how role weight shifts between Hardpoint and S&D. CoD Mobile." },
+    { "n": 15, "kind": "Guide", "title": "Role specialization in a 4-stack", "by": "GuildOrder", "url": "https://guildorder.com/th/games/cod/guides/role-specialization-in-a-4-stack", "used": "How to hand out roles to four players, how long to keep them, and the common mismatches." },
+    { "n": 16, "kind": "Article", "title": "Call of Duty League: How Pros Play Search and Destroy", "by": "EssentiallySports", "url": "https://www.essentiallysports.com/call-of-duty-league-how-pros-play-search-and-destroy-esports-news/", "used": "The first-blood win rate, escorting the bomb, and who pushes versus who watches flanks." },
+    { "n": 17, "kind": "Guide", "title": "MW4 Hijack Game Mode Explained", "by": "Modern Warfare 4 Wiki (cod-mw4.wiki)", "url": "http://cod-mw4.wiki/multiplayer/cod-mw4-hijack-game-mode", "used": "A beta-era role and weapon table for Hijack, and the advice to name a carrier before the round. MW4." },
+    { "n": 18, "kind": "Data", "title": "Player Roles, 2024 CDL Season", "by": "Keilan Kenny", "url": "https://keilankenny.substack.com/p/call-of-duty", "used": "Splitting players in the same role into objective-focused and pressure-focused by hill time." },
+    { "n": 19, "kind": "TikTok", "title": "Hardpoint isn't about everyone sitting on the hill", "by": "Big Joe (@bigjoecodm)", "url": "https://www.tiktok.com/@bigjoecodm/video/7682104231041453330", "used": "Caption only: control the spawn and rotate early. CoD Mobile." },
+    { "n": 20, "kind": "Official", "title": "2027 Season Announcement", "by": "Call of Duty League", "url": "https://callofdutyleague.com/en-us/news/2027-season-announcement", "used": "The 2027 season is played on MW4 with Hardpoint, Search & Destroy and Hijack." }
+  ],
+  "limits": [
+    "Most role theory comes from earlier Call of Duty titles. The same four roles have been played 4v4 since 2021, so it carries over, but only the entries marked MW4 are about this game.",
+    "YouTube videos were read from their transcripts. Two older videos that looked relevant could not be loaded.",
+    "TikTok's search needs a signed-in account, so only public hashtag pages were read, and only the captions. What is said in the clips is not reflected here.",
+    "Which of the four roles takes which job in each mode is a synthesis of the sources, not a quote from any one of them."
+  ]
+}

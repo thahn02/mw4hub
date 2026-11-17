@@ -767,8 +767,8 @@
 				'<div class="pl-chips">' + (MAP.location ? '<span class="chip">' + esc(MAP.location) + '</span>' : '') + (MAP.size ? '<span class="chip">' + esc(MAP.size) + '</span>' : '') + (MAP.ranked ? '<span class="chip chip-sage">Ranked pool</span>' : '') + '<span class="chip chip-brass">4v4</span></div>' +
 				'<div class="seg pl-modes" role="tablist" aria-label="Game mode">' + MODES.map(function (m) { return '<button type="button" role="tab" data-mode="' + m + '">' + esc(MODE_NAMES[m]) + '</button>'; }).join('') + '</div>' +
 			'</div>' +
-			'<div class="pl-tabs" role="tablist" aria-label="Panel"><button type="button" role="tab" data-tab="intel">Intel</button><button type="button" role="tab" data-tab="plan">Plan</button><button type="button" role="tab" data-tab="roles">Roles</button></div>' +
-			'<div class="pl-body"><section data-pane="intel"></section><section data-pane="plan" hidden></section><section data-pane="roles" hidden></section></div>';
+			'<div class="pl-tabs" role="tablist" aria-label="Panel"><button type="button" role="tab" data-tab="intel">Intel</button><button type="button" role="tab" data-tab="plan">Plan</button></div>' +
+			'<div class="pl-body"><section data-pane="intel"></section><section data-pane="plan" hidden></section></div>';
 	}
 
 	function renderIntelPane() {
@@ -861,19 +861,8 @@
 		syncToolUI();
 	}
 
-	function renderRolesPane() {
-		var roster = D.roster || {}, team = roster.team || 'OpTic Texas';
-		paneEl('roles').innerHTML = '<div class="pl-sec"><p class="muted">Ranked Play is 4v4. These roles are modeled on ' + esc(team) + '. Draw each player\u2019s route in their colour on the Plan tab.</p>' +
-			(D.roles || []).map(function (r) {
-				var pros = roster[r.group] || [];
-				return '<article class="pl-role" style="--role:' + r.color + '"><div class="pl-role-h"><span class="role-badge">' + esc(r.short) + '</span><div><b>' + esc(r.name) + '</b><span class="muted">' + esc(r.tag) + '</span></div></div><ul>' +
-					(r[S.mode] || r.hp || []).map(function (li) { return '<li>' + esc(li) + '</li>'; }).join('') + '</ul>' +
-					(pros.length ? '<div class="pl-role-pros">' + esc(team) + ' ' + (r.group === 'ar' ? 'AR' : 'SMG') + ': <b>' + esc(pros.join(' \u00b7 ')) + '</b></div>' : '') + '</article>';
-			}).join('') + '<a class="pl-link" href="' + esc(D.links.roles) + '">Open the full role guide</a></div>';
-	}
-
 	function renderPanels() {
-		renderIntelPane(); renderPlanPane(); renderRolesPane();
+		renderIntelPane(); renderPlanPane();
 		Array.prototype.forEach.call(panel.querySelectorAll('[data-mode]'), function (b) {
 			var on = b.getAttribute('data-mode') === S.mode;
 			b.classList.toggle('is-on', on); b.setAttribute('aria-selected', on ? 'true' : 'false');

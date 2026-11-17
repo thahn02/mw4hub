@@ -190,13 +190,6 @@
 .pl-plan span { font-size: .76rem; color: var(--dim, #727862); }
 .pl-admin { margin-top: 8px; padding: 14px; border-radius: 14px; border: 1px solid rgba(216, 169, 75, .3); background: rgba(216, 169, 75, .06); }
 .pl-admin .btn { margin-top: 8px; }
-.pl-role { padding: 14px; margin-top: 10px; border-radius: 14px; background: rgba(255, 255, 255, .03); border: 1px solid rgba(205, 214, 180, .08); border-left: 3px solid var(--role); }
-.pl-role-h { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-.pl-role-h b { display: block; }
-.pl-role-h .muted { font-size: .76rem; }
-.pl-role ul { margin: 0; padding-left: 1.1em; font-size: .85rem; color: var(--muted, #a6ac94); display: grid; gap: 4px; }
-.pl-role-pros { margin-top: 10px; font-size: .78rem; color: var(--dim, #727862); }
-.pl-role-pros b { color: var(--text, #e9ecdf); }
 .pl-keys p { font-size: .78rem !important; line-height: 1.55; }
 
 /* Modal */

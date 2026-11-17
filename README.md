@@ -10,6 +10,7 @@ Ranked game plans, pro loadouts and interactive maps for Modern Warfare 4. A sta
 | `data/loadouts.json` | Every build: ranked pro builds, ranked meta tiers, Warzone meta tiers |
 | `data/warzone-maps.json` | Warzone map cards |
 | `data/roster.json`, `data/roles.json` | Pro roster, the four roles and general coaching |
+| `data/role-guide.json` | The in-depth role guide shown on the Roles page, with its sources |
 | `data/pages.json`, `data/site.json` | Page titles and intros, site name |
 | `src/assets/` | Styles and scripts (`planner.js` is the map planner) |
 | `src/images/` | Minimaps, map cover images, Warzone map images |

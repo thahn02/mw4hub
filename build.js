@@ -26,6 +26,7 @@ const loadouts = read('loadouts.json');
 const wzmaps = read('warzone-maps.json');
 const roleData = read('roles.json');
 const roster = read('roster.json');
+const guide = read('role-guide.json');
 const pages = read('pages.json');
 
 // ---------- helpers ----------
@@ -232,6 +233,80 @@ function rolesBlock(compact) {
 	}
 	return h + '</div>';
 }
+// The standalone role guide (data/role-guide.json). Roles live here only, not in the map planner.
+function rolesGuide() {
+	const g = guide, team = roster.team || 'OpTic Texas';
+	const byKey = {}; roleData.roles.forEach((r) => { byKey[r.key] = r; });
+	const list = (items, tag) => '<' + (tag || 'ul') + '>' + items.map((li) => '<li>' + esc(li) + '</li>').join('') + '</' + (tag || 'ul') + '>';
+	const refs = (ids) => (ids && ids.length ? '<p class="rg-refs">Sources ' + ids.map((n) => '<a href="#src-' + n + '">' + n + '</a>').join('') + '</p>' : '');
+	const roleChip = (k) => '<a class="rg-who" href="#role-' + k + '" style="--role:' + esc(byKey[k].color) + '"><i></i>' + esc(byKey[k].name) + '</a>';
+	const sec = (id, eyebrow, h2, body) => '<section class="rg-sec" id="' + id + '"><div class="rg-head reveal"><span class="eyebrow">' + esc(eyebrow) + '</span><h2>' + esc(h2) + '</h2></div>' + body + '</section>';
+	const modeNames = { hp: 'Hardpoint', snd: 'Search & Destroy', hj: 'Hijack' };
+
+	let h = '<div class="rg">';
+	h += '<nav class="rg-nav chips reveal" aria-label="On this page">' + [['summary', 'The short version'], ['the-roles', 'The four roles'], ['by-mode', 'Jobs by mode'], ['shifts', 'When roles shift'], ['build', 'Build your four'], ['mistakes', 'Team mistakes'], ['sources', 'Sources']]
+		.map((x) => '<a class="chip" href="#' + x[0] + '">' + esc(x[1]) + '</a>').join('') + '</nav>';
+
+	// Summary
+	let b = '<div class="card card-pad rg-sum reveal"><p class="rg-lead">' + esc(g.summary.lead) + '</p><ol class="rg-points">' +
+		g.summary.points.map((p) => '<li><b>' + esc(p.t) + '</b> ' + esc(p.d) + ' ' + (p.src || []).map((n) => '<a class="rg-ref" href="#src-' + n + '">' + n + '</a>').join('') + '</li>').join('') + '</ol></div>';
+	b += '<div class="grid rg-pairs">' + g.pairs.map((p) => '<article class="card card-pad reveal"><h3>' + esc(p.name) + '</h3><div class="rg-whos">' + p.roles.map(roleChip).join('') + '</div><p class="muted">' + esc(p.text) + '</p></article>').join('') + '</div>';
+	h += sec('summary', 'The short version', 'Two pairs, four starting jobs', b);
+
+	// The four roles
+	b = '';
+	for (const r of roleData.roles) {
+		const d = g.roles[r.key], players = roster[r.group] || [];
+		b += '<article class="card role-card role-deep reveal" id="role-' + r.key + '" style="--role:' + esc(r.color) + '">' +
+			'<div class="role-top"><span class="role-badge">' + esc(r.short) + '</span><div><h3>' + esc(r.name) + '</h3><span class="muted">' + esc(r.tag) + '</span></div>' +
+			'<div class="rg-aka">' + d.aka.map((a) => '<span class="chip">' + esc(a) + '</span>').join('') + '</div></div>' +
+			'<p class="rg-job">' + esc(d.job) + '</p>' +
+			'<div class="rg-cols rg-cols-3">' + ['hp', 'snd', 'hj'].map((m) => '<section><h4>' + esc(modeNames[m]) + '</h4>' + list(d[m]) + '</section>').join('') + '</div>' +
+			'<div class="rg-cols rg-cols-4 rg-soft">' +
+				'<section><h4>What good looks like</h4>' + list(d.traits) + '</section>' +
+				'<section><h4>Calls to make</h4>' + list(d.comms) + '</section>' +
+				'<section><h4>Common mistakes</h4>' + list(d.mistakes) + '</section>' +
+				'<section><h4>How to practice</h4>' + list(d.practice) + '</section></div>' +
+			'<p class="rg-measure"><b>How to judge it</b> ' + esc(d.measure) + '</p>' +
+			(players.length ? '<div class="role-pros"><span>' + esc(team + ' ' + (r.group === 'ar' ? 'AR' : 'SMG') + ' players') + '</span><b>' + esc(players.join(' \u00b7 ')) + '</b></div>' : '') +
+			refs(d.src) + '</article>';
+	}
+	h += sec('the-roles', 'Role by role', 'The four roles in depth', b);
+
+	// Jobs by mode
+	b = '<p class="muted rg-intro">A role is who you are on the team. A job is what needs doing right now. Each mode has its own set of jobs, and this is who usually starts on each.</p>';
+	for (const m of g.modes) {
+		const habits = m.habits || roleData.coaching[m.key] || [];
+		b += '<article class="card card-pad rg-mode reveal" id="mode-' + m.key + '"><h3>' + esc(m.name) + '</h3><p class="muted">' + esc(m.rules) + '</p>' +
+			(m.caveat ? '<p class="rg-caveat"><b>Early read.</b> ' + esc(m.caveat) + '</p>' : '') +
+			'<div class="rg-jobs">' + m.jobs.map((j) => '<div class="rg-jobrow"><b>' + esc(j.job) + '</b><div class="rg-whos">' + j.who.map(roleChip).join('') + (j.alt ? '<span class="muted">' + esc(j.alt) + '</span>' : '') + '</div><p>' + esc(j.what) + '</p></div>').join('') + '</div>' +
+			'<div class="rg-cols rg-cols-2"><section><h4>Keep in mind</h4>' + list(m.notes) + '</section>' +
+			(habits.length ? '<section><h4>Team habits</h4>' + list(habits) + '</section>' : '') + '</div>' + refs(m.src) + '</article>';
+	}
+	h += sec('by-mode', 'Mode by mode', 'Jobs by mode', b);
+
+	// Shifts
+	b = '<div class="card card-pad rg-shifts reveal">' + g.shifts.map((x) => '<div class="rg-shift"><b>' + esc(x.when) + '</b><p>' + esc(x.then) + '</p></div>').join('') + '</div>';
+	h += sec('shifts', 'Fluid roles', 'When roles shift', b);
+
+	// Build your four
+	b = '<div class="grid rg-build"><article class="card card-pad reveal"><h3>Who plays what</h3><ol class="rg-steps">' + g.assign.map((x) => '<li><b>' + esc(x.t) + '</b> ' + esc(x.d) + '</li>').join('') + '</ol>' + refs([1, 2, 15]) + '</article>' +
+		'<div class="rg-stack"><article class="card card-pad reveal"><h3>Line-ups that do not work</h3>' + list(g.mismatches) + '</article>' +
+		'<article class="card card-pad roster reveal"><span class="eyebrow">Modeled on</span><h3>' + esc(team) + '</h3><dl><dt>AR</dt><dd>' + esc((roster.ar || []).join(', ')) + '</dd><dt>SMG</dt><dd>' + esc((roster.smg || []).join(', ')) + '</dd><dt>Coach</dt><dd>' + esc(roster.coach || '') + '</dd></dl>' +
+		'<p class="muted">Ranked Play is 4v4, the same format as the Call of Duty League, so these roles map straight onto your squad.</p>' +
+		(roster.source ? '<a class="lo-src" href="' + esc(roster.source) + '" target="_blank" rel="noopener nofollow">Roster source: Breaking Point</a>' : '') + '</article></div></div>';
+	h += sec('build', 'Your squad', 'Build your four', b);
+
+	// Team mistakes
+	b = '<div class="grid grid-3">' + g.teamMistakes.map((x) => '<article class="card card-pad rg-miss reveal"><h3>' + esc(x.t) + '</h3><p class="muted">' + esc(x.d) + '</p></article>').join('') + '</div>' + refs([2, 6, 7, 14]);
+	h += sec('mistakes', 'What loses games', 'Team mistakes', b);
+
+	// Sources
+	b = '<div class="card card-pad rg-sources reveal"><ol>' + g.sources.map((x) => '<li id="src-' + x.n + '" value="' + x.n + '"><span class="chip">' + esc(x.kind) + '</span> <a href="' + esc(x.url) + '" target="_blank" rel="noopener nofollow">' + esc(x.title) + '</a> <span class="muted">' + esc(x.by) + '</span><p class="muted">' + esc(x.used) + '</p></li>').join('') + '</ol>' +
+		'<h4>What this guide could not check</h4>' + list(g.limits) + '<p class="muted">Last reviewed ' + esc(g.updated) + '.</p></div>';
+	h += sec('sources', 'Where this comes from', 'Sources', b);
+	return h + '</div>';
+}
 function credits() {
 	const rows = [
 		['GamesAtlas', 'https://www.gamesatlas.com/cod-modern-warfare-4/maps/', 'Map list, minimap layouts and cover images, hardpoint names and rotation order, Warzone map info.'],
@@ -260,10 +335,10 @@ function planner(m, r) {
 			hp: m.hp || { hills: [] }, snd: m.snd || null, intel: { hp: (m.intel && m.intel.hp) || [], snd: (m.intel && m.intel.snd) || [] }, sources: m.sources || [], ranked: !!m.ranked, modes: m.modes, hj: m.hj ? { spawns: m.hj.spawns, spike: m.hj.spike, commStations: m.hj.commStations || [] } : null,
 		},
 		maps: maps.map((x) => ({ slug: x.slug, name: x.name, url: r + 'maps/' + x.slug + '/' })),
-		roles: roleData.roles, coaching: roleData.coaching, roster: roster,
+		coaching: roleData.coaching,
 		user: { loggedIn: false, name: '', canEdit: false, team: '', loginUrl: '', registerUrl: '' },
 		rest: { root: '', nonce: '' },
-		links: { maps: r + 'maps/', myPlans: r + 'my-plans/', roles: r + 'roles/', bombSites: r + 'bomb-sites/' },
+		links: { maps: r + 'maps/', myPlans: r + 'my-plans/', bombSites: r + 'bomb-sites/' },
 	};
 	let h = '<div class="mw4-planner" id="mw4-planner"><div class="pl-stage" id="pl-stage" tabindex="0" role="application" aria-label="' + esc(m.name + ' map. Drag to pan, scroll or pinch to zoom.') + '">';
 	if (m.image) h += '<img class="pl-img" id="pl-img" src="' + r + esc(m.image.file) + '" width="' + (+m.image.w) + '" height="' + (+m.image.h) + '" alt="' + esc(m.name + ' minimap') + '" draggable="false" decoding="async" fetchpriority="high">';
@@ -339,7 +414,7 @@ write('maps/index.html', standardPage('maps', mapsGrid('../')));
 write('bomb-sites/index.html', standardPage('bomb-sites', bombSites('../')));
 write('ranked-loadouts/index.html', standardPage('ranked-loadouts', rankedLoadouts()));
 write('warzone/index.html', standardPage('warzone', warzone('../')));
-write('roles/index.html', standardPage('roles', rolesBlock(false)));
+write('roles/index.html', standardPage('roles', rolesGuide()));
 write('my-plans/index.html', standardPage('my-plans', myPlans(), { scripts: ['plans-local.js'] }));
 write('credits/index.html', standardPage('credits', credits()));
 for (const m of maps) {
