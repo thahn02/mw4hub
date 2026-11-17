@@ -27,6 +27,7 @@ const wzmaps = read('warzone-maps.json');
 const roleData = read('roles.json');
 const roster = read('roster.json');
 const guide = read('role-guide.json');
+const extras = read('map-extras.json');
 const pages = read('pages.json');
 
 // ---------- helpers ----------
@@ -314,7 +315,8 @@ function credits() {
 		['warzoneloadout.games', 'https://warzoneloadout.games/', 'Warzone and MW4 multiplayer tier rankings and attachment builds.'],
 		['wzstats.gg', 'https://wzstats.gg/', 'Warzone meta tier list used in our combined Warzone rankings.'],
 		['Call of Duty League', 'https://callofdutyleague.com/en-us/competitive-settings', 'CDL 2027 Competitive Maps & Modes: the Hardpoint, Search & Destroy and Hijack map pool used for the Ranked maps shown here.'],
-		['Call of Duty (Activision)', 'https://www.callofduty.com/blog/2026/10/call-of-duty-modern-warfare-4-ready-for-launch-maps-modes', 'Official launch map and mode announcement, and the tac maps used for Hijack team spawn positions.'],
+		['Call of Duty (Activision)', 'https://www.callofduty.com/blog/2026/10/call-of-duty-modern-warfare-4-ready-for-launch-maps-modes', 'Official launch map and mode announcement, and the tac maps used for team spawn positions, area names and Domination flags in the planner.'],
+		['RankKD', 'https://www.rankkd.com/guides-tools/call-of-duty-modern-warfare-4/', 'Callout names, the short names for each Hardpoint hill and the map notes in the planner, plus the Hardpoint and Hijack job breakdowns in the role guide.'],
 	];
 	return '<div class="credits prose"><p>MW4 Hub combines and reworks public information into its own tools. Map marker positions were plotted onto the minimaps from the sources below; tiers and builds were cross-checked across sites. Please support these creators.</p><div class="grid">' +
 		rows.map((r) => '<a class="card card-pad credit" href="' + esc(r[1]) + '" target="_blank" rel="noopener nofollow"><h3>' + esc(r[0]) + '</h3><p class="muted">' + esc(r[2]) + '</p></a>').join('') +
@@ -327,12 +329,27 @@ function myPlans() {
 		'<section class="plans-list"><h3>My plans <span class="muted" data-plan-count>0</span></h3><div class="plans-rows" data-plan-rows><p class="muted">Nothing saved yet. Open a map and draw your plan; it is saved here as you go.</p></div></section>' +
 		'</div>\n<script type="application/json" id="mw4-maps">' + jsonForScript(maps.map((m) => ({ slug: m.slug, name: m.name, modes: m.modes }))) + '</script>';
 }
+// Default callouts for a map: the official tac-map area names, plus the short name players use for
+// each Hardpoint hill (placed just above the hill marker). A team can replace these in the planner.
+function defaultCallouts(m) {
+	const ex = extras[m.slug] || {}, calls = ex.hillCalls || {}, off = m.official || {}, out = [];
+	const hills = has(m, 'hp') ? ((m.hp && m.hp.hills) || []).filter((h) => calls[h.n]) : [];
+	hills.forEach((h) => out.push({ id: 'h' + h.n, s: calls[h.n], x: h.x, y: Math.max(0.02, +(h.y - 0.036).toFixed(4)), k: 'hill' }));
+	(off.pois || []).forEach((p, i) => {
+		if (hills.some((h) => Math.hypot(h.x - p.x, h.y - p.y) < 0.055)) return; // the hill's own callout already names this spot
+		out.push({ id: 'p' + i, s: p.s, x: p.x, y: p.y, k: 'official' });
+	});
+	return out;
+}
 function planner(m, r) {
+	const ex = extras[m.slug] || {}, off = m.official || {};
 	const data = {
 		map: {
 			id: m.id || 0, slug: m.slug, name: m.name, url: r + 'maps/' + m.slug + '/', location: m.location || '', size: m.size || '', description: m.description || '',
 			image: m.image ? { url: r + m.image.file, w: m.image.w, h: m.image.h } : null,
 			hp: m.hp || { hills: [] }, snd: m.snd || null, intel: { hp: (m.intel && m.intel.hp) || [], snd: (m.intel && m.intel.snd) || [] }, sources: m.sources || [], ranked: !!m.ranked, modes: m.modes, hj: m.hj ? { spawns: m.hj.spawns, spike: m.hj.spike, commStations: m.hj.commStations || [] } : null,
+			callouts: defaultCallouts(m), calloutNames: ex.names || [], tips: ex.tips || [], tipSource: ex.source || null,
+			spawns: off.spawns || [], dom: off.dom || [],
 		},
 		maps: maps.map((x) => ({ slug: x.slug, name: x.name, url: r + 'maps/' + x.slug + '/' })),
 		coaching: roleData.coaching,

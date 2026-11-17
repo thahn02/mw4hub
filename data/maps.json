@@ -180,6 +180,77 @@
       "img": {
         "label": "GamesAtlas",
         "url": "https://www.gamesatlas.com/cod-modern-warfare-4/maps/coal"
+      },
+      "tac": {
+        "label": "Call of Duty tac map",
+        "url": "https://www.callofduty.com/guides/modernwarfare4/multiplayer-maps/launch/coal"
+      }
+    },
+    "official": {
+      "pois": [
+        {
+          "s": "Conveyor",
+          "x": 0.5754,
+          "y": 0.5455
+        },
+        {
+          "s": "Foreman's Office",
+          "x": 0.382,
+          "y": 0.8824
+        },
+        {
+          "s": "Garage",
+          "x": 0.7533,
+          "y": 0.3874
+        },
+        {
+          "s": "Smokestack",
+          "x": 0.5436,
+          "y": 0.2503
+        },
+        {
+          "s": "Stockpiles",
+          "x": 0.3801,
+          "y": 0.5085
+        },
+        {
+          "s": "Trucks",
+          "x": 0.5549,
+          "y": 0.6689
+        }
+      ],
+      "spawns": [
+        {
+          "team": 1,
+          "x": 0.7137,
+          "y": 0.0882
+        },
+        {
+          "team": 2,
+          "x": 0.4808,
+          "y": 0.8961
+        }
+      ],
+      "dom": [
+        {
+          "id": "A",
+          "x": 0.5567,
+          "y": 0.7671
+        },
+        {
+          "id": "B",
+          "x": 0.542,
+          "y": 0.5698
+        },
+        {
+          "id": "C",
+          "x": 0.6519,
+          "y": 0.314
+        }
+      ],
+      "fit": {
+        "points": 4,
+        "maxErr": 0.0133
       }
     }
   },
@@ -284,6 +355,10 @@
       "hj": {
         "label": "Call of Duty tac map",
         "url": "https://www.callofduty.com/guides/modernwarfare4/multiplayer-maps/launch/lithium"
+      },
+      "tac": {
+        "label": "Call of Duty tac map",
+        "url": "https://www.callofduty.com/guides/modernwarfare4/multiplayer-maps/launch/lithium"
       }
     },
     "hj": {
@@ -317,6 +392,63 @@
         }
       ],
       "note": "Team spawns are from the official Call of Duty tac map, registered to this minimap via the hardpoint positions (about 1% error). The Data Spike area is the midpoint between spawns: officially it starts around the central area. Comm Station positions were not published anywhere as of 2026-11-17, so commStations are ESTIMATED zones: each covers a team spawn and the Domination flag nearest to it (official tac map). Replace with exact x,y (drop r and estimated) when a source appears."
+    },
+    "official": {
+      "pois": [
+        {
+          "s": "Back Gate",
+          "x": 0.8507,
+          "y": 0.6385
+        },
+        {
+          "s": "Excavator",
+          "x": 0.4908,
+          "y": 0.6308
+        },
+        {
+          "s": "Refinery",
+          "x": 0.5034,
+          "y": 0.3435
+        },
+        {
+          "s": "Silos",
+          "x": 0.2403,
+          "y": 0.4943
+        }
+      ],
+      "spawns": [
+        {
+          "team": 1,
+          "x": 0.9126,
+          "y": 0.5527
+        },
+        {
+          "team": 2,
+          "x": 0.1146,
+          "y": 0.4877
+        }
+      ],
+      "dom": [
+        {
+          "id": "A",
+          "x": 0.715,
+          "y": 0.6003
+        },
+        {
+          "id": "B",
+          "x": 0.4974,
+          "y": 0.3727
+        },
+        {
+          "id": "C",
+          "x": 0.2486,
+          "y": 0.471
+        }
+      ],
+      "fit": {
+        "points": 6,
+        "maxErr": 0.012
+      }
     }
   },
   {
@@ -421,6 +553,10 @@
       "hj": {
         "label": "Call of Duty tac map",
         "url": "https://www.callofduty.com/guides/modernwarfare4/multiplayer-maps/launch/lotus"
+      },
+      "tac": {
+        "label": "Call of Duty tac map",
+        "url": "https://www.callofduty.com/guides/modernwarfare4/multiplayer-maps/launch/lotus"
       }
     },
     "hj": {
@@ -454,6 +590,68 @@
         }
       ],
       "note": "Team spawns are from the official Call of Duty tac map, registered to this minimap via the hardpoint positions (about 1% error). The Data Spike area is the midpoint between spawns: officially it starts around the central area. Comm Station positions were not published anywhere as of 2026-11-17, so commStations are ESTIMATED zones: each covers a team spawn and the Domination flag nearest to it (official tac map). Replace with exact x,y (drop r and estimated) when a source appears."
+    },
+    "official": {
+      "pois": [
+        {
+          "s": "Alley",
+          "x": 0.5516,
+          "y": 0.7799
+        },
+        {
+          "s": "Boathouse",
+          "x": 0.7165,
+          "y": 0.5025
+        },
+        {
+          "s": "Fish Market",
+          "x": 0.5882,
+          "y": 0.5537
+        },
+        {
+          "s": "Hostel",
+          "x": 0.3418,
+          "y": 0.6013
+        },
+        {
+          "s": "Residential",
+          "x": 0.1978,
+          "y": 0.4192
+        }
+      ],
+      "spawns": [
+        {
+          "team": 1,
+          "x": 0.2217,
+          "y": 0.3186
+        },
+        {
+          "team": 2,
+          "x": 0.8383,
+          "y": 0.6068
+        }
+      ],
+      "dom": [
+        {
+          "id": "A",
+          "x": 0.7417,
+          "y": 0.7042
+        },
+        {
+          "id": "B",
+          "x": 0.5565,
+          "y": 0.5257
+        },
+        {
+          "id": "C",
+          "x": 0.2643,
+          "y": 0.4954
+        }
+      ],
+      "fit": {
+        "points": 6,
+        "maxErr": 0.0102
+      }
     }
   },
   {
@@ -649,6 +847,10 @@
       "hj": {
         "label": "Call of Duty tac map",
         "url": "https://www.callofduty.com/guides/modernwarfare4/multiplayer-maps/launch/munition"
+      },
+      "tac": {
+        "label": "Call of Duty tac map",
+        "url": "https://www.callofduty.com/guides/modernwarfare4/multiplayer-maps/launch/munition"
       }
     },
     "hj": {
@@ -682,6 +884,73 @@
         }
       ],
       "note": "Team spawns are from the official Call of Duty tac map, registered to this minimap via the hardpoint positions (about 1% error). The Data Spike area is the midpoint between spawns: officially it starts around the central area. Comm Station positions were not published anywhere as of 2026-11-17, so commStations are ESTIMATED zones: each covers a team spawn and the Domination flag nearest to it (official tac map). Replace with exact x,y (drop r and estimated) when a source appears."
+    },
+    "official": {
+      "pois": [
+        {
+          "s": "Research Room",
+          "x": 0.5783,
+          "y": 0.4702
+        },
+        {
+          "s": "Water Tower",
+          "x": 0.3405,
+          "y": 0.5928
+        },
+        {
+          "s": "Convoy",
+          "x": 0.3837,
+          "y": 0.3564
+        },
+        {
+          "s": "Garage",
+          "x": 0.3499,
+          "y": 0.4551
+        },
+        {
+          "s": "Missile Cache",
+          "x": 0.4953,
+          "y": 0.6236
+        },
+        {
+          "s": "Mural",
+          "x": 0.7924,
+          "y": 0.635
+        }
+      ],
+      "spawns": [
+        {
+          "team": 1,
+          "x": 0.8407,
+          "y": 0.6918
+        },
+        {
+          "team": 2,
+          "x": 0.2226,
+          "y": 0.6248
+        }
+      ],
+      "dom": [
+        {
+          "id": "A",
+          "x": 0.7342,
+          "y": 0.6364
+        },
+        {
+          "id": "B",
+          "x": 0.4903,
+          "y": 0.365
+        },
+        {
+          "id": "C",
+          "x": 0.3088,
+          "y": 0.6345
+        }
+      ],
+      "fit": {
+        "points": 6,
+        "maxErr": 0.0146
+      }
     }
   },
   {
@@ -866,6 +1135,77 @@
       "img": {
         "label": "GamesAtlas",
         "url": "https://www.gamesatlas.com/cod-modern-warfare-4/maps/reactor-u92"
+      },
+      "tac": {
+        "label": "Call of Duty tac map",
+        "url": "https://www.callofduty.com/guides/modernwarfare4/multiplayer-maps/launch/reactor-u92"
+      }
+    },
+    "official": {
+      "pois": [
+        {
+          "s": "Loading Dock",
+          "x": 0.5047,
+          "y": 0.4238
+        },
+        {
+          "s": "Reactor Hall",
+          "x": 0.331,
+          "y": 0.4817
+        },
+        {
+          "s": "Statue",
+          "x": 0.5001,
+          "y": 0.8165
+        },
+        {
+          "s": "Train Cars",
+          "x": 0.5018,
+          "y": 0.6398
+        },
+        {
+          "s": "Train Engine",
+          "x": 0.5392,
+          "y": 0.2716
+        },
+        {
+          "s": "Transformers",
+          "x": 0.6515,
+          "y": 0.4371
+        }
+      ],
+      "spawns": [
+        {
+          "team": 1,
+          "x": 0.5099,
+          "y": 0.1238
+        },
+        {
+          "team": 2,
+          "x": 0.4966,
+          "y": 0.9082
+        }
+      ],
+      "dom": [
+        {
+          "id": "A",
+          "x": 0.341,
+          "y": 0.6654
+        },
+        {
+          "id": "B",
+          "x": 0.5207,
+          "y": 0.4066
+        },
+        {
+          "id": "C",
+          "x": 0.6608,
+          "y": 0.2077
+        }
+      ],
+      "fit": {
+        "points": 5,
+        "maxErr": 0.0067
       }
     }
   },
@@ -966,6 +1306,72 @@
       "img": {
         "label": "GamesAtlas",
         "url": "https://www.gamesatlas.com/cod-modern-warfare-4/maps/rooftops"
+      },
+      "tac": {
+        "label": "Call of Duty tac map",
+        "url": "https://www.callofduty.com/guides/modernwarfare4/multiplayer-maps/launch/rooftops"
+      }
+    },
+    "official": {
+      "pois": [
+        {
+          "s": "Center",
+          "x": 0.5066,
+          "y": 0.5197
+        },
+        {
+          "s": "HVAC",
+          "x": 0.2993,
+          "y": 0.5752
+        },
+        {
+          "s": "Parking Lot",
+          "x": 0.1534,
+          "y": 0.4421
+        },
+        {
+          "s": "Patio",
+          "x": 0.4896,
+          "y": 0.3529
+        },
+        {
+          "s": "Skylight",
+          "x": 0.7457,
+          "y": 0.5728
+        }
+      ],
+      "spawns": [
+        {
+          "team": 1,
+          "x": 0.0757,
+          "y": 0.4857
+        },
+        {
+          "team": 2,
+          "x": 0.9189,
+          "y": 0.523
+        }
+      ],
+      "dom": [
+        {
+          "id": "A",
+          "x": 0.2039,
+          "y": 0.3776
+        },
+        {
+          "id": "B",
+          "x": 0.5333,
+          "y": 0.5895
+        },
+        {
+          "id": "C",
+          "x": 0.7973,
+          "y": 0.4247
+        }
+      ],
+      "fit": {
+        "points": 6,
+        "maxErr": 0.0046
       }
     }
   },
@@ -1059,6 +1465,72 @@
       "img": {
         "label": "GamesAtlas",
         "url": "https://www.gamesatlas.com/cod-modern-warfare-4/maps/sentry"
+      },
+      "tac": {
+        "label": "Call of Duty tac map",
+        "url": "https://www.callofduty.com/guides/modernwarfare4/multiplayer-maps/launch/sentry"
+      }
+    },
+    "official": {
+      "pois": [
+        {
+          "s": "Barracks",
+          "x": 0.6355,
+          "y": 0.3786
+        },
+        {
+          "s": "Control Center",
+          "x": 0.5386,
+          "y": 0.5138
+        },
+        {
+          "s": "Driveway",
+          "x": 0.2782,
+          "y": 0.5202
+        },
+        {
+          "s": "Fuel Depot",
+          "x": 0.8471,
+          "y": 0.5522
+        },
+        {
+          "s": "Generator",
+          "x": 0.7076,
+          "y": 0.6947
+        }
+      ],
+      "spawns": [
+        {
+          "team": 1,
+          "x": 0.1153,
+          "y": 0.5135
+        },
+        {
+          "team": 2,
+          "x": 0.9423,
+          "y": 0.5939
+        }
+      ],
+      "dom": [
+        {
+          "id": "A",
+          "x": 0.6594,
+          "y": 0.3503
+        },
+        {
+          "id": "B",
+          "x": 0.5207,
+          "y": 0.5634
+        },
+        {
+          "id": "C",
+          "x": 0.3951,
+          "y": 0.6927
+        }
+      ],
+      "fit": {
+        "points": 5,
+        "maxErr": 0.0106
       }
     }
   },
@@ -1158,6 +1630,72 @@
       "img": {
         "label": "GamesAtlas",
         "url": "https://www.gamesatlas.com/cod-modern-warfare-4/maps/silkworm"
+      },
+      "tac": {
+        "label": "Call of Duty tac map",
+        "url": "https://www.callofduty.com/guides/modernwarfare4/multiplayer-maps/launch/silkworm"
+      }
+    },
+    "official": {
+      "pois": [
+        {
+          "s": "Apartment Alley",
+          "x": 0.1826,
+          "y": 0.5783
+        },
+        {
+          "s": "Basketball Court",
+          "x": 0.4193,
+          "y": 0.1862
+        },
+        {
+          "s": "Convenience Store",
+          "x": 0.7009,
+          "y": 0.6283
+        },
+        {
+          "s": "Game Room",
+          "x": 0.7215,
+          "y": 0.4596
+        },
+        {
+          "s": "Main Street",
+          "x": 0.4088,
+          "y": 0.5698
+        }
+      ],
+      "spawns": [
+        {
+          "team": 1,
+          "x": 0.2713,
+          "y": 0.1836
+        },
+        {
+          "team": 2,
+          "x": 0.5382,
+          "y": 0.8752
+        }
+      ],
+      "dom": [
+        {
+          "id": "A",
+          "x": 0.5381,
+          "y": 0.6892
+        },
+        {
+          "id": "B",
+          "x": 0.5115,
+          "y": 0.4661
+        },
+        {
+          "id": "C",
+          "x": 0.5406,
+          "y": 0.2622
+        }
+      ],
+      "fit": {
+        "points": 6,
+        "maxErr": 0.0082
       }
     }
   },

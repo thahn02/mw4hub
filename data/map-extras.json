@@ -1,0 +1,91 @@
+{
+  "_about": "Per-map callout vocabulary and notes, paraphrased from the RankKD map guides (read 2026-11-17). hillCalls are the short names players use for each Hardpoint hill; names are other callouts whose positions were only published as an image, so the planner offers them as suggestions for a team to place. Positions that ARE known come from the official tac map (data/maps.json -> official).",
+  "lotus": {
+    "source": { "label": "RankKD Lotus callouts", "url": "https://www.rankkd.com/guides-tools/call-of-duty-modern-warfare-4/maps/lotus" },
+    "hillCalls": { "1": "Fish", "2": "Red", "3": "Fire", "4": "Gun", "5": "Sushi" },
+    "names": ["Top Fish", "Top Red", "Statue", "Gate", "Water", "Docks", "Mid Tank", "Mid Street", "Mid Cut", "Flowers", "Spawn Tank", "Boxes", "L", "Shed", "Coffee", "Street", "Benches", "Broken"],
+    "tips": [
+      "P2 to P3 is the long rotation, from the west side across to the boathouse. P5 to P6 is long too, from the north down to the south-east. P1 to P2 is the shortest.",
+      "The pipe outside the boathouse climbs to its lower roof and second floor.",
+      "The roof of Shed, between Alley and the B site, is a spot players hold.",
+      "The north harbor can be swum as a route."
+    ]
+  },
+  "lithium": {
+    "source": { "label": "RankKD Lithium callouts", "url": "https://www.rankkd.com/guides-tools/call-of-duty-modern-warfare-4/maps/lithium" },
+    "hillCalls": {},
+    "names": ["Lockers", "Tarp", "Washroom", "Forklift", "Garage", "Water", "Tractor", "Back Alley", "Yellow Crate", "Jeep", "Cat", "Pit", "Gate", "Gens", "Underpass", "Overpass", "L", "Fire"],
+    "tips": [
+      "Players call the hills by number here. P3 to P4 is the longest rotation, from the east side down to the south-west. P6 back to P1 is the shortest.",
+      "Jeep is a raised spot with a view of the yard and mid. Pair it with a teammate on Tractor for a crossfire.",
+      "Garage doors open with the buttons, or can be lowered to a gap you slide under."
+    ]
+  },
+  "munition": {
+    "source": { "label": "RankKD Munition callouts", "url": "https://www.rankkd.com/guides-tools/call-of-duty-modern-warfare-4/maps/munition" },
+    "hillCalls": { "1": "Convoy", "2": "Missile Room", "3": "Shack", "4": "Top Bridge", "6": "Water Tower" },
+    "names": ["Low Bridge", "Under Bridge", "Hop Up", "Mid Hop", "Basement", "Lab", "Maps", "Top Maps", "Bottom Maps", "Map Steps", "Gate", "Mid Gate", "Mid Truck", "Mid Window", "P2 Window", "Hangar", "Garage", "Plat", "Balcony", "Crate", "Top TV", "Bottom TV", "Security", "Mid Street", "Courtyard", "Gens", "Boxes", "Statue", "Mural", "Loading", "Ramp", "Oil Tanker", "Street", "Heli"],
+    "tips": [
+      "P5 to P6 is the longest rotation, corner to corner, and P6 back to P1 is long as well. P4 to P5 is the shortest.",
+      "Two ways onto Top Bridge (P4): jump off the green truck on its north side (Hop Up), or climb the yellow and black ladder at its east end (Basement).",
+      "Mid Window is a hop up into Missile Room (P2) from mid.",
+      "Gens, between P5 and Shack, is the spot to hold when P5 is up.",
+      "Oil Tanker, in the far west lane, is a lurk spot."
+    ]
+  },
+  "reactor-u92": {
+    "source": { "label": "RankKD Reactor U92 callouts", "url": "https://www.rankkd.com/guides-tools/call-of-duty-modern-warfare-4/maps/reactor-u92" },
+    "hillCalls": { "2": "Barrels", "3": "Mid", "4": "Flood", "5": "Gens" },
+    "names": ["Server", "Office", "Statue", "Water", "Mid Cut", "Big Door", "Train", "Blue", "Con", "Lockers", "Broken", "Boxes", "Dark", "L", "Engine", "Alley", "Forklift", "Shed", "Pillars"],
+    "tips": [
+      "P4 to P5 (Flood to Gens) is the longest rotation. P5 back to P1 is the shortest.",
+      "P1 sits on the east rim of the reactor pool (Water).",
+      "Dark, in the western reactor hall, is a lurk spot.",
+      "In Search & Destroy the attackers start at the north end and the defenders at the south end."
+    ]
+  },
+  "rooftops": {
+    "source": { "label": "RankKD Rooftops callouts", "url": "https://www.rankkd.com/guides-tools/call-of-duty-modern-warfare-4/maps/rooftops" },
+    "hillCalls": { "1": "Laundry", "3": "Garden", "4": "AC", "5": "Bar" },
+    "names": ["Plat", "Square", "Pallets", "L", "Scaff", "Lights", "Bricks", "Glass", "Balcony", "Boiler Room", "Blue Tarp", "Water Tower", "Graffiti", "Vents", "Fans", "Ramp", "Bar Steps", "Server", "Top Server"],
+    "tips": [
+      "P2 to P3 is the longest rotation and crosses nearly the whole roof, so send the first player early. P1 to P2 is the shortest.",
+      "The west start is much closer to P1 than the east start.",
+      "The Bar counter gives covered sightlines over Pallets. When it gets hot, fall back to Laundry or Server.",
+      "Balcony, in the south-east, overlooks P6 and Glass.",
+      "Vents, north of Parking Lot, is where players hold to defend P2.",
+      "The catwalk by L is out of sight and lets you drop on players from behind."
+    ]
+  },
+  "sentry": {
+    "source": { "label": "RankKD Sentry callouts", "url": "https://www.rankkd.com/guides-tools/call-of-duty-modern-warfare-4/maps/sentry" },
+    "hillCalls": { "1": "Mid", "2": "Green", "3": "Bridge", "4": "White Truck", "5": "AC" },
+    "names": ["Lower Green", "Top Green", "Top Truck", "Catwalk", "Vent", "Mid Alley", "Server", "Garage", "Office", "Broken", "Silos", "Gate", "Tanker", "Block", "Shack", "Containers", "Heli", "Gas Tanks", "Gens"],
+    "tips": [
+      "P4 to P5 is the longest rotation, straight west to east across the map. P2 to P3 is long as well. P5 to P1 is the shortest.",
+      "Tanker and Block, in the north-west, are used as head-glitch cover.",
+      "Catwalk runs from Bridge (P3) north to a door into the south side of Mid.",
+      "Office, on the south-west side of Mid, has a doorway straight onto the P1 hill."
+    ]
+  },
+  "coal": {
+    "source": { "label": "RankKD Coal map guide", "url": "https://www.rankkd.com/guides-tools/call-of-duty-modern-warfare-4/maps/coal" },
+    "hillCalls": {},
+    "names": [],
+    "tips": [
+      "The A site is on the east side and the B site on the west side.",
+      "One team starts in the north-east and the other at the south end."
+    ]
+  },
+  "silkworm": {
+    "source": { "label": "RankKD Silkworm map guide", "url": "https://www.rankkd.com/guides-tools/call-of-duty-modern-warfare-4/maps/silkworm" },
+    "hillCalls": {},
+    "names": [],
+    "tips": [
+      "The A site is on the west side and the B site on the east side.",
+      "One team starts in the north-west and the other at the south end.",
+      "There are few high spots, so build for fast aim-down-sights.",
+      "Cars on the main street explode when shot in the engine. Time it for enemies standing beside them."
+    ]
+  }
+}

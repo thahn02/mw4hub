@@ -72,7 +72,8 @@
 		fit: '<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>',
 		expand: '<path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/>',
 		back: '<path d="M15 18l-6-6 6-6"/>',
-		bomb: '<circle cx="11" cy="14" r="6"/><path d="M15 9l2-2M18 4l1 1M20 7h1"/>'
+		bomb: '<circle cx="11" cy="14" r="6"/><path d="M15 9l2-2M18 4l1 1M20 7h1"/>',
+		brief: '<path d="M4 5h16v11H4z"/><path d="M9 20h6M12 16v4"/><path d="M10 8.2l4.4 2.3-4.4 2.3z"/>'
 	};
 	function ico(n) {
 		return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (IC[n] || '') + '</svg>';
@@ -155,14 +156,15 @@
 		mode: pickMode(params.get('mode')),
 		cam: { x: 500, y: 500, k: 1 }, vw: 1, vh: 1, kMin: 0.5, kMax: 4,
 		anim: null, vel: null, raf: 0, lastT: 0,
-		layers: { obj: true, rot: true, route: true, enemy: true, strong: true, note: true, plan: true },
+		layers: { obj: true, rot: true, route: true, enemy: true, strong: true, note: true, plan: true, callouts: true, starter: true, spawns: true },
 		tool: 'pan', role: 'entry', icon: 'ar', sel: null,
 		plans: { hp: [], snd: [], hj: [] },
 		intel: { hp: (MAP.intel && MAP.intel.hp) ? MAP.intel.hp.slice() : [], snd: (MAP.intel && MAP.intel.snd) ? MAP.intel.snd.slice() : [], hj: (MAP.intel && MAP.intel.hj) ? MAP.intel.hj.slice() : [] },
 		editIntel: false, intelDirty: false,
 		history: [], future: [],
 		planMeta: { code: null, title: '', visibility: 'unlisted', canEdit: true },
-		tab: 'intel'
+		tab: 'intel',
+		step: null, brief: false, coPick: ''
 	};
 	var lastK = -1, spaceDown = false, tipTimer = 0, saveTimer = 0, pop = null;
 	var lastTap = { t: 0, x: 0, y: 0 };
@@ -174,6 +176,48 @@
 			if (Array.isArray(v)) S.plans[m] = v;
 		} catch (e3) { /* ignore */ }
 	});
+	// Team edits to the map layers (callouts, corrected spawn zones) and the layer switches stay on this device.
+	var TEAM_KEY = 'mw4hub:' + MAP.slug + ':team', LAYER_KEY = 'mw4hub:layers', PREF_LAYERS = ['callouts', 'starter', 'spawns'];
+	var TEAM = { callouts: null, spawns: {} };
+	function readTeam(raw) {
+		var t = { callouts: null, spawns: {} };
+		if (raw && Array.isArray(raw.callouts)) {
+			t.callouts = raw.callouts.filter(function (c) { return c && typeof c.s === 'string' && c.s && isFinite(c.x) && isFinite(c.y); })
+				.slice(0, 120).map(function (c, i) { return { id: String(c.id || ('c' + i)), s: c.s.slice(0, 40), x: clamp(+c.x, 0, 1), y: clamp(+c.y, 0, 1), k: (c.k === 'official' || c.k === 'hill') ? c.k : 'team' }; });
+		}
+		if (raw && raw.spawns && typeof raw.spawns === 'object') {
+			Object.keys(raw.spawns).slice(0, 12).forEach(function (n) {
+				var v = raw.spawns[n], o = {};
+				['own', 'enemy'].forEach(function (w) { if (v && Array.isArray(v[w]) && isFinite(v[w][0]) && isFinite(v[w][1])) o[w] = [clamp(+v[w][0], 0, 1), clamp(+v[w][1], 0, 1)]; });
+				if (o.own || o.enemy) t.spawns[String(n).slice(0, 4)] = o;
+			});
+		}
+		return t;
+	}
+	function saveTeam() {
+		try {
+			if (!TEAM.callouts && !Object.keys(TEAM.spawns).length) localStorage.removeItem(TEAM_KEY);
+			else localStorage.setItem(TEAM_KEY, JSON.stringify(TEAM));
+		} catch (e9) { /* storage full */ }
+	}
+	function teamEdited() { return !!TEAM.callouts || Object.keys(TEAM.spawns).length > 0; }
+	function callouts() { return TEAM.callouts || MAP.callouts || []; }
+	function editCallouts() { if (!TEAM.callouts) TEAM.callouts = JSON.parse(JSON.stringify(MAP.callouts || [])); return TEAM.callouts; }
+	function packTeam() {
+		return { v: 1, m: MAP.slug, c: TEAM.callouts ? TEAM.callouts.map(function (c) { return [c.s, c.x, c.y, c.k === 'official' ? 1 : (c.k === 'hill' ? 2 : 0)]; }) : null, sp: TEAM.spawns };
+	}
+	function unpackTeam(pk) {
+		return readTeam({
+			callouts: Array.isArray(pk.c) ? pk.c.map(function (c, i) { return { id: 'c' + i, s: String(c[0]), x: c[1], y: c[2], k: c[3] === 1 ? 'official' : (c[3] === 2 ? 'hill' : 'team') }; }) : null,
+			spawns: pk.sp
+		});
+	}
+	try { TEAM = readTeam(JSON.parse(localStorage.getItem(TEAM_KEY) || 'null')); } catch (e7) { /* ignore */ }
+	try {
+		var lp = JSON.parse(localStorage.getItem(LAYER_KEY) || '{}');
+		PREF_LAYERS.forEach(function (k) { if (lp && typeof lp[k] === 'boolean') S.layers[k] = lp[k]; });
+	} catch (e8) { /* ignore */ }
+
 	if (location.hash.indexOf('#p=') === 0) {
 		try {
 			var shared = JSON.parse(b64d(location.hash.slice(3)));
@@ -181,24 +225,120 @@
 				S.mode = pickMode(shared.d);
 				S.plans[S.mode] = shared.i;
 				S.sharedLoaded = true;
+				// A plan link carries the sender's callouts. Use them unless this device already has its own.
+				if (Array.isArray(shared.c) && !TEAM.callouts) { TEAM.callouts = unpackTeam({ c: shared.c }).callouts; saveTeam(); }
 			}
 		} catch (e4) { /* ignore bad links */ }
+	}
+	if (location.hash.indexOf('#t=') === 0) {
+		try {
+			var tp = JSON.parse(b64d(location.hash.slice(3)));
+			if (tp && tp.m === MAP.slug) {
+				try { var prevT = localStorage.getItem(TEAM_KEY); if (prevT) localStorage.setItem(TEAM_KEY + ':prev', prevT); } catch (e10) { /* ignore */ }
+				TEAM = unpackTeam(tp); saveTeam(); S.teamLoaded = true;
+			}
+		} catch (e11) { /* ignore bad links */ }
 	}
 
 	function currentItems() { return S.editIntel ? S.intel[S.mode] : S.plans[S.mode]; }
 	function setCurrentItems(a) { if (S.editIntel) S.intel[S.mode] = a; else S.plans[S.mode] = a; }
 	function sortedHills() { return ((MAP.hp && MAP.hp.hills) || []).slice().sort(function (a, b) { return a.n - b.n; }); }
 
-	// ---------- DOM: svg layers, hud ----------
-	var gRot = s('g'), gIntel = s('g'), gPlan = s('g'), gObj = s('g'), gTemp = s('g');
-	svg.appendChild(gRot); svg.appendChild(gIntel); svg.appendChild(gPlan); svg.appendChild(gObj); svg.appendChild(gTemp);
-	var SC = { obj: [], rot: [], intel: [], plan: [], temp: [] };
+	// ---------- steps: one per hill (Hardpoint), per side of the round (S&D), per starting spawn (Hijack) ----------
+	function compass(pt) {
+		var dx = pt.x - 0.5, dy = pt.y - 0.5, ns = dy < -0.12 ? 'north' : (dy > 0.12 ? 'south' : ''), ew = dx < -0.12 ? 'west' : (dx > 0.12 ? 'east' : '');
+		return (ns && ew) ? ns + '-' + ew : (ns || ew || 'middle');
+	}
+	function cap(t) { return t.charAt(0).toUpperCase() + t.slice(1); }
+	function steps(m) {
+		m = m || S.mode;
+		if (m === 'hp') return sortedHills().map(function (hl) { return { k: String(hl.n), label: 'P' + hl.n, name: hl.name, x: hl.x, y: hl.y }; });
+		if (m === 'snd') return [{ k: 'atk', label: 'Attack', name: 'Attacking rounds' }, { k: 'def', label: 'Defense', name: 'Defending rounds' }];
+		if (m === 'hj' && (MAP.spawns || []).length === 2) {
+			return MAP.spawns.map(function (sp, i) { return { k: 't' + (i + 1), label: cap(compass(sp)) + ' start', name: 'Rounds starting from the ' + compass(sp) + ' spawn', x: sp.x, y: sp.y }; });
+		}
+		return [];
+	}
+	function stepObj(k) { k = k === undefined ? S.step : k; return steps().filter(function (x) { return x.k === k; })[0] || null; }
+	function inStep(it) { return !S.step || !it.st || it.st === S.step; }
+	function stepItems() { return (S.plans[S.mode] || []).filter(function (it) { return !!S.step && it.st === S.step; }); }
 
-	var hud = h('div', 'pl-hud', '<button type="button" data-zoom="in" aria-label="Zoom in">' + ico('plus') + '</button><button type="button" data-zoom="out" aria-label="Zoom out">' + ico('minus') + '</button><button type="button" data-zoom="fit" aria-label="Reset view">' + ico('fit') + '</button><button type="button" data-fs aria-label="Full screen">' + ico('expand') + '</button>');
+	// Spawn zones for a hill. Nobody has published per-hill spawns, so these are estimates: the team holding tends to
+	// spawn on the side it set up on (nearest spawn area), the team breaking on the far side. A team can drag them.
+	function hillSpawns(n) {
+		var hl = sortedHills().filter(function (x) { return x.n === +n; })[0];
+		if (!hl) return null;
+		var cands = (MAP.spawns || []).map(function (sp) { return { x: sp.x, y: sp.y }; });
+		(MAP.dom || []).forEach(function (d) { if (d.id !== 'B') cands.push({ x: d.x, y: d.y }); });
+		if (cands.length < 2) return null;
+		cands.sort(function (a, b) { return dist(a, hl) - dist(b, hl); });
+		var own = cands.filter(function (c) { return dist(c, hl) >= 0.13; })[0] || cands[0], enemy = cands[cands.length - 1];
+		var ov = TEAM.spawns[String(n)] || {};
+		return {
+			own: ov.own ? { x: ov.own[0], y: ov.own[1], set: true } : { x: own.x, y: own.y },
+			enemy: ov.enemy ? { x: ov.enemy[0], y: ov.enemy[1], set: true } : { x: enemy.x, y: enemy.y }
+		};
+	}
+
+	// Starter setups: a shape to begin from. Players are placed by formula (hill, spawn zones, next hill), not on real cover.
+	function toward(a, b, d) {
+		var dx = b.x - a.x, dy = b.y - a.y, L = Math.hypot(dx, dy) || 1, t = Math.min(d, L * 0.8) / L;
+		return { x: a.x + dx * t, y: a.y + dy * t };
+	}
+	function spread(pts, pt) {
+		for (var n = 0; n < 6; n++) {
+			var hit = null;
+			for (var j = 0; j < pts.length; j++) { if (dist(pt, pts[j]) < 0.05) { hit = pts[j]; break; } }
+			if (!hit) break;
+			var dx = pt.x - hit.x, dy = pt.y - hit.y, L = Math.hypot(dx, dy);
+			if (L < 0.001) { dx = 0.7; dy = 0.7; L = 1; }
+			pt = { x: clamp(pt.x + dx / L * 0.035, 0.02, 0.98), y: clamp(pt.y + dy / L * 0.035, 0.02, 0.98) };
+		}
+		pts.push(pt);
+		return pt;
+	}
+	function ghost(i, pt, tipText) { return { t: 'icon', i: i, x: r4(pt.x), y: r4(pt.y), ghost: 1, tip: 'Starter \u00b7 ' + tipText }; }
+	function starterItems() {
+		var st = stepObj(), out = [], pts = [];
+		if (!st) return out;
+		if (S.mode === 'hp') {
+			var hills = sortedHills(), i = hills.map(function (x) { return String(x.n); }).indexOf(st.k);
+			var hl = hills[i], nx = hills[(i + 1) % hills.length], sp = hl ? hillSpawns(hl.n) : null;
+			if (!hl || !sp) return out;
+			out.push(ghost('sub', spread(pts, { x: hl.x + 0.03, y: hl.y + 0.008 }), 'Second SMG takes the hill. One player inside is enough.'));
+			out.push(ghost('ar', spread(pts, toward(hl, sp.own, 0.12)), 'Main AR overlooks the hill with your spawn behind them and blocks the back.'));
+			out.push(ghost('entry', spread(pts, toward(hl, sp.enemy, 0.11)), 'Entry SMG pushes out toward the enemy spawn and closes a lane.'));
+			var f = spread(pts, toward(hl, nx, 0.1));
+			out.push(ghost('flex', f, 'Flex sets up on the P' + nx.n + ' side and leaves first, with about 20 seconds left.'));
+			out.push({ t: 'route', r: 'flex', p: [[r4(f.x), r4(f.y)], [r4(nx.x), r4(nx.y)]], ghost: 1 });
+		} else if (S.mode === 'hj' && MAP.hj && MAP.hj.spike && (MAP.spawns || []).length === 2) {
+			var ti = st.k === 't2' ? 1 : 0, mine = MAP.spawns[ti], theirs = MAP.spawns[1 - ti], cs = MAP.hj.commStations || [];
+			if (cs.length < 2) return out;
+			var near = function (q) { return cs.slice().sort(function (a, b) { return dist(a, q) - dist(b, q); })[0]; };
+			var myCs = near(mine), enCs = near(theirs), k = MAP.hj.spike;
+			var car = spread(pts, { x: k.x + 0.03, y: k.y + 0.008 });
+			out.push(ghost('sub', car, 'Second SMG carries the Spike. Pass it before you die with it.'));
+			out.push({ t: 'route', r: 'sub', p: [[r4(car.x), r4(car.y)], [r4(enCs.x), r4(enCs.y)]], ghost: 1 });
+			out.push(ghost('entry', spread(pts, toward(k, enCs, dist(k, enCs) * 0.7)), 'Entry SMG leads forward and wins the fight at the enemy Comm Station before the Spike arrives.'));
+			var mid = toward(k, enCs, dist(k, enCs) * 0.35), ex = enCs.x - k.x, ey = enCs.y - k.y, eL = Math.hypot(ex, ey) || 1;
+			out.push(ghost('flex', spread(pts, { x: clamp(mid.x - ey / eL * 0.08, 0.02, 0.98), y: clamp(mid.y + ex / eL * 0.08, 0.02, 0.98) }), 'Flex escorts off to the side, trades, and picks up the Spike if the carrier falls.'));
+			out.push(ghost('ar', spread(pts, toward(k, myCs, dist(k, myCs) * 0.45)), 'Main AR anchors between the middle and your own Comm Station.'));
+		}
+		return out;
+	}
+
+	// ---------- DOM: svg layers, hud ----------
+	var gRot = s('g'), gSpawn = s('g'), gStart = s('g'), gIntel = s('g'), gPlan = s('g'), gObj = s('g'), gCall = s('g'), gTemp = s('g');
+	[gRot, gSpawn, gStart, gIntel, gPlan, gObj, gCall, gTemp].forEach(function (g) { svg.appendChild(g); });
+	var SC = { obj: [], rot: [], spawn: [], start: [], intel: [], plan: [], call: [], temp: [] };
+
+	var hud = h('div', 'pl-hud', '<button type="button" data-zoom="in" aria-label="Zoom in">' + ico('plus') + '</button><button type="button" data-zoom="out" aria-label="Zoom out">' + ico('minus') + '</button><button type="button" data-zoom="fit" aria-label="Reset view">' + ico('fit') + '</button><button type="button" data-fs aria-label="Full screen">' + ico('expand') + '</button><button type="button" data-brief aria-label="Briefing view" title="Briefing view">' + ico('brief') + '</button>');
 	var badge = h('div', 'pl-badge');
 	var tip = h('div', 'pl-tip'); tip.hidden = true;
 	var toastEl = h('div', 'pl-toast'); toastEl.setAttribute('role', 'status'); toastEl.setAttribute('aria-live', 'polite');
-	stage.appendChild(hud); stage.appendChild(badge); stage.appendChild(tip); root.appendChild(toastEl);
+	var stepBar = h('div', 'pl-steps'); stepBar.setAttribute('role', 'tablist'); stepBar.setAttribute('aria-label', 'Plan step'); stepBar.hidden = true;
+	var briefBar = h('div', 'pl-brief'); briefBar.hidden = true;
+	stage.appendChild(hud); stage.appendChild(badge); stage.appendChild(stepBar); stage.appendChild(tip); root.appendChild(briefBar); root.appendChild(toastEl);
 
 	function toast(msg) {
 		toastEl.textContent = msg;
@@ -332,14 +472,16 @@
 		clear(gObj); SC.obj = [];
 		if (!S.layers.obj) return;
 		if (S.mode === 'hp') {
-			sortedHills().forEach(function (hl) {
-				var x = hl.x * 1000, y = hl.y * 1000, sel = S.sel === 'h' + hl.n;
-				var g = s('g', { 'class': 'mk mk-hill' + (sel ? ' is-sel' : ''), 'data-tip': 'P' + hl.n + ' \u00b7 ' + hl.name, 'data-hill': hl.n });
+			var hsAll = sortedHills(), curI = S.step ? hsAll.map(function (x) { return String(x.n); }).indexOf(S.step) : -1;
+			var nextN = curI >= 0 ? hsAll[(curI + 1) % hsAll.length].n : 0;
+			hsAll.forEach(function (hl) {
+				var x = hl.x * 1000, y = hl.y * 1000, sel = S.sel === 'h' + hl.n, dim = curI >= 0 && String(hl.n) !== S.step && hl.n !== nextN;
+				var g = s('g', { 'class': 'mk mk-hill' + (sel ? ' is-sel' : '') + (dim ? ' is-dim' : ''), 'data-tip': 'P' + hl.n + ' \u00b7 ' + hl.name + (curI >= 0 && hl.n === nextN ? ' \u00b7 next hill' : ''), 'data-hill': hl.n });
 				g.appendChild(s('circle', { r: 22, fill: 'rgba(216,169,75,0.22)', 'class': 'mk-halo' }));
 				g.appendChild(s('circle', { r: 14.5, fill: '#d8a94b', stroke: '#1b1608', 'stroke-width': 2 }));
 				g.appendChild(s('text', { y: 4.6, 'text-anchor': 'middle', 'font-size': 12.5, 'font-weight': 800, fill: '#1b1608', 'font-family': FONT }, 'P' + hl.n));
 				gObj.appendChild(g); track(SC.obj, g, x, y);
-				var lb = s('g', { 'class': 'mk-label' + (sel ? ' is-sel' : '') });
+				var lb = s('g', { 'class': 'mk-label' + (sel ? ' is-sel' : '') + (dim ? ' is-dim' : '') });
 				lb.appendChild(s('text', { y: 34, 'text-anchor': 'middle', 'font-size': 11.5, 'font-weight': 650, fill: '#f3f1e6', stroke: 'rgba(0,0,0,0.85)', 'stroke-width': 3.2, 'paint-order': 'stroke', 'font-family': FONT }, hl.name));
 				gObj.appendChild(lb); track(SC.obj, lb, x, y);
 			});
@@ -395,7 +537,8 @@
 		if (S.mode !== 'hp' || !S.layers.rot || !S.layers.obj) return;
 		var hl = sortedHills();
 		for (var i = 0; i < hl.length; i++) {
-			var a = hl[i], b = hl[(i + 1) % hl.length], last = i === hl.length - 1;
+			var a = hl[i], b = hl[(i + 1) % hl.length], last = !S.step && i === hl.length - 1;
+			if (S.step && String(a.n) !== S.step) continue;
 			var x1 = a.x * 1000, y1 = a.y * 1000, x2 = b.x * 1000, y2 = b.y * 1000;
 			var dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy) || 1;
 			var cx = (x1 + x2) / 2 - dy / len * len * 0.13, cy = (y1 + y2) / 2 + dx / len * len * 0.13;
@@ -427,12 +570,13 @@
 			var d = smoothPath(pts);
 			var g = s('g', { 'class': 'it it-' + it.t, 'data-idx': ia });
 			g.appendChild(s('path', { d: d, fill: 'none', stroke: 'rgba(0,0,0,0.6)', 'stroke-width': 7.5, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'vector-effect': 'non-scaling-stroke' }));
-			g.appendChild(s('path', { d: d, fill: 'none', stroke: col, 'stroke-width': 3.6, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'stroke-dasharray': it.t === 'enemy' ? '10 8' : null, 'vector-effect': 'non-scaling-stroke' }));
+			g.appendChild(s('path', { d: d, fill: 'none', stroke: col, 'stroke-width': 3.6, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'stroke-dasharray': it.t === 'enemy' ? '10 8' : (it.ghost ? '3 8' : null), 'vector-effect': 'non-scaling-stroke' }));
+			if (it.ghost) g.setAttribute('opacity', '0.7');
 			if (ia !== null) g.appendChild(s('path', { d: d, fill: 'none', stroke: 'rgba(0,0,0,0)', 'stroke-width': 20, 'vector-effect': 'non-scaling-stroke', 'class': 'hit' }));
 			parent.appendChild(g);
 			var n = pts.length, b = pts[n - 1], a = pts[n - 2];
 			for (var j = n - 2; j >= 0; j--) { if (Math.hypot(b[0] - pts[j][0], b[1] - pts[j][1]) > 3) { a = pts[j]; break; } }
-			var head = s('path', { d: 'M10,0 L-6,-7.5 L-2.5,0 L-6,7.5 Z', fill: col, stroke: 'rgba(0,0,0,0.65)', 'stroke-width': 1.3, 'data-idx': ia });
+			var head = s('path', { d: 'M10,0 L-6,-7.5 L-2.5,0 L-6,7.5 Z', fill: col, stroke: 'rgba(0,0,0,0.65)', 'stroke-width': 1.3, 'data-idx': ia, opacity: it.ghost ? 0.7 : null });
 			parent.appendChild(head); track(list, head, b[0], b[1], Math.atan2(b[1] - a[1], b[0] - a[0]) * 180 / Math.PI);
 			return;
 		}
@@ -444,6 +588,7 @@
 		} else if (it.t === 'icon') {
 			var c = ICONS[it.i] || ICONS.ar;
 			g2 = s('g', { 'class': 'it it-icon', 'data-idx': ia, 'data-tip': c.name });
+			if (it.ghost) g2.appendChild(s('circle', { r: 20, fill: 'rgba(0,0,0,0.35)', stroke: c.color, 'stroke-width': 1.6, 'stroke-dasharray': '3 3' }));
 			g2.appendChild(s('circle', { r: 14, fill: c.color, stroke: 'rgba(0,0,0,0.7)', 'stroke-width': 2 }));
 			g2.appendChild(s('text', { y: c.label.length > 2 ? 3.6 : 4.4, 'text-anchor': 'middle', 'font-size': c.label.length > 2 ? 9.5 : 12, 'font-weight': 850, fill: c.ink, 'font-family': FONT }, c.label));
 		} else if (it.t === 'text') {
@@ -459,16 +604,63 @@
 		} else {
 			return;
 		}
+		if (it.tip) g2.setAttribute('data-tip', it.tip);
+		if (it.ghost) g2.setAttribute('class', g2.getAttribute('class') + ' is-ghost');
 		parent.appendChild(g2); track(list, g2, x, y);
 	}
 
 	function renderItems() {
 		clear(gIntel); clear(gPlan); SC.intel = []; SC.plan = [];
-		(S.intel[S.mode] || []).forEach(function (it, i) { if (layerOn(it.t)) drawItem(gIntel, SC.intel, it, S.editIntel ? i : -1); });
-		if (S.layers.plan) (S.plans[S.mode] || []).forEach(function (it, i) { drawItem(gPlan, SC.plan, it, S.editIntel ? -1 : i); });
+		(S.intel[S.mode] || []).forEach(function (it, i) { if (layerOn(it.t) && inStep(it)) drawItem(gIntel, SC.intel, it, S.editIntel ? i : -1); });
+		if (S.layers.plan) (S.plans[S.mode] || []).forEach(function (it, i) { if (inStep(it)) drawItem(gPlan, SC.plan, it, S.editIntel ? -1 : i); });
 		gPlan.setAttribute('opacity', S.editIntel ? '0.35' : '1');
 	}
-	function renderAll() { renderRot(); renderObj(); renderItems(); lastK = -1; applyCam(); }
+	// Starter setup: shown for the picked step until the team has drawn its own plan for that step.
+	function renderStarter() {
+		clear(gStart); SC.start = [];
+		if (!S.layers.starter || !S.step || S.editIntel || S.brief || stepItems().length) return;
+		starterItems().forEach(function (it) { drawItem(gStart, SC.start, it, -1); });
+	}
+	function spawnMark(x, y, col, label, tipText, which) {
+		var g = s('g', { 'class': 'mk mk-sp', 'data-tip': tipText, 'data-sp': which || null });
+		g.appendChild(s('rect', { x: -21, y: -11, width: 42, height: 22, rx: 7, fill: '#10140c', stroke: col, 'stroke-width': 2 }));
+		g.appendChild(s('text', { y: 3.8, 'text-anchor': 'middle', 'font-size': 10, 'font-weight': 850, 'letter-spacing': 0.3, fill: col, 'font-family': FONT }, label));
+		gSpawn.appendChild(g); track(SC.spawn, g, x * 1000, y * 1000);
+	}
+	function renderSpawns() {
+		clear(gSpawn); SC.spawn = [];
+		if (!S.layers.spawns) return;
+		var sp = MAP.spawns || [], zones = (S.mode === 'hp' && S.step) ? hillSpawns(S.step) : null;
+		if (zones) {
+			[['own', '#4fc3f7', 'HOLD', 'Likely spawn for the team holding P' + S.step], ['enemy', '#ff5a5a', 'BREAK', 'Likely spawn for the team breaking P' + S.step]].forEach(function (d) {
+				var z = zones[d[0]];
+				gSpawn.appendChild(s('circle', { cx: r2(z.x * 1000), cy: r2(z.y * 1000), r: 62, fill: d[1], 'fill-opacity': 0.09, stroke: d[1], 'stroke-width': 2, 'stroke-dasharray': z.set ? null : '8 7', 'vector-effect': 'non-scaling-stroke', 'pointer-events': 'none' }));
+				spawnMark(z.x, z.y, d[1], d[2], d[3] + (z.set ? ' \u00b7 set by your team' : ' \u00b7 estimate, not confirmed'), d[0]);
+			});
+		}
+		if (S.mode === 'hj' && S.layers.obj && MAP.hj) return; // Hijack already draws the team spawns as objectives
+		var atk = -1;
+		if (S.mode === 'snd' && MAP.snd && MAP.snd.bomb && sp.length === 2) atk = dist(sp[0], MAP.snd.bomb) <= dist(sp[1], MAP.snd.bomb) ? 0 : 1;
+		sp.forEach(function (q, i) {
+			if (zones && (dist(q, zones.own) < 0.045 || dist(q, zones.enemy) < 0.045)) return;
+			var label = atk < 0 ? 'START' : (i === atk ? 'ATK' : 'DEF');
+			var tipText = (atk < 0 ? 'Team ' + q.team + ' starts here' : (i === atk ? 'Attackers start here' : 'Defenders start here')) + ' \u00b7 official tac map';
+			spawnMark(q.x, q.y, i ? '#ffb38a' : '#9bdcf7', label, tipText);
+		});
+	}
+	function renderCallouts() {
+		clear(gCall); SC.call = [];
+		var edit = S.tool === 'layers';
+		if (!S.layers.callouts && !edit) return;
+		callouts().forEach(function (c, i) {
+			var txt = String(c.s || '').toUpperCase(), w = Math.min(240, txt.length * 6.6 + 16), team = c.k === 'team';
+			var g = s('g', { 'class': 'co' + (team ? ' co-team' : '') + (edit ? ' is-edit' : ''), 'data-co': edit ? i : null });
+			g.appendChild(s('rect', { x: -w / 2, y: -10, width: w, height: 20, rx: 6, fill: 'rgba(8,10,7,0.82)', stroke: team ? 'rgba(240,198,107,0.8)' : 'rgba(233,236,223,0.3)', 'stroke-width': 1.1, 'stroke-dasharray': edit ? '3 2' : null }));
+			g.appendChild(s('text', { y: 3.7, 'text-anchor': 'middle', 'font-size': 10.4, 'font-weight': 750, 'letter-spacing': 0.5, fill: team ? '#f0c66b' : '#e9ecdf', 'font-family': FONT }, txt));
+			gCall.appendChild(g); track(SC.call, g, c.x * 1000, c.y * 1000);
+		});
+	}
+	function renderAll() { renderRot(); renderSpawns(); renderObj(); renderStarter(); renderItems(); renderCallouts(); lastK = -1; applyCam(); }
 
 	function renderTemp(pts, tool) {
 		clear(gTemp); SC.temp = [];
@@ -484,7 +676,8 @@
 		S.future = [];
 	}
 	function changed() {
-		renderItems(); lastK = -1; applyCam();
+		renderItems(); renderStarter(); lastK = -1; applyCam();
+		renderSteps(); if (S.brief) renderBrief();
 		if (S.editIntel) {
 			S.intelDirty = true;
 		} else {
@@ -513,7 +706,7 @@
 		pushHistory(); items.splice(i, 1); changed();
 	}
 	function isPointItem(i) { var it = currentItems()[i]; return !!(it && it.t !== 'route' && it.t !== 'enemy'); }
-	function addItem(it) { pushHistory(); currentItems().push(it); changed(); }
+	function addItem(it) { if (S.step && !S.editIntel && !it.st) it.st = S.step; pushHistory(); currentItems().push(it); changed(); }
 
 	function closePop() { if (pop) { pop.remove(); pop = null; } }
 	function openPop(pt, placeholder, cb) {
@@ -535,6 +728,41 @@
 			if (e.key === 'Escape') { e.preventDefault(); closePop(); stage.focus({ preventScroll: true }); }
 		});
 	}
+	function refreshLayers() { renderSpawns(); renderStarter(); renderCallouts(); lastK = -1; applyCam(); }
+	function openCalloutPop(pt, idx) {
+		closePop();
+		var cur = idx >= 0 ? callouts()[idx] : null, mp = toMap(pt), was = cur ? cur.s : '';
+		pop = h('form', 'pl-pop pl-pop-co', '<input type="text" maxlength="40" placeholder="Callout name" aria-label="Callout name" value="' + esc(cur ? cur.s : S.coPick) + '"><button type="submit" class="btn btn-sm btn-primary">' + (cur ? 'Save' : 'Add') + '</button>' +
+			(cur ? '<button type="button" class="btn btn-sm btn-ghost" data-co-del aria-label="Delete callout" title="Delete callout">' + ico('trash') + '</button>' : ''));
+		pop.style.left = Math.round(clamp(pt.x - 20, 8, S.vw - 330)) + 'px';
+		pop.style.top = Math.round(clamp(pt.y + 16, 8, S.vh - 64)) + 'px';
+		stage.appendChild(pop);
+		var inp = pop.querySelector('input');
+		setTimeout(function () { inp.focus(); inp.select(); }, 10);
+		var done = function () { closePop(); stage.focus({ preventScroll: true }); saveTeam(); refreshLayers(); renderPlanPane(); };
+		pop.addEventListener('submit', function (e) {
+			e.preventDefault();
+			var v = inp.value.trim().slice(0, 40);
+			if (!v) { closePop(); return; }
+			var list = editCallouts();
+			if (cur) { if (v !== was) { list[idx].s = v; list[idx].k = 'team'; } }
+			else list.push({ id: 'c' + Date.now().toString(36), s: v, x: r4(clamp(mp.x / 1000, 0, 1)), y: r4(clamp(mp.y / 1000, 0, 1)), k: 'team' });
+			if (S.coPick === v) S.coPick = '';
+			done();
+		});
+		pop.addEventListener('click', function (e) { if (e.target.closest('[data-co-del]')) { editCallouts().splice(idx, 1); done(); } });
+		inp.addEventListener('keydown', function (e) {
+			e.stopPropagation();
+			if (e.key === 'Escape') { e.preventDefault(); closePop(); stage.focus({ preventScroll: true }); }
+		});
+	}
+	function tapLayers(pt) {
+		if (!S.coPick) { openCalloutPop(pt, -1); return; }
+		var mp = toMap(pt), name = S.coPick;
+		editCallouts().push({ id: 'c' + Date.now().toString(36), s: name, x: r4(clamp(mp.x / 1000, 0, 1)), y: r4(clamp(mp.y / 1000, 0, 1)), k: 'team' });
+		S.coPick = ''; saveTeam(); refreshLayers(); renderPlanPane();
+		toast('Added \u201c' + name + '\u201d');
+	}
 	function placeAt(mp, pt) {
 		var x = r4(clamp(mp.x / 1000, 0, 1)), y = r4(clamp(mp.y / 1000, 0, 1));
 		if (S.tool === 'strong') addItem({ t: 'strong', x: x, y: y });
@@ -551,6 +779,7 @@
 	function hideTip() { tip.hidden = true; }
 
 	function selectHill(n) {
+		if (S.mode === 'hp' && !S.editIntel && S.step !== String(n)) { setStep(String(n), false); return; }
 		S.sel = 'h' + n; renderObj(); lastK = -1; applyCam();
 		Array.prototype.forEach.call(panel.querySelectorAll('[data-fly-hill]'), function (b) { b.classList.toggle('is-sel', +b.getAttribute('data-fly-hill') === n); });
 	}
@@ -558,7 +787,7 @@
 	// ---------- pointer input ----------
 	var pointers = new Map(), gesture = null;
 	stage.addEventListener('pointerdown', function (e) {
-		if (e.button === 2 || (e.target.closest && e.target.closest('.pl-hud,.pl-pop'))) return;
+		if (e.button === 2 || (e.target.closest && e.target.closest('.pl-hud,.pl-pop,.pl-steps'))) return;
 		var pt = local(e);
 		var target = e.target.closest ? e.target.closest('[data-idx]') : null;
 		pointers.set(e.pointerId, pt);
@@ -574,12 +803,17 @@
 		}
 		if (pointers.size > 2) return;
 		var mp = toMap(pt);
+		if (S.tool === 'layers' && e.button === 0 && !spaceDown && e.target.closest) {
+			var coEl = e.target.closest('[data-co]'), spEl = e.target.closest('[data-sp]');
+			if (coEl) { gesture = { type: 'codrag', idx: +coEl.getAttribute('data-co'), start: pt, moved: false }; return; }
+			if (spEl && S.mode === 'hp' && S.step) { gesture = { type: 'spdrag', which: spEl.getAttribute('data-sp'), start: pt, moved: false }; return; }
+		}
 		if (S.tool === 'erase' && e.button === 0 && !spaceDown) {
 			gesture = { type: 'erase', target: e.target };
 			if (target) eraseIdx(+target.getAttribute('data-idx'));
 			return;
 		}
-		if (S.tool === 'pan' || e.button === 1 || spaceDown) {
+		if (S.tool === 'pan' || S.tool === 'layers' || e.button === 1 || spaceDown) {
 			if (target && S.tool === 'pan' && !spaceDown && isPointItem(+target.getAttribute('data-idx'))) {
 				pushHistory();
 				gesture = { type: 'drag', idx: +target.getAttribute('data-idx'), start: pt, moved: false, target: e.target };
@@ -632,6 +866,19 @@
 			if (it2) { it2.x = r4(clamp(m2.x / 1000, 0, 1)); it2.y = r4(clamp(m2.y / 1000, 0, 1)); gesture.moved = true; renderItems(); lastK = -1; applyCam(); }
 			return;
 		}
+		if (gesture.type === 'codrag') {
+			if (dist(pt, gesture.start) < 3 && !gesture.moved) return;
+			var mc = toMap(pt), cl = editCallouts()[gesture.idx];
+			if (cl) { cl.x = r4(clamp(mc.x / 1000, 0, 1)); cl.y = r4(clamp(mc.y / 1000, 0, 1)); gesture.moved = true; renderCallouts(); lastK = -1; applyCam(); }
+			return;
+		}
+		if (gesture.type === 'spdrag') {
+			if (dist(pt, gesture.start) < 3 && !gesture.moved) return;
+			var ms = toMap(pt), ov = TEAM.spawns[S.step] || (TEAM.spawns[S.step] = {});
+			ov[gesture.which] = [r4(clamp(ms.x / 1000, 0, 1)), r4(clamp(ms.y / 1000, 0, 1))];
+			gesture.moved = true; renderSpawns(); renderStarter(); lastK = -1; applyCam();
+			return;
+		}
 		if (gesture.type === 'draw') {
 			if (dist(pt, gesture.last) > 3) {
 				var m3 = toMap(pt);
@@ -654,7 +901,16 @@
 		if (g.type === 'pinch') { if (pointers.size < 2) gesture = null; return; }
 		gesture = null;
 		stage.classList.remove('is-grabbing');
+		if (g.type === 'codrag') {
+			if (!g.moved) openCalloutPop(pt, g.idx); else { saveTeam(); renderPlanPane(); }
+			return;
+		}
+		if (g.type === 'spdrag') {
+			if (g.moved) { saveTeam(); renderPlanPane(); toast('Spawn zone saved for your team'); }
+			return;
+		}
 		if (g.type === 'pan') {
+			if (!g.moved && S.tool === 'layers' && e.type !== 'pointercancel' && !(g.target && g.target.closest && g.target.closest('.mk,[data-co]'))) { tapLayers(pt); return; }
 			if (!g.moved) { handleTap(pt, g.target); return; }
 			if (Math.hypot(g.vx, g.vy) > 0.2 && performance.now() - g.t < 90) { S.vel = { x: g.vx, y: g.vy }; startLoop(); }
 			return;
@@ -711,6 +967,7 @@
 		if (z === 'in') zoomAt(center(), 1.6, 320);
 		else if (z === 'out') zoomAt(center(), 1 / 1.6, 320);
 		else if (z === 'fit') fitView();
+		else if (b.hasAttribute('data-brief')) setBrief(!S.brief);
 		else if (b.hasAttribute('data-fs')) {
 			if (document.fullscreenElement) { document.exitFullscreen(); }
 			else if (root.requestFullscreen) { root.requestFullscreen().catch(function () { toast('Full screen not available'); }); }
@@ -730,7 +987,9 @@
 		if (k === '+' || k === '=') { e.preventDefault(); zoomAt(center(), 1.5, 280); }
 		else if (k === '-' || k === '_') { e.preventDefault(); zoomAt(center(), 1 / 1.5, 280); }
 		else if (k === '0') { e.preventDefault(); fitView(); }
-		else if (k === 'Escape') { cancelTemp(); closePop(); hideTip(); gesture = null; }
+		else if (k === 'Escape') { cancelTemp(); closePop(); hideTip(); gesture = null; if (S.brief && !document.fullscreenElement) setBrief(false); }
+		else if (k === '[' || k === ']') { e.preventDefault(); stepMove(k === ']' ? 1 : -1); }
+		else if (S.brief && (k === 'ArrowLeft' || k === 'ArrowRight')) { e.preventDefault(); stepMove(k === 'ArrowRight' ? 1 : -1); }
 		else if (k === ' ') { e.preventDefault(); spaceDown = true; stage.classList.add('is-space'); }
 		else if (k.indexOf('Arrow') === 0) {
 			e.preventDefault();
@@ -778,7 +1037,7 @@
 			html += '<div class="pl-sec"><div class="pl-sec-h"><h3>Hardpoint rotation</h3><span class="muted">' + hills.length + ' hills</span></div><ol class="pl-hills">';
 			hills.forEach(function (hl, i) {
 				var nx = hills[(i + 1) % hills.length];
-				html += '<li><button type="button" data-fly-hill="' + hl.n + '" class="' + (S.sel === 'h' + hl.n ? 'is-sel' : '') + '"><span class="pl-num">P' + hl.n + '</span><span class="pl-hname">' + esc(hl.name) + '</span><span class="pl-next">next P' + nx.n + '</span></button></li>';
+				html += '<li><button type="button" data-fly-hill="' + hl.n + '" class="' + ((S.sel === 'h' + hl.n || S.step === String(hl.n)) ? 'is-sel' : '') + '"><span class="pl-num">P' + hl.n + '</span><span class="pl-hname">' + esc(hl.name) + '</span><span class="pl-next">next P' + nx.n + '</span></button></li>';
 			});
 			html += '</ol>' + srcLine([MAP.sources && MAP.sources.hp, MAP.sources && MAP.sources.rot]) + '</div>';
 		} else if (S.mode === 'hj') {
@@ -819,7 +1078,15 @@
 			layerToggle('enemy', 'Common enemy routes', countOf('enemy')) +
 			layerToggle('note', 'Coach notes', countOf('note') + countOf('text')) +
 			layerToggle('plan', 'My plan', (S.plans[S.mode] || []).length) +
-			'</div></div>';
+			layerToggle('callouts', 'Callouts', callouts().length) +
+			(steps().length && S.mode !== 'snd' ? layerToggle('starter', S.mode === 'hp' ? 'Starter setup per hill' : 'Starter setup per side') : '') +
+			((MAP.spawns || []).length ? layerToggle('spawns', S.mode === 'hp' ? 'Spawns & spawn zones' : 'Team spawns') : '') +
+			'</div>' +
+			(steps().length && S.mode !== 'snd' ? '<p class="muted pl-hint">Pick a ' + (S.mode === 'hp' ? 'hill' : 'side') + ' in the bar above the map to see its starter setup' + (S.mode === 'hp' ? ' and spawn zones' : '') + '. Starters are a shape placed by formula, not real cover' + (S.mode === 'hp' ? ', and spawn zones marked as estimates follow one rule: the team holding spawns on the side it set up on' : '') + '.</p>' : '') +
+			'</div>';
+		if ((MAP.tips || []).length) {
+			html += '<div class="pl-sec"><div class="pl-sec-h"><h3>Map notes</h3></div><ul class="pl-tips">' + MAP.tips.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>' + srcLine([MAP.tipSource]) + '</div>';
+		}
 		var intel = S.intel[S.mode] || [];
 		var notes = intel.filter(function (it) { return it.t === 'note' && it.s; });
 		html += '<div class="pl-sec"><div class="pl-sec-h"><h3>Coaching</h3></div>';
@@ -848,21 +1115,39 @@
 			Object.keys(ICONS).map(function (k) { var c = ICONS[k]; return '<button type="button" data-icon="' + k + '" title="' + esc(c.name) + '" style="--c:' + c.color + ';--ink:' + c.ink + '"><b>' + esc(c.label) + '</b><span>' + esc(c.name) + '</span></button>'; }).join('') + '</div></div>' +
 			'<div class="pl-actions"><button type="button" class="btn btn-sm" data-undo title="Undo (Ctrl+Z)" aria-label="Undo">' + ico('undo') + '</button><button type="button" class="btn btn-sm" data-redo title="Redo (Ctrl+Shift+Z)" aria-label="Redo">' + ico('redo') + '</button><button type="button" class="btn btn-sm btn-ghost" data-clear>' + ico('trash') + 'Clear</button></div></div>';
 		if (!S.editIntel) {
+			var stp = stepObj(), edit = S.tool === 'layers', used = {};
+			callouts().forEach(function (c) { used[String(c.s).toLowerCase()] = 1; });
+			var sugg = (MAP.calloutNames || []).filter(function (n) { return !used[n.toLowerCase()]; });
+			if (steps().length) {
+				html += '<div class="pl-sec"><div class="pl-sec-h"><h3>Step</h3><span class="muted">' + esc(stp ? stp.label + (S.mode === 'hp' ? ' \u00b7 ' + stp.name : '') : 'All steps') + '</span></div>' +
+					'<p class="muted pl-hint" style="margin-top:0">' + (stp ? 'What you draw now belongs to ' + esc(stp.label) + ' only.' : 'What you draw now shows on every step. Pick a ' + (S.mode === 'hp' ? 'hill' : 'step') + ' in the bar above the map to plan it on its own.') + '</p>' +
+					(stp && S.mode !== 'snd' && !stepItems().length && starterItems().length ? '<div class="pl-share" style="margin-top:10px"><button type="button" class="btn btn-sm" data-copy-starter>' + ico('plus') + 'Copy the starter setup into my plan</button></div>' : '') + '</div>';
+			}
+			html += '<div class="pl-sec"><div class="pl-sec-h"><h3>Callouts</h3><span class="muted">' + (TEAM.callouts ? 'Your team\u2019s' : 'Default') + ' \u00b7 ' + callouts().length + '</span></div>' +
+				'<div class="pl-share"><button type="button" class="btn btn-sm' + (edit ? ' btn-primary' : '') + '" data-edit-layers>' + (edit ? 'Done editing' : 'Edit callouts') + '</button>' +
+				(teamEdited() ? '<button type="button" class="btn btn-sm" data-share-team>' + ico('link') + 'Copy team link</button><button type="button" class="btn btn-sm btn-ghost" data-reset-team>Reset</button>' : '') + '</div>' +
+				(edit ? '<p class="muted pl-hint">Tap the map to add a callout. Tap one to rename or delete it, drag to move it.' + (S.mode === 'hp' ? ' With a hill picked, the HOLD and BREAK spawn zones can be dragged too.' : '') + '</p>' +
+					(sugg.length ? '<span class="pl-lbl" style="margin-top:12px">Names players use' + (MAP.tipSource ? ' (' + esc(MAP.tipSource.label.split(' ')[0]) + ')' : '') + ' \u00b7 tap one, then tap the map</span><div class="pl-names">' + sugg.map(function (n) { return '<button type="button" data-co-pick="' + esc(n) + '"' + (S.coPick === n ? ' class="is-on"' : '') + '>' + esc(n) + '</button>'; }).join('') + '</div>' : '')
+					: '<p class="muted pl-hint">Add your own names and move the defaults. Edits stay on this device. Send the team link so everyone sees the same map.</p>') + '</div>';
 			html += '<div class="pl-sec"><div class="pl-sec-h"><h3>Share</h3></div><div class="pl-share">' +
 				'<button type="button" class="btn btn-sm" data-share>' + ico('link') + 'Copy link</button>' +
+				'<button type="button" class="btn btn-sm" data-share-brief>' + ico('brief') + 'Copy briefing link</button>' +
+				'<button type="button" class="btn btn-sm" data-open-brief>' + ico('brief') + 'Briefing view</button>' +
 				'<button type="button" class="btn btn-sm" data-export>' + ico('download') + 'Export image</button>' +
 				(D.user.loggedIn ? '<button type="button" class="btn btn-sm btn-primary" data-save>' + ico('save') + (S.planMeta.code && S.planMeta.canEdit ? 'Save changes' : 'Save to account') + '</button>' : (D.user.loginUrl ? '<a class="btn btn-sm btn-primary" href="' + esc(D.user.loginUrl) + '">Sign in to save</a>' : '')) +
 				'</div>' + (S.planMeta.code ? '<p class="muted pl-current">Plan: <b>' + esc(S.planMeta.title) + '</b> \u00b7 ' + esc(visName(S.planMeta.visibility)) + (S.planMeta.canEdit ? '' : ' \u00b7 view only, saving creates your own copy') + ' <button type="button" class="pl-link" data-new-plan>Start new</button></p>' : '') +
 				'<p class="muted pl-hint">Your plan saves on this device automatically.</p></div>';
 			if (D.user.loggedIn) html += '<div class="pl-sec"><div class="pl-sec-h"><h3>Saved plans</h3><button type="button" class="pl-link" data-load-plans>Load</button></div><div class="pl-saved" data-saved><p class="muted">Load your plans and your team\u2019s plans for this map.</p></div></div>';
 		}
-		html += '<div class="pl-sec pl-keys"><h4>Controls</h4><p class="muted">Drag to pan \u00b7 scroll or pinch to zoom \u00b7 double-click to zoom in \u00b7 drag icons to move them \u00b7 keys V R E S I T N X pick tools \u00b7 Ctrl+Z undo \u00b7 0 resets the view</p></div>';
+		html += '<div class="pl-sec pl-keys"><h4>Controls</h4><p class="muted">Drag to pan \u00b7 scroll or pinch to zoom \u00b7 double-click to zoom in \u00b7 drag icons to move them \u00b7 keys V R E S I T N X pick tools \u00b7 [ and ] change step \u00b7 Ctrl+Z undo \u00b7 0 resets the view</p></div>';
 		paneEl('plan').innerHTML = html;
 		syncToolUI();
 	}
 
 	function renderPanels() {
+		var body = panel.querySelector('.pl-body'), top = body ? body.scrollTop : 0;
 		renderIntelPane(); renderPlanPane();
+		if (body) body.scrollTop = top;
 		Array.prototype.forEach.call(panel.querySelectorAll('[data-mode]'), function (b) {
 			var on = b.getAttribute('data-mode') === S.mode;
 			b.classList.toggle('is-on', on); b.setAttribute('aria-selected', on ? 'true' : 'false');
@@ -886,9 +1171,11 @@
 		if (t !== 'plan' && S.tool !== 'pan') setTool('pan');
 	}
 	function setTool(t) {
+		var was = S.tool;
 		S.tool = t;
 		stage.setAttribute('data-tool', t);
 		syncToolUI();
+		if ((was === 'layers') !== (t === 'layers')) { S.coPick = ''; closePop(); renderCallouts(); lastK = -1; applyCam(); if (paneEl('plan')) renderPlanPane(); }
 	}
 	function syncToolUI() {
 		Array.prototype.forEach.call(panel.querySelectorAll('[data-tool]'), function (b) { b.classList.toggle('is-on', b.getAttribute('data-tool') === S.tool); });
@@ -898,7 +1185,7 @@
 	}
 	function setMode(m, silent) {
 		if (S.editIntel && S.intelDirty && !silent && !window.confirm('You have unpublished intel changes. Switch mode anyway?')) return;
-		S.mode = m; S.sel = null; S.history = []; S.future = [];
+		S.mode = m; S.sel = null; S.history = []; S.future = []; S.step = null; S.coPick = '';
 		if (!silent) {
 			S.planMeta = { code: null, title: '', visibility: 'unlisted', canEdit: true };
 			var u = new URL(location.href);
@@ -907,7 +1194,111 @@
 			u.hash = '';
 			history.replaceState(null, '', u.toString());
 		}
-		renderAll(); renderPanels();
+		renderAll(); renderPanels(); renderSteps();
+		if (S.brief) { renderBrief(); frameStep(); }
+	}
+
+	// ---------- steps bar and briefing view ----------
+	function renderSteps() {
+		var st = steps();
+		stepBar.hidden = !st.length;
+		stepBar.innerHTML = !st.length ? '' : '<button type="button" role="tab" data-step=""' + (!S.step ? ' class="is-on" aria-selected="true"' : '') + '>All</button>' + st.map(function (x) {
+			var n = (S.plans[S.mode] || []).filter(function (it) { return it.st === x.k; }).length;
+			return '<button type="button" role="tab" data-step="' + esc(x.k) + '" title="' + esc(x.name) + '"' + (S.step === x.k ? ' class="is-on" aria-selected="true"' : '') + '>' + esc(x.label) + (n ? '<i aria-hidden="true"></i>' : '') + '</button>';
+		}).join('');
+	}
+	function setStep(k, fly) {
+		if (k && !stepObj(k)) k = null;
+		S.step = k || null;
+		S.sel = (S.step && S.mode === 'hp') ? 'h' + S.step : null;
+		closePop(); renderAll(); renderSteps(); renderPanels();
+		if (S.brief) renderBrief();
+		if (fly) frameStep();
+	}
+	function stepMove(d) {
+		var seq = [null].concat(steps().map(function (x) { return x.k; }));
+		if (seq.length < 2) return;
+		setStep(seq[(seq.indexOf(S.step) + d + seq.length) % seq.length], true);
+	}
+	function frameStep() {
+		var st = stepObj(), pts = [];
+		if (!st) { fitView(); return; }
+		if (st.x !== undefined) pts.push([st.x, st.y]);
+		if (S.mode === 'hp') {
+			var hs = sortedHills(), i = hs.map(function (x) { return String(x.n); }).indexOf(st.k), nx = hs[(i + 1) % hs.length];
+			if (nx) pts.push([nx.x, nx.y]);
+			var z = S.layers.spawns ? hillSpawns(st.k) : null;
+			if (z) { pts.push([z.own.x, z.own.y]); pts.push([z.enemy.x, z.enemy.y]); }
+		}
+		var add = function (it) { if (it.p) it.p.forEach(function (q) { pts.push(q); }); else if (isFinite(it.x)) pts.push([it.x, it.y]); };
+		stepItems().forEach(add);
+		if (S.layers.starter && !S.brief && !stepItems().length) starterItems().forEach(add);
+		if (pts.length < 2) { fitView(); return; }
+		var x0 = 1, y0 = 1, x1 = 0, y1 = 0;
+		pts.forEach(function (q) { x0 = Math.min(x0, q[0]); y0 = Math.min(y0, q[1]); x1 = Math.max(x1, q[0]); y1 = Math.max(y1, q[1]); });
+		var w = Math.max(0.24, x1 - x0 + 0.18) * 1000, hh = Math.max(0.24, y1 - y0 + 0.18) * 1000;
+		animateTo({ x: (x0 + x1) / 2 * 1000, y: (y0 + y1) / 2 * 1000, k: Math.min(S.vw / w, S.vh / hh) }, 600);
+	}
+	stepBar.addEventListener('click', function (e) {
+		var b = e.target.closest('[data-step]');
+		if (b) setStep(b.getAttribute('data-step') || null, true);
+	});
+	function briefNotes() {
+		var out = [];
+		(S.intel[S.mode] || []).concat(S.plans[S.mode] || []).forEach(function (it) {
+			if ((it.t === 'note' || it.t === 'text') && it.s && (S.step ? it.st === S.step : !it.st)) out.push(it.s);
+		});
+		return out;
+	}
+	function renderBrief() {
+		briefBar.hidden = !S.brief;
+		if (!S.brief) { briefBar.innerHTML = ''; return; }
+		var st = steps(), i = st.map(function (x) { return x.k; }).indexOf(S.step), cur = i >= 0 ? st[i] : null, sub;
+		if (S.mode === 'hp' && cur) { var nx = st[(i + 1) % st.length]; sub = 'Next is ' + nx.label + ' \u00b7 ' + nx.name + '. Send the first player with about 20 seconds left.'; }
+		else if (cur) sub = cur.name;
+		else sub = st.length ? 'Everything on one map. Use the arrows to step through.' : 'Everything on one map.';
+		var n = cur ? stepItems().length : (S.plans[S.mode] || []).length, notes = briefNotes();
+		briefBar.innerHTML =
+			'<div class="pl-brief-top"><b>' + esc(MAP.name) + '</b>' +
+			(MODES.length > 1 ? '<div class="seg">' + MODES.map(function (m) { return '<button type="button" data-brief-mode="' + m + '"' + (m === S.mode ? ' class="is-on"' : '') + '>' + (m === 'snd' ? 'S&amp;D' : esc(MODE_NAMES[m])) + '</button>'; }).join('') + '</div>' : '<span class="muted">' + esc(modeName()) + '</span>') +
+			'<button type="button" class="btn btn-sm" data-brief-exit>Exit</button></div>' +
+			'<div class="pl-brief-main"><button type="button" class="pl-brief-nav" data-brief-prev aria-label="Previous step"' + (st.length ? '' : ' disabled') + '>' + ico('back') + '</button>' +
+			'<div class="pl-brief-step"><span class="pl-num">' + esc(cur ? (S.mode === 'hp' ? cur.label : String(i + 1)) : 'All') + '</span><div><b>' + esc(cur ? (S.mode === 'hp' ? cur.name : cur.label) : 'Whole plan') + '</b><em>' + esc(sub) + '</em></div></div>' +
+			'<button type="button" class="pl-brief-nav pl-brief-next" data-brief-next aria-label="Next step"' + (st.length ? '' : ' disabled') + '>' + ico('back') + '</button></div>' +
+			(notes.length ? '<ul class="pl-brief-notes">' + notes.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>'
+				: '<p class="pl-brief-empty">' + (n ? n + (n === 1 ? ' item' : ' items') + ' drawn for this ' + (cur ? 'step' : 'mode') + '.' : 'Nothing drawn for this ' + (cur ? 'step' : 'mode') + ' yet.') + '</p>');
+	}
+	function setBrief(on) {
+		S.brief = !!on;
+		root.classList.toggle('is-brief', S.brief);
+		root.classList.remove('panel-open');
+		closePop(); setTool('pan');
+		var u = new URL(location.href);
+		if (S.brief) u.searchParams.set('view', 'brief'); else u.searchParams.delete('view');
+		history.replaceState(null, '', u.toString());
+		renderBrief(); refreshLayers();
+		setTimeout(function () { measure(); frameStep(); }, 80);
+	}
+	briefBar.addEventListener('click', function (e) {
+		var b = e.target.closest('button');
+		if (!b) return;
+		if (b.hasAttribute('data-brief-exit')) setBrief(false);
+		else if (b.hasAttribute('data-brief-prev')) stepMove(-1);
+		else if (b.hasAttribute('data-brief-next')) stepMove(1);
+		else if (b.hasAttribute('data-brief-mode')) setMode(b.getAttribute('data-brief-mode'));
+	});
+	function copyStarter() {
+		var items = starterItems();
+		if (!items.length || !S.step) return;
+		pushHistory();
+		items.forEach(function (it) { var c = JSON.parse(JSON.stringify(it)); delete c.ghost; delete c.tip; c.st = S.step; currentItems().push(c); });
+		setTool('pan'); changed(); renderPlanPane();
+		toast('Starter copied. Drag each player onto real cover.');
+	}
+	function saveLayerPrefs() {
+		var o = {};
+		PREF_LAYERS.forEach(function (k) { o[k] = !!S.layers[k]; });
+		try { localStorage.setItem(LAYER_KEY, JSON.stringify(o)); } catch (e12) { /* ignore */ }
 	}
 
 	panel.addEventListener('click', function (e) {
@@ -925,6 +1316,29 @@
 			if (hl) { selectHill(n); flyTo(hl.x * 1000, hl.y * 1000, 2.6); }
 			return;
 		}
+		if (b.hasAttribute('data-edit-layers')) {
+			setTool(S.tool === 'layers' ? 'pan' : 'layers');
+			if (S.tool === 'layers') root.classList.remove('panel-open');
+			renderPlanPane();
+			return;
+		}
+		if (b.hasAttribute('data-co-pick')) {
+			var nm = b.getAttribute('data-co-pick');
+			S.coPick = S.coPick === nm ? '' : nm;
+			renderPlanPane();
+			if (S.coPick) { root.classList.remove('panel-open'); toast('Tap the map where \u201c' + nm + '\u201d is'); }
+			return;
+		}
+		if (b.hasAttribute('data-share-team')) { shareTeam(); return; }
+		if (b.hasAttribute('data-reset-team')) {
+			if (window.confirm('Remove your team\u2019s callouts and spawn-zone edits for ' + MAP.name + ' on this device and go back to the defaults?')) {
+				TEAM = { callouts: null, spawns: {} }; saveTeam(); renderAll(); renderPanels(); toast('Back to the default callouts');
+			}
+			return;
+		}
+		if (b.hasAttribute('data-copy-starter')) { copyStarter(); return; }
+		if (b.hasAttribute('data-share-brief')) { sharePlan(true); return; }
+		if (b.hasAttribute('data-open-brief')) { setBrief(true); return; }
 		if (b.hasAttribute('data-fly-site')) {
 			var id = b.getAttribute('data-fly-site');
 			var st = MAP.snd.sites.filter(function (x) { return x.id === id; })[0];
@@ -936,6 +1350,12 @@
 		if (b.hasAttribute('data-undo')) { undo(); return; }
 		if (b.hasAttribute('data-redo')) { redo(); return; }
 		if (b.hasAttribute('data-clear')) {
+			if (S.step && !S.editIntel) {
+				if (stepItems().length && window.confirm('Clear your plan for ' + stepObj().label + '? Other steps are kept.')) {
+					pushHistory(); setCurrentItems(currentItems().filter(function (it) { return it.st !== S.step; })); changed(); renderPlanPane();
+				}
+				return;
+			}
 			if (!currentItems().length) return;
 			if (window.confirm(S.editIntel ? 'Clear all official intel for this mode? (Not published until you press Publish.)' : 'Clear your plan for this mode?')) { pushHistory(); setCurrentItems([]); changed(); }
 			return;
@@ -955,7 +1375,12 @@
 	});
 	panel.addEventListener('change', function (e) {
 		var t = e.target;
-		if (t.hasAttribute('data-layer')) { S.layers[t.getAttribute('data-layer')] = t.checked; renderAll(); return; }
+		if (t.hasAttribute('data-layer')) {
+			var lk = t.getAttribute('data-layer');
+			S.layers[lk] = t.checked; renderAll();
+			if (PREF_LAYERS.indexOf(lk) >= 0) saveLayerPrefs();
+			return;
+		}
 		if (t.hasAttribute('data-map-switch')) { location.href = t.value + '?mode=' + S.mode; return; }
 		if (t.hasAttribute('data-edit-intel')) {
 			if (!t.checked && S.intelDirty && !window.confirm('Discard unpublished intel changes?')) { t.checked = true; return; }
@@ -966,7 +1391,14 @@
 	});
 
 	// ---------- share / save ----------
-	function sharePlan() {
+	function shareTeam() {
+		var u = new URL(location.href);
+		u.searchParams.delete('plan'); u.searchParams.delete('view');
+		modeParam(u, S.mode);
+		u.hash = 't=' + b64e(JSON.stringify(packTeam()));
+		copyText(u.toString()).then(function () { toast('Team link copied. Opening it loads these callouts on that device.'); });
+	}
+	function sharePlan(brief) {
 		var items = S.plans[S.mode] || [];
 		if (S.planMeta.code && S.planMeta.visibility !== 'private') {
 			var u0 = new URL(location.href); u0.hash = '';
@@ -977,10 +1409,13 @@
 		var u = new URL(location.href);
 		u.searchParams.delete('plan');
 		modeParam(u, S.mode);
-		u.hash = 'p=' + b64e(JSON.stringify({ v: 1, d: S.mode, i: items }));
+		if (brief) u.searchParams.set('view', 'brief'); else u.searchParams.delete('view');
+		var pay = { v: 1, d: S.mode, i: items };
+		if (TEAM.callouts) pay.c = packTeam().c;
+		u.hash = 'p=' + b64e(JSON.stringify(pay));
 		var url = u.toString();
 		copyText(url).then(function () {
-			toast(url.length > 7000 ? 'Link copied. It is long: saving to your account gives a short link.' : 'Share link copied');
+			toast(brief ? 'Briefing link copied. It opens straight into the step-through view.' : (url.length > 7000 ? 'Link copied. It is a long one because the plan is big.' : 'Share link copied'));
 		});
 	}
 	function publishIntel() {
@@ -1101,7 +1536,7 @@
 			var ov = new Image();
 			ov.onload = function () {
 				ctx.drawImage(ov, 0, 0, size, size);
-				var label = 'MW4 HUB \u00b7 ' + MAP.name + ' \u00b7 ' + modeName();
+				var label = 'MW4 HUB \u00b7 ' + MAP.name + ' \u00b7 ' + modeName() + (stepObj() ? ' \u00b7 ' + stepObj().label : '');
 				ctx.font = '700 30px ' + FONT;
 				var w = ctx.measureText(label).width + 36;
 				ctx.fillStyle = 'rgba(7,9,10,0.78)';
@@ -1112,7 +1547,7 @@
 					if (!blob) { toast('Export failed'); return; }
 					var a = document.createElement('a');
 					a.href = URL.createObjectURL(blob);
-					a.download = 'mw4hub-' + MAP.slug + '-' + S.mode + '.png';
+					a.download = 'mw4hub-' + MAP.slug + '-' + S.mode + (S.step ? '-' + S.step : '') + '.png';
 					document.body.appendChild(a); a.click();
 					setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 2000);
 					toast('Image downloaded');
@@ -1137,9 +1572,17 @@
 	measure();
 	renderAll();
 	renderPanels();
+	renderSteps();
 	var ready = function () { root.classList.add('is-ready'); };
 	if (!img || img.complete) ready(); else { img.addEventListener('load', ready); img.addEventListener('error', ready); }
 	if (S.sharedLoaded) { setTab('plan'); toast('Shared plan loaded'); }
+	if (S.teamLoaded) {
+		var ut = new URL(location.href); ut.hash = ''; history.replaceState(null, '', ut.toString());
+		setTab('plan'); toast('Team callouts loaded on this device');
+	}
+	if (params.get('view') === 'brief') setBrief(true);
+	// A plan or team link pasted into a tab that already has this map open only changes the hash, so reload to apply it.
+	window.addEventListener('hashchange', function () { if (/^#[pt]=/.test(location.hash)) location.reload(); });
 	var planCode = params.get('plan');
 	if (planCode && D.rest && D.rest.root) openPlan(planCode);
 })();

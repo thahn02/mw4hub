@@ -83,6 +83,9 @@ const server = http.createServer((req, res) => {
 		expect(btns.join() === m.modes.join(), 'mode buttons ' + btns.join() + ' vs ' + m.modes.join());
 		for (const mode of m.modes) {
 			await page.click('.pl-modes [data-mode=' + mode + ']');
+			const nSteps = mode === 'hp' ? m.hp.hills.length : 2;
+			expect(await page.locator('.pl-steps [data-step]').count() === nSteps + 1, mode + ' step bar has All + ' + nSteps + ' steps on ' + m.slug);
+			expect(await page.locator('.pl-svg .co').count() > 0, mode + ' callouts drawn on ' + m.slug);
 			expect((await page.locator('.pl-badge span').innerText()).toLowerCase() === NAMES[mode].toLowerCase(), 'badge for ' + mode);
 			expect(await page.locator('.mk-hill').count() === (mode === 'hp' ? m.hp.hills.length : 0), mode + ' hill markers');
 			expect(await page.locator('.mk-site').count() === (mode === 'snd' ? 2 : 0), mode + ' site markers');
@@ -101,6 +104,59 @@ const server = http.createServer((req, res) => {
 	await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight)); await page.waitForTimeout(400);
 	await page.evaluate(() => window.scrollTo(0, 0)); await page.waitForTimeout(600);
 	await shot('bomb-sites-top');
+	// Planner layers, steps, team callouts and the briefing view (own browser context so nothing leaks into My Plans).
+	{
+		const c3 = await browser.newContext({ viewport: { width: 1360, height: 860 } });
+		const p3 = await c3.newPage();
+		p3.on('pageerror', (e) => problems.push('planner script error: ' + e.message));
+		const hpMap = maps.find((x) => x.modes.indexOf('hp') >= 0);
+		const open = async (q) => { await p3.goto(base + 'maps/' + hpMap.slug + '/' + (q || ''), { waitUntil: 'networkidle' }); await p3.waitForSelector('.mw4-planner.is-ready'); };
+		const ex3 = (ok, msg) => { if (!ok) problems.push('planner: ' + msg); };
+		await open();
+		ex3(await p3.locator('.pl-svg .is-ghost').count() === 0, 'no starter before a step is picked');
+		await p3.click('.pl-steps [data-step="1"]');
+		ex3(await p3.locator('.pl-svg .is-ghost').count() === 4, 'starter shows four players on P1');
+		ex3(await p3.locator('.pl-svg .mk-sp[data-sp]').count() === 2, 'hold and break spawn zones on P1');
+		ex3(await p3.locator('.pl-svg .mk-hill.is-dim').count() === hpMap.hp.hills.length - 2, 'other hills dimmed');
+		for (const k of ['starter', 'spawns', 'callouts']) await p3.locator('.pl-toggle:has([data-layer=' + k + '])').click();
+		ex3(await p3.locator('.pl-svg .is-ghost, .pl-svg .mk-sp, .pl-svg .co').count() === 0, 'starter, spawns and callouts switch off');
+		await open();
+		await p3.click('.pl-steps [data-step="1"]');
+		ex3(await p3.locator('.pl-svg .is-ghost, .pl-svg .mk-sp, .pl-svg .co').count() === 0, 'layer switches are remembered');
+		for (const k of ['starter', 'spawns', 'callouts']) await p3.locator('.pl-toggle:has([data-layer=' + k + '])').click();
+		const nCo = await p3.locator('.pl-svg .co').count();
+		await p3.click('.pl-tabs [data-tab=plan]');
+		await p3.click('[data-copy-starter]');
+		ex3(await p3.locator('.pl-svg .is-ghost').count() === 0 && await p3.locator('.pl-svg .it-icon[data-idx]').count() === 4, 'starter copied into the plan');
+		await p3.click('.pl-steps [data-step="2"]');
+		ex3(await p3.locator('.pl-svg .it-icon[data-idx]').count() === 0, 'P1 plan is hidden on P2');
+		await p3.click('.pl-steps [data-step=""]');
+		ex3(await p3.locator('.pl-svg .it-icon[data-idx]').count() === 4, 'All shows every step');
+		await p3.click('[data-edit-layers]');
+		const b3 = await p3.locator('#pl-stage').boundingBox();
+		await p3.mouse.click(b3.x + b3.width * 0.5, b3.y + b3.height * 0.93);
+		await p3.fill('.pl-pop-co input', 'Test Callout');
+		await p3.keyboard.press('Enter');
+		ex3(await p3.locator('.pl-svg .co').count() === nCo + 1, 'custom callout added');
+		await p3.click('[data-edit-layers]');
+		await open();
+		ex3(await p3.locator('.pl-svg .co').count() === nCo + 1 && await p3.locator('.pl-svg .co-team').count() === 1, 'custom callout kept after reload');
+		await p3.click('.pl-hud [data-brief]');
+		ex3(await p3.locator('.mw4-planner.is-brief').count() === 1 && await p3.locator('.pl-brief').isVisible() && !(await p3.locator('.pl-panel').isVisible()), 'briefing view opens');
+		await p3.click('[data-brief-next]');
+		ex3((await p3.locator('.pl-brief-step .pl-num').innerText()) === 'P1' && await p3.locator('.pl-svg .it-icon').count() === 4, 'briefing steps to P1');
+		ex3(/view=brief/.test(p3.url()), 'briefing view is in the address');
+		await p3.click('[data-brief-exit]');
+		ex3(await p3.locator('.mw4-planner.is-brief').count() === 0 && await p3.locator('.pl-panel').isVisible(), 'briefing view closes');
+		// A team link replaces the callouts on the device that opens it.
+		const pack = Buffer.from(JSON.stringify({ v: 1, m: hpMap.slug, c: [['Link Callout', 0.5, 0.5, 0]], sp: { 1: { own: [0.2, 0.2] } } })).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+		await open('#t=' + pack);
+		ex3(await p3.locator('.pl-svg .co').count() === 1 && !/#t=/.test(p3.url()), 'team link loads its callouts');
+		await open('?view=brief');
+		ex3(await p3.locator('.mw4-planner.is-brief').count() === 1, 'briefing link opens straight into the briefing view');
+		if (SHOTS) await p3.screenshot({ path: path.join(SHOTS, 'planner-brief.png') });
+		await c3.close();
+	}
 	// Draw a route on the first map, check it persists and shows on My Plans.
 	const m0 = maps[0];
 	await go('maps/' + m0.slug + '/');

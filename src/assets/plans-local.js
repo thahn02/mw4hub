@@ -41,7 +41,7 @@
 			u.hash = 'p=' + b64e(JSON.stringify({ v: 1, d: p.mode, i: p.items }));
 			var n = p.items.length;
 			return '<div class="plan-row card"><div class="plan-main"><b>' + esc(p.map.name) + ' ' + ({ hp: 'Hardpoint', snd: 'S&amp;D', hj: 'Hijack' }[p.mode] || 'Hardpoint') + ' plan</b><span class="muted">' + n + (n === 1 ? ' item' : ' items') + ' · saved on this device</span></div><div class="plan-actions">' +
-				'<a class="btn btn-sm btn-primary" href="' + esc(open) + '">Open</a><button type="button" class="btn btn-sm" data-copy="' + esc(u.toString()) + '">Copy link</button>' +
+				'<a class="btn btn-sm btn-primary" href="' + esc(open) + '">Open</a><a class="btn btn-sm" href="' + esc(open + '&view=brief') + '">Briefing</a><button type="button" class="btn btn-sm" data-copy="' + esc(u.toString()) + '">Copy link</button>' +
 				'<button type="button" class="btn btn-sm btn-ghost" data-local-del="' + esc(p.map.slug + ':' + p.mode) + '">Delete</button></div></div>';
 		}).join('');
 	}
