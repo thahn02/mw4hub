@@ -362,6 +362,24 @@
 				gObj.appendChild(g2); track(SC.obj, g2, bx, by);
 			}
 		}
+		if (S.mode === 'hj' && MAP.hj) {
+			if (MAP.hj.spike) {
+				var kx = MAP.hj.spike.x * 1000, ky = MAP.hj.spike.y * 1000;
+				gObj.appendChild(s('circle', { cx: r2(kx), cy: r2(ky), r: 75, fill: 'rgba(216,169,75,0.12)', stroke: '#f0c66b', 'stroke-width': 2, 'stroke-dasharray': '8 7', 'vector-effect': 'non-scaling-stroke' }));
+				var gk = s('g', { 'class': 'mk mk-spike', 'data-tip': 'Data Spike starts around the central area (approximate)' });
+				gk.appendChild(s('circle', { r: 15, fill: '#d8a94b', stroke: '#1b1608', 'stroke-width': 2 }));
+				gk.appendChild(s('text', { y: 4.2, 'text-anchor': 'middle', 'font-size': 11, 'font-weight': 850, fill: '#1b1608', 'font-family': FONT }, 'DS'));
+				gObj.appendChild(gk); track(SC.obj, gk, kx, ky);
+			}
+			(MAP.hj.spawns || []).forEach(function (sp, i) {
+				var scol = i ? '#ff6b4a' : '#4fc3f7';
+				var gs = s('g', { 'class': 'mk mk-spawn', 'data-tip': 'Team spawn \u00b7 official tac map' });
+				gs.appendChild(s('rect', { x: -24, y: -24, width: 48, height: 48, rx: 14, fill: scol, opacity: 0.22, 'class': 'mk-halo' }));
+				gs.appendChild(s('rect', { x: -17, y: -17, width: 34, height: 34, rx: 10, fill: scol, stroke: 'rgba(0,0,0,0.65)', 'stroke-width': 2 }));
+				gs.appendChild(s('text', { y: 5, 'text-anchor': 'middle', 'font-size': 13, 'font-weight': 900, fill: '#0b0d0a', 'font-family': FONT }, 'SP'));
+				gObj.appendChild(gs); track(SC.obj, gs, sp.x * 1000, sp.y * 1000);
+			});
+		}
 	}
 
 	function renderRot() {
@@ -756,7 +774,17 @@
 			});
 			html += '</ol>' + srcLine([MAP.sources && MAP.sources.hp, MAP.sources && MAP.sources.rot]) + '</div>';
 		} else if (S.mode === 'hj') {
-			html += '<div class="pl-sec"><div class="pl-sec-h"><h3>Hijack</h3></div><p class="pl-empty">Comm Station and Data Spike positions for ' + esc(MAP.name) + ' have not been mapped yet. You can still plan here and mark them with labels.</p></div>';
+			html += '<div class="pl-sec"><div class="pl-sec-h"><h3>Hijack</h3></div>';
+			if (MAP.hj) {
+				html += '<div class="pl-sites">' + (MAP.hj.spawns || []).map(function (sp, i) {
+					return '<button type="button" class="pl-site pl-site-' + (i ? 'A' : 'B') + '" data-fly-xy="' + sp.x + ',' + sp.y + '"><b>SP</b><span>Team spawn</span></button>';
+				}).join('');
+				if (MAP.hj.spike) html += '<button type="button" class="pl-site pl-site-bomb" data-fly-xy="' + MAP.hj.spike.x + ',' + MAP.hj.spike.y + '"><b>DS</b><span>Data Spike start area (approx.)</span></button>';
+				html += '</div><p class="pl-empty" style="margin-top:10px">Each team plants at the enemy Comm Station on the other side of the map. Exact Comm Station positions for ' + esc(MAP.name) + ' have not been published yet, so they are not marked.</p>' + srcLine([MAP.sources && MAP.sources.hj]);
+			} else {
+				html += '<p class="pl-empty">Comm Station and Data Spike positions for ' + esc(MAP.name) + ' have not been mapped yet. You can still plan here and mark them with labels.</p>';
+			}
+			html += '</div>';
 		} else {
 			html += '<div class="pl-sec"><div class="pl-sec-h"><h3>Bomb sites</h3></div>';
 			if (HAS_SND) {
@@ -772,7 +800,7 @@
 			html += '</div>';
 		}
 		html += '<div class="pl-sec"><div class="pl-sec-h"><h3>Layers</h3></div><div class="pl-layers">' +
-			(S.mode === 'hj' ? '' : layerToggle('obj', S.mode === 'hp' ? 'Hardpoints' : 'Bomb sites & bomb spawn')) +
+			(S.mode === 'hj' ? (MAP.hj ? layerToggle('obj', 'Team spawns & Data Spike area') : '') : layerToggle('obj', S.mode === 'hp' ? 'Hardpoints' : 'Bomb sites & bomb spawn')) +
 			(S.mode === 'hp' ? layerToggle('rot', 'Rotation path') : '') +
 			layerToggle('route', 'Team routes & setups', countOf('route') + countOf('icon')) +
 			layerToggle('strong', 'Strong points to hold', countOf('strong')) +

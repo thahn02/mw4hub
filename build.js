@@ -239,7 +239,7 @@ function credits() {
 		['warzoneloadout.games', 'https://warzoneloadout.games/', 'Warzone and MW4 multiplayer tier rankings and attachment builds.'],
 		['wzstats.gg', 'https://wzstats.gg/', 'Warzone meta tier list used in our combined Warzone rankings.'],
 		['Call of Duty League', 'https://callofdutyleague.com/en-us/competitive-settings', 'CDL 2027 Competitive Maps & Modes: the Hardpoint, Search & Destroy and Hijack map pool used for the Ranked maps shown here.'],
-		['Call of Duty (Activision)', 'https://www.callofduty.com/blog/2026/10/call-of-duty-modern-warfare-4-ready-for-launch-maps-modes', 'Official launch map and mode announcement.'],
+		['Call of Duty (Activision)', 'https://www.callofduty.com/blog/2026/10/call-of-duty-modern-warfare-4-ready-for-launch-maps-modes', 'Official launch map and mode announcement, and the tac maps used for Hijack team spawn positions.'],
 	];
 	return '<div class="credits prose"><p>MW4 Hub combines and reworks public information into its own tools. Map marker positions were plotted onto the minimaps from the sources below; tiers and builds were cross-checked across sites. Please support these creators.</p><div class="grid">' +
 		rows.map((r) => '<a class="card card-pad credit" href="' + esc(r[1]) + '" target="_blank" rel="noopener nofollow"><h3>' + esc(r[0]) + '</h3><p class="muted">' + esc(r[2]) + '</p></a>').join('') +
@@ -257,7 +257,7 @@ function planner(m, r) {
 		map: {
 			id: m.id || 0, slug: m.slug, name: m.name, url: r + 'maps/' + m.slug + '/', location: m.location || '', size: m.size || '', description: m.description || '',
 			image: m.image ? { url: r + m.image.file, w: m.image.w, h: m.image.h } : null,
-			hp: m.hp || { hills: [] }, snd: m.snd || null, intel: { hp: (m.intel && m.intel.hp) || [], snd: (m.intel && m.intel.snd) || [] }, sources: m.sources || [], ranked: !!m.ranked, modes: m.modes,
+			hp: m.hp || { hills: [] }, snd: m.snd || null, intel: { hp: (m.intel && m.intel.hp) || [], snd: (m.intel && m.intel.snd) || [] }, sources: m.sources || [], ranked: !!m.ranked, modes: m.modes, hj: m.hj ? { spawns: m.hj.spawns, spike: m.hj.spike } : null,
 		},
 		maps: maps.map((x) => ({ slug: x.slug, name: x.name, url: r + 'maps/' + x.slug + '/' })),
 		roles: roleData.roles, coaching: roleData.coaching, roster: roster,

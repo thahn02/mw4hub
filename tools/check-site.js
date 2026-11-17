@@ -76,6 +76,7 @@ const server = http.createServer((req, res) => {
 			expect((await page.locator('.pl-badge span').innerText()).toLowerCase() === NAMES[mode].toLowerCase(), 'badge for ' + mode);
 			expect(await page.locator('.mk-hill').count() === (mode === 'hp' ? m.hp.hills.length : 0), mode + ' hill markers');
 			expect(await page.locator('.mk-site').count() === (mode === 'snd' ? 2 : 0), mode + ' site markers');
+			expect(await page.locator('.mk-spawn').count() === (mode === 'hj' && m.hj ? m.hj.spawns.length : 0), mode + ' spawn markers');
 		}
 	}
 	for (const m of allMaps.filter((x) => !(x.modes && x.modes.length))) {

@@ -280,7 +280,30 @@
       "img": {
         "label": "GamesAtlas",
         "url": "https://www.gamesatlas.com/cod-modern-warfare-4/maps/lithium"
+      },
+      "hj": {
+        "label": "Call of Duty tac map",
+        "url": "https://www.callofduty.com/guides/modernwarfare4/multiplayer-maps/launch/lithium"
       }
+    },
+    "hj": {
+      "spawns": [
+        {
+          "x": 0.1147,
+          "y": 0.4877
+        },
+        {
+          "x": 0.9127,
+          "y": 0.5528
+        }
+      ],
+      "spike": {
+        "x": 0.5137,
+        "y": 0.5202,
+        "approx": true
+      },
+      "commStations": null,
+      "note": "Team spawns are from the official Call of Duty tac map, registered to this minimap via the hardpoint positions (about 1% error). The Data Spike area is the midpoint between spawns: officially it starts around the central area. Comm Station positions were not published anywhere as of 2026-11-17."
     }
   },
   {
@@ -381,7 +404,30 @@
       "img": {
         "label": "GamesAtlas",
         "url": "https://www.gamesatlas.com/cod-modern-warfare-4/maps/lotus"
+      },
+      "hj": {
+        "label": "Call of Duty tac map",
+        "url": "https://www.callofduty.com/guides/modernwarfare4/multiplayer-maps/launch/lotus"
       }
+    },
+    "hj": {
+      "spawns": [
+        {
+          "x": 0.8382,
+          "y": 0.6068
+        },
+        {
+          "x": 0.2217,
+          "y": 0.3186
+        }
+      ],
+      "spike": {
+        "x": 0.5299,
+        "y": 0.4627,
+        "approx": true
+      },
+      "commStations": null,
+      "note": "Team spawns are from the official Call of Duty tac map, registered to this minimap via the hardpoint positions (about 1% error). The Data Spike area is the midpoint between spawns: officially it starts around the central area. Comm Station positions were not published anywhere as of 2026-11-17."
     }
   },
   {
@@ -573,7 +619,30 @@
       "img": {
         "label": "GamesAtlas",
         "url": "https://www.gamesatlas.com/cod-modern-warfare-4/maps/munition"
+      },
+      "hj": {
+        "label": "Call of Duty tac map",
+        "url": "https://www.callofduty.com/guides/modernwarfare4/multiplayer-maps/launch/munition"
       }
+    },
+    "hj": {
+      "spawns": [
+        {
+          "x": 0.2225,
+          "y": 0.6243
+        },
+        {
+          "x": 0.8411,
+          "y": 0.6909
+        }
+      ],
+      "spike": {
+        "x": 0.5318,
+        "y": 0.6576,
+        "approx": true
+      },
+      "commStations": null,
+      "note": "Team spawns are from the official Call of Duty tac map, registered to this minimap via the hardpoint positions (about 1% error). The Data Spike area is the midpoint between spawns: officially it starts around the central area. Comm Station positions were not published anywhere as of 2026-11-17."
     }
   },
   {
