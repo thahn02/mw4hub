@@ -102,6 +102,45 @@ const server = http.createServer((req, res) => {
 	expect(await page.locator('[data-panel=rules] .rl-row').count() > 20 && await page.locator('.rl-card').count() === 2 && !(await page.locator('.ld').isVisible()), 'rules panel: gun check and both rule sets');
 	await page.click('[data-seg] [data-tab=loadouts]');
 	expect(await page.locator('.ld-view:visible').count() === 1, 'back to the loadout screen');
+	// Detailed callouts: on-map switch (All, Main, Off), rename from the map, and older team lists get the new names.
+	if (maps.some((m) => m.slug === 'lotus')) {
+		const cc = await browser.newContext({ viewport: { width: 1360, height: 900 } });
+		const cp = await cc.newPage();
+		cp.on('pageerror', (e) => problems.push('callouts: error: ' + e.message));
+		const exc = (ok, what) => { if (!ok) problems.push('callouts: ' + what); };
+		const openMap = async () => { await cp.goto(base + 'maps/lotus/', { waitUntil: 'networkidle' }); await cp.waitForSelector('.mw4-planner.is-ready'); };
+		const n = (sel) => cp.locator(sel).count();
+		await openMap();
+		const all = await n('.pl-svg .co'), det = await n('.pl-svg .co-detail');
+		exc(det >= 15 && all > det, 'detailed callouts are drawn with the main ones (' + det + ' of ' + all + ')');
+		exc((await cp.locator('[data-co-cycle]').innerText()) === 'Callouts: All' && (await cp.locator('[data-co-edit]').innerText()) === 'Edit names', 'on-map callout buttons show');
+		await cp.click('[data-co-cycle]');
+		exc((await cp.locator('[data-co-cycle]').innerText()) === 'Callouts: Main' && await n('.pl-svg .co-detail') === 0 && await n('.pl-svg .co') === all - det, 'Main hides only the detailed callouts');
+		await cp.click('[data-co-cycle]');
+		exc((await cp.locator('[data-co-cycle]').innerText()) === 'Callouts: Off' && await n('.pl-svg .co') === 0, 'Off hides every callout');
+		await openMap();
+		exc(await n('.pl-svg .co') === 0 && (await cp.locator('[data-co-cycle]').innerText()) === 'Callouts: Off', 'the callout choice is remembered');
+		await cp.click('[data-co-cycle]');
+		exc(await n('.pl-svg .co') === all, 'All brings them back');
+		await cp.click('[data-co-edit]');
+		exc((await cp.locator('[data-co-edit]').innerText()) === 'Done', 'Edit names starts editing');
+		const box = await cp.locator('.pl-svg .co-detail').first().boundingBox();
+		await cp.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+		await cp.fill('.pl-pop-co input', 'Renamed Spot');
+		await cp.keyboard.press('Enter');
+		exc((await cp.locator('.pl-svg').innerHTML()).includes('RENAMED SPOT'), 'a callout can be renamed from the map');
+		await cp.click('[data-co-edit]');
+		if (SHOTS) await cp.screenshot({ path: path.join(SHOTS, 'callouts.png') });
+		await openMap();
+		exc((await cp.locator('.pl-svg').innerHTML()).includes('RENAMED SPOT') && await n('.pl-svg .co') === all, 'the new name is kept after reload');
+		await cp.evaluate(() => localStorage.setItem('mw4hub:lotus:team', JSON.stringify({ callouts: [{ id: 'c1', s: 'Only One', x: 0.5, y: 0.5, k: 'team' }], spawns: {} })));
+		await openMap();
+		exc(await n('.pl-svg .co') === det + 1, 'a team list saved before gets the detailed callouts added');
+		await cp.click('[data-co-edit]'); await cp.click('[data-co-edit]');
+		await openMap();
+		exc(await n('.pl-svg .co') === det + 1, 'and they are not added twice');
+		await cc.close();
+	}
 	// Squad: names live on the device, each named player gets a card, and the squad travels by link.
 	{
 		const sc = await browser.newContext({ viewport: { width: 1360, height: 900 } });
@@ -308,7 +347,7 @@ const server = http.createServer((req, res) => {
 		ex3(await frame() === frame0, 'keyboard focus moved the planner');
 		await p3.setViewportSize({ width: 1360, height: 860 });
 		// A team link replaces the callouts on the device that opens it.
-		const pack = Buffer.from(JSON.stringify({ v: 1, m: hpMap.slug, c: [['Link Callout', 0.5, 0.5, 0]], sp: { 1: { own: [0.2, 0.2] } } })).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+		const pack = Buffer.from(JSON.stringify({ v: 1, m: hpMap.slug, cv: 2, c: [['Link Callout', 0.5, 0.5, 0]], sp: { 1: { own: [0.2, 0.2] } } })).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 		await open('#t=' + pack);
 		ex3(await p3.locator('.pl-svg .co').count() === 1 && !/#t=/.test(p3.url()), 'team link loads its callouts');
 		await open('?view=brief');

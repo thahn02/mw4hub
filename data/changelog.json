@@ -4,7 +4,8 @@
     { "date": "2026-11-17", "items": [
       { "area": "Loadouts", "text": "Ranked classes rebuilt from what pros are running now: HAN 86, VEL 46, ISO Nightshade and M4, each checked against the Ranked and CMG rules." },
       { "area": "Warzone", "text": "Tiers and builds re-read from wzstats.gg and warzoneloadout.games: 20 weapons." },
-      { "area": "Site", "text": "New Match Night and Squad pages, and the loadout pages now look like the in-game class screen." }
+      { "area": "Site", "text": "New Match Night and Squad pages, and the loadout pages now look like the in-game class screen." },
+      { "area": "Maps", "text": "Detailed callouts added to Lotus, Lithium, Munition, Reactor U92, Rooftops and Sentry. A Callouts button on the map shows all, main only or none, and Edit names lets you rename them." }
     ] },
     { "date": "2026-11-16", "items": [
       { "area": "Loadouts", "text": "Pros agreed to stop using the VEL 46 long barrel. The pro VEL 46 build now uses the light barrel." },

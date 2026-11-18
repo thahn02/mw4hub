@@ -577,7 +577,7 @@ function teamData() {
 		coaching: roleData.coaching || {},
 		maps: maps.map((m) => {
 			const ex = extras[m.slug] || {}, calls = ex.hillCalls || {};
-			return { slug: m.slug, name: m.name, modes: m.modes, img: (m.image && m.image.file) || '', hills: has(m, 'hp') ? ((m.hp && m.hp.hills) || []).map((h) => ({ n: h.n, name: h.name, call: calls[h.n] || '' })) : [], names: ex.names || [], tips: ex.tips || [], src: ex.source || null };
+			return { slug: m.slug, name: m.name, modes: m.modes, img: (m.image && m.image.file) || '', hills: has(m, 'hp') ? ((m.hp && m.hp.hills) || []).map((h) => ({ n: h.n, name: h.name, call: calls[h.n] || '' })) : [], names: (ex.detail || []).map((d) => d.s).concat(ex.names || []).filter((n, i, arr) => arr.indexOf(n) === i), tips: ex.tips || [], src: ex.source || null };
 		}),
 	};
 }
@@ -598,6 +598,8 @@ function defaultCallouts(m) {
 		if (hills.some((h) => Math.hypot(h.x - p.x, h.y - p.y) < 0.055)) return; // the hill's own callout already names this spot
 		out.push({ id: 'p' + i, s: p.s, x: p.x, y: p.y, k: 'official' });
 	});
+	// Detailed player callouts: placed by eye from written descriptions (see data/map-extras.json), so approximate.
+	(ex.detail || []).forEach((d, i) => out.push({ id: 'd' + i, s: d.s, x: d.x, y: d.y, k: 'detail' }));
 	return out;
 }
 function planner(m, r) {

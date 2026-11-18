@@ -156,7 +156,7 @@
 		mode: pickMode(params.get('mode')),
 		cam: { x: 500, y: 500, k: 1 }, vw: 1, vh: 1, kMin: 0.5, kMax: 4,
 		anim: null, vel: null, raf: 0, lastT: 0,
-		layers: { obj: true, rot: true, route: true, enemy: true, strong: true, note: true, plan: true, callouts: true, starter: true, spawns: true },
+		layers: { obj: true, rot: true, route: true, enemy: true, strong: true, note: true, plan: true, callouts: true, detail: true, starter: true, spawns: true },
 		tool: 'pan', role: 'entry', icon: 'ar', sel: null,
 		plans: { hp: [], snd: [], hj: [] },
 		intel: { hp: (MAP.intel && MAP.intel.hp) ? MAP.intel.hp.slice() : [], snd: (MAP.intel && MAP.intel.snd) ? MAP.intel.snd.slice() : [], hj: (MAP.intel && MAP.intel.hj) ? MAP.intel.hj.slice() : [] },
@@ -177,13 +177,13 @@
 		} catch (e3) { /* ignore */ }
 	});
 	// Team edits to the map layers (callouts, corrected spawn zones) and the layer switches stay on this device.
-	var TEAM_KEY = 'mw4hub:' + MAP.slug + ':team', LAYER_KEY = 'mw4hub:layers', PREF_LAYERS = ['callouts', 'starter', 'spawns'];
-	var TEAM = { callouts: null, spawns: {} };
+	var TEAM_KEY = 'mw4hub:' + MAP.slug + ':team', LAYER_KEY = 'mw4hub:layers', PREF_LAYERS = ['callouts', 'detail', 'starter', 'spawns'], CALLOUT_VER = 2;
+	var TEAM = { callouts: null, spawns: {}, cv: CALLOUT_VER };
 	function readTeam(raw) {
-		var t = { callouts: null, spawns: {} };
+		var t = { callouts: null, spawns: {}, cv: raw && raw.cv >= 1 ? +raw.cv : 1 };
 		if (raw && Array.isArray(raw.callouts)) {
 			t.callouts = raw.callouts.filter(function (c) { return c && typeof c.s === 'string' && c.s && isFinite(c.x) && isFinite(c.y); })
-				.slice(0, 120).map(function (c, i) { return { id: String(c.id || ('c' + i)), s: c.s.slice(0, 40), x: clamp(+c.x, 0, 1), y: clamp(+c.y, 0, 1), k: (c.k === 'official' || c.k === 'hill') ? c.k : 'team' }; });
+				.slice(0, 120).map(function (c, i) { return { id: String(c.id || ('c' + i)), s: c.s.slice(0, 40), x: clamp(+c.x, 0, 1), y: clamp(+c.y, 0, 1), k: (c.k === 'official' || c.k === 'hill' || c.k === 'detail') ? c.k : 'team' }; });
 		}
 		if (raw && raw.spawns && typeof raw.spawns === 'object') {
 			Object.keys(raw.spawns).slice(0, 12).forEach(function (n) {
@@ -192,6 +192,13 @@
 				if (o.own || o.enemy) t.spawns[String(n).slice(0, 4)] = o;
 			});
 		}
+		// A team list saved before the detailed callouts existed gets them added once (by name, so nothing doubles up).
+		if (t.callouts && t.cv < CALLOUT_VER) {
+			var have = {};
+			t.callouts.forEach(function (c) { have[c.s.toLowerCase()] = 1; });
+			(MAP.callouts || []).forEach(function (c) { if (c.k === 'detail' && !have[c.s.toLowerCase()] && t.callouts.length < 120) t.callouts.push({ id: c.id, s: c.s, x: c.x, y: c.y, k: 'detail' }); });
+		}
+		t.cv = CALLOUT_VER;
 		return t;
 	}
 	function saveTeam() {
@@ -202,13 +209,15 @@
 	}
 	function teamEdited() { return !!TEAM.callouts || Object.keys(TEAM.spawns).length > 0; }
 	function callouts() { return TEAM.callouts || MAP.callouts || []; }
+	function nDetail() { return callouts().filter(function (c) { return c.k === 'detail'; }).length; }
 	function editCallouts() { if (!TEAM.callouts) TEAM.callouts = JSON.parse(JSON.stringify(MAP.callouts || [])); return TEAM.callouts; }
 	function packTeam() {
-		return { v: 1, m: MAP.slug, c: TEAM.callouts ? TEAM.callouts.map(function (c) { return [c.s, c.x, c.y, c.k === 'official' ? 1 : (c.k === 'hill' ? 2 : 0)]; }) : null, sp: TEAM.spawns };
+		return { v: 1, m: MAP.slug, cv: CALLOUT_VER, c: TEAM.callouts ? TEAM.callouts.map(function (c) { return [c.s, c.x, c.y, c.k === 'official' ? 1 : (c.k === 'hill' ? 2 : (c.k === 'detail' ? 3 : 0))]; }) : null, sp: TEAM.spawns };
 	}
 	function unpackTeam(pk) {
 		return readTeam({
-			callouts: Array.isArray(pk.c) ? pk.c.map(function (c, i) { return { id: 'c' + i, s: String(c[0]), x: c[1], y: c[2], k: c[3] === 1 ? 'official' : (c[3] === 2 ? 'hill' : 'team') }; }) : null,
+			callouts: Array.isArray(pk.c) ? pk.c.map(function (c, i) { return { id: 'c' + i, s: String(c[0]), x: c[1], y: c[2], k: c[3] === 1 ? 'official' : (c[3] === 2 ? 'hill' : (c[3] === 3 ? 'detail' : 'team')) }; }) : null,
+			cv: pk.cv,
 			spawns: pk.sp
 		});
 	}
@@ -338,6 +347,8 @@
 	var toastEl = h('div', 'pl-toast'); toastEl.setAttribute('role', 'status'); toastEl.setAttribute('aria-live', 'polite');
 	var stepBar = h('div', 'pl-steps'); stepBar.setAttribute('role', 'tablist'); stepBar.setAttribute('aria-label', 'Plan step'); stepBar.hidden = true;
 	var briefBar = h('div', 'pl-brief'); briefBar.hidden = true;
+	var coBar = h('div', 'pl-cobar', '<button type="button" data-co-cycle title="Show all callouts, only the main ones, or none"></button><button type="button" data-co-edit title="Rename, move, add or remove callouts"></button>');
+	stage.appendChild(coBar);
 	stage.appendChild(hud); stage.appendChild(badge); stage.appendChild(stepBar); stage.appendChild(tip); root.appendChild(briefBar); root.appendChild(toastEl);
 
 	function toast(msg) {
@@ -653,14 +664,16 @@
 		var edit = S.tool === 'layers';
 		if (!S.layers.callouts && !edit) return;
 		callouts().forEach(function (c, i) {
-			var txt = String(c.s || '').toUpperCase(), w = Math.min(240, txt.length * 6.6 + 16), team = c.k === 'team';
-			var g = s('g', { 'class': 'co' + (team ? ' co-team' : '') + (edit ? ' is-edit' : ''), 'data-co': edit ? i : null });
-			g.appendChild(s('rect', { x: -w / 2, y: -10, width: w, height: 20, rx: 6, fill: 'rgba(8,10,7,0.82)', stroke: team ? 'rgba(240,198,107,0.8)' : 'rgba(233,236,223,0.3)', 'stroke-width': 1.1, 'stroke-dasharray': edit ? '3 2' : null }));
-			g.appendChild(s('text', { y: 3.7, 'text-anchor': 'middle', 'font-size': 10.4, 'font-weight': 750, 'letter-spacing': 0.5, fill: team ? '#f0c66b' : '#e9ecdf', 'font-family': FONT }, txt));
+			var det = c.k === 'detail';
+			if (det && !S.layers.detail && !edit) return;
+			var txt = String(c.s || '').toUpperCase(), fs = det ? 8.4 : 10.4, hh = det ? 15 : 20, w = Math.min(240, txt.length * (det ? 5.4 : 6.6) + (det ? 11 : 16)), team = c.k === 'team';
+			var g = s('g', { 'class': 'co' + (team ? ' co-team' : '') + (det ? ' co-detail' : '') + (edit ? ' is-edit' : ''), 'data-co': edit ? i : null });
+			g.appendChild(s('rect', { x: -w / 2, y: -hh / 2, width: w, height: hh, rx: det ? 4.5 : 6, fill: det ? 'rgba(8,10,7,0.66)' : 'rgba(8,10,7,0.82)', stroke: team ? 'rgba(240,198,107,0.8)' : (det ? 'rgba(163,179,124,0.42)' : 'rgba(233,236,223,0.3)'), 'stroke-width': det ? 0.9 : 1.1, 'stroke-dasharray': edit ? '3 2' : null }));
+			g.appendChild(s('text', { y: det ? 3 : 3.7, 'text-anchor': 'middle', 'font-size': fs, 'font-weight': det ? 700 : 750, 'letter-spacing': 0.5, fill: team ? '#f0c66b' : (det ? '#cdd6b4' : '#e9ecdf'), 'font-family': FONT }, txt));
 			gCall.appendChild(g); track(SC.call, g, c.x * 1000, c.y * 1000);
 		});
 	}
-	function renderAll() { renderRot(); renderSpawns(); renderObj(); renderStarter(); renderItems(); renderCallouts(); lastK = -1; applyCam(); }
+	function renderAll() { renderRot(); renderSpawns(); renderObj(); renderStarter(); renderItems(); renderCallouts(); lastK = -1; applyCam(); syncCoBar(); }
 
 	function renderTemp(pts, tool) {
 		clear(gTemp); SC.temp = [];
@@ -728,7 +741,7 @@
 			if (e.key === 'Escape') { e.preventDefault(); closePop(); stage.focus({ preventScroll: true }); }
 		});
 	}
-	function refreshLayers() { renderSpawns(); renderStarter(); renderCallouts(); lastK = -1; applyCam(); }
+	function refreshLayers() { renderSpawns(); renderStarter(); renderCallouts(); lastK = -1; applyCam(); syncCoBar(); }
 	function openCalloutPop(pt, idx) {
 		closePop();
 		var cur = idx >= 0 ? callouts()[idx] : null, mp = toMap(pt), was = cur ? cur.s : '';
@@ -787,7 +800,7 @@
 	// ---------- pointer input ----------
 	var pointers = new Map(), gesture = null;
 	stage.addEventListener('pointerdown', function (e) {
-		if (e.button === 2 || (e.target.closest && e.target.closest('.pl-hud,.pl-pop,.pl-steps'))) return;
+		if (e.button === 2 || (e.target.closest && e.target.closest('.pl-hud,.pl-cobar,.pl-pop,.pl-steps'))) return;
 		var pt = local(e);
 		var target = e.target.closest ? e.target.closest('[data-idx]') : null;
 		pointers.set(e.pointerId, pt);
@@ -960,6 +973,30 @@
 	}, { passive: false });
 	stage.addEventListener('dblclick', function (e) { e.preventDefault(); });
 
+	function coState() { return !S.layers.callouts ? 0 : (nDetail() && S.layers.detail ? 2 : 1); }
+	function syncCoBar() {
+		var st = coState(), edit = S.tool === 'layers', b = coBar.children;
+		b[0].textContent = 'Callouts: ' + (st === 0 ? 'Off' : (st === 2 ? 'All' : (nDetail() ? 'Main' : 'On')));
+		b[0].classList.toggle('is-off', st === 0);
+		b[1].textContent = edit ? 'Done' : 'Edit names';
+		b[1].classList.toggle('is-on', edit);
+		b[1].hidden = !!S.brief;
+	}
+	coBar.addEventListener('click', function (e) {
+		var b = e.target.closest('button');
+		if (!b) return;
+		if (b.hasAttribute('data-co-cycle')) {
+			// All -> Main -> Off -> All (maps without detailed callouts just go On -> Off).
+			var st = coState();
+			if (st === 2) { S.layers.detail = false; } else if (st === 1) { S.layers.callouts = false; } else { S.layers.callouts = true; S.layers.detail = true; }
+			saveLayerPrefs(); refreshLayers();
+			if (paneEl('intel')) renderIntelPane();
+		} else if (b.hasAttribute('data-co-edit')) {
+			setTool(S.tool === 'layers' ? 'pan' : 'layers');
+			if (S.tool === 'layers') { root.classList.remove('panel-open'); toast('Tap a callout to rename it, drag to move it, tap the map to add one'); }
+		}
+		syncCoBar();
+	});
 	hud.addEventListener('click', function (e) {
 		var b = e.target.closest('button');
 		if (!b) return;
@@ -1079,6 +1116,7 @@
 			layerToggle('note', 'Coach notes', countOf('note') + countOf('text')) +
 			layerToggle('plan', 'My plan', (S.plans[S.mode] || []).length) +
 			layerToggle('callouts', 'Callouts', callouts().length) +
+			(nDetail() ? layerToggle('detail', 'Detailed callouts', nDetail()) : '') +
 			(steps().length && S.mode !== 'snd' ? layerToggle('starter', S.mode === 'hp' ? 'Starter setup per hill' : 'Starter setup per side') : '') +
 			((MAP.spawns || []).length ? layerToggle('spawns', S.mode === 'hp' ? 'Spawns & spawn zones' : 'Team spawns') : '') +
 			'</div>' +
@@ -1175,7 +1213,7 @@
 		S.tool = t;
 		stage.setAttribute('data-tool', t);
 		syncToolUI();
-		if ((was === 'layers') !== (t === 'layers')) { S.coPick = ''; closePop(); renderCallouts(); lastK = -1; applyCam(); if (paneEl('plan')) renderPlanPane(); }
+		if ((was === 'layers') !== (t === 'layers')) { S.coPick = ''; closePop(); renderCallouts(); lastK = -1; applyCam(); if (paneEl('plan')) renderPlanPane(); syncCoBar(); }
 	}
 	function syncToolUI() {
 		Array.prototype.forEach.call(panel.querySelectorAll('[data-tool]'), function (b) { b.classList.toggle('is-on', b.getAttribute('data-tool') === S.tool); });
@@ -1271,6 +1309,7 @@
 	function setBrief(on) {
 		S.brief = !!on;
 		root.classList.toggle('is-brief', S.brief);
+		syncCoBar();
 		root.classList.remove('panel-open');
 		closePop(); setTool('pan');
 		var u = new URL(location.href);
