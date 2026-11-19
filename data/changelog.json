@@ -1,6 +1,12 @@
 {
   "_about": "What changed, newest first. The daily refresh adds one entry per run (see tools/DAILY-LOADOUTS.md), even when nothing changed, so the home page can show when the site was last checked. area is one of Loadouts, Warzone, Rules, Maps, Site. Keep each line short and plain. Keep the newest 30 entries.",
   "entries": [
+    { "date": "2026-11-19", "items": [
+      { "area": "Warzone", "text": "Re-checked on wzstats.gg and warzoneloadout.games. No tier or build changes: the same 29 weapons, with the same top six." },
+      { "area": "Warzone", "text": "warzoneloadout.games still shows no build for the Type 73, so its build is the one read on Nov 16. It comes off the page on Nov 21 unless it can be read again." },
+      { "area": "Loadouts", "text": "Re-checked. No changes. YouTube could not be read for a second day, so the pro classes are as last confirmed on Nov 17." },
+      { "area": "Rules", "text": "CMG Arena rules re-read: no changes. CDL Competitive Settings are still v1.0." }
+    ] },
     { "date": "2026-11-18", "items": [
       { "area": "Warzone", "text": "Nine more weapons listed after the trackers added them: Oden, Krait P68, Rezi 12, Warlord, APOC-338, Signal 50, MAR-9, Sang 9mm and Mojave .357. 29 weapons in all." },
       { "area": "Warzone", "text": "Hyeon Burst, Cronen Squall and FiNN LMG move up from B to A, and the Patriot XMR from C to B, after wzstats.gg put them in its A tier. The top six are unchanged." },
