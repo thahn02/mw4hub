@@ -1,6 +1,11 @@
 {
   "_about": "What changed, newest first. The daily refresh adds one entry per run (see tools/DAILY-LOADOUTS.md), even when nothing changed, so the home page can show when the site was last checked. area is one of Loadouts, Warzone, Rules, Maps, Site. Keep each line short and plain. Keep the newest 30 entries.",
   "entries": [
+    { "date": "2026-11-22", "items": [
+      { "area": "Warzone", "text": "Re-checked on wzstats.gg and warzoneloadout.games. No tier moves and no build changes: the same 30 weapons, with the same top six." },
+      { "area": "Loadouts", "text": "Re-checked. No changes. YouTube could not be read for a fifth day, so the pro classes are as last confirmed on Nov 17." },
+      { "area": "Rules", "text": "CMG Arena rules re-read: no changes. CDL Competitive Settings are still v1.0." }
+    ] },
     { "date": "2026-11-21", "items": [
       { "area": "Warzone", "text": "Re-checked on wzstats.gg and warzoneloadout.games. No tier moves and no build changes for the 29 weapons already listed, and the top six are the same." },
       { "area": "Warzone", "text": "The Type 73 stays on the page. warzoneloadout.games still shows no build for it, so its build is now the one on wzstats.gg, which has the same five attachments." },
