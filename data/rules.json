@@ -1,6 +1,6 @@
 {
   "_about": "Rule sets every multiplayer class on the site is checked against at build time (build.js, legality()). cdl = the league's Competitive Settings, which Ranked Play follows. cmg = Checkmate Gaming's MW4 Arena rules. ga = gentlemen's agreements between pros: not written rules, shown as warnings. Update `checked` whenever the source pages are re-read, and copy any change into `changes`.",
-  "checked": "2026-11-22",
+  "checked": "2026-11-23",
   "cdl": {
     "name": "Ranked / CDL",
     "title": "CDL Competitive Settings v1.0",
