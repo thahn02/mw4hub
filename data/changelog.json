@@ -1,6 +1,14 @@
 {
   "_about": "What changed, newest first. The daily refresh adds one entry per run (see tools/DAILY-LOADOUTS.md), even when nothing changed, so the home page can show when the site was last checked. area is one of Loadouts, Warzone, Rules, Maps, Site. Keep each line short and plain. Keep the newest 30 entries.",
   "entries": [
+    { "date": "2026-11-24", "items": [
+      { "area": "Warzone", "text": "Cronen Osprey on wzstats.gg: both builds now use the FT Stalwart MK2 stock, and the Sniper Support build drops the suppressor for a Locus PX3 Canted optic and a 100 Round Drum." },
+      { "area": "Warzone", "text": "WZ.55 Striga on wzstats.gg: EXP Narrow-Lite stock and Schlager Visiv-5 laser replace the Wire Stock and the rear grip. ISO Nightshade: the laser is now the Schlager Visiv-5." },
+      { "area": "Warzone", "text": "Hyeon Burst moved from B to A on warzoneloadout.games, with a new build (Locus PX3 Canted optic, 40 Round Mag). It stays in A tier here; no weapon changed tier on our list." },
+      { "area": "Warzone", "text": "The Sang 9mm and Mojave .357 builds could not be re-read today (that part of the warzoneloadout.games list did not load), so they keep yesterday’s check date." },
+      { "area": "Loadouts", "text": "Re-checked. No changes. YouTube could not be read for a seventh day, so the pro classes are as last confirmed on Nov 17." },
+      { "area": "Rules", "text": "CMG Arena rules re-read: no changes. CDL Competitive Settings are still v1.0." }
+    ] },
     { "date": "2026-11-23", "items": [
       { "area": "Warzone", "text": "Re-checked on wzstats.gg and warzoneloadout.games. No tier moves and no build changes: the same 30 weapons, with the same top six." },
       { "area": "Loadouts", "text": "Re-checked. No changes. YouTube could not be read for a sixth day, so the pro classes are as last confirmed on Nov 17." },
