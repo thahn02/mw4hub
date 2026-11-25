@@ -1,6 +1,14 @@
 {
   "_about": "What changed, newest first. The daily refresh adds one entry per run (see tools/DAILY-LOADOUTS.md), even when nothing changed, so the home page can show when the site was last checked. area is one of Loadouts, Warzone, Rules, Maps, Site. Keep each line short and plain. Keep the newest 30 entries.",
   "entries": [
+    { "date": "2026-11-25", "items": [
+      { "area": "Warzone", "text": "Hyeon Burst on wzstats.gg: new build with the Hyeon Auto Apex, Locus PX3 Canted optic, 60 Round Drum Mag and HVY-80 Stockpad. The Hyperburst Apex, Cronen R808, rear grip and high velocity rounds are gone." },
+      { "area": "Warzone", "text": "CSG-35 on wzstats.gg: the Matuzek Fire-Pro rear grip replaces the CQC Stop underbarrel." },
+      { "area": "Warzone", "text": "Cronen Squall: wzstats.gg now runs a Locus PX3 Canted optic, FSS Fireline Grip and 60 Round Drum, so the two sites no longer agree and both builds are shown." },
+      { "area": "Warzone", "text": "No weapon changed tier. All 30 weapons were re-read on both sites today." },
+      { "area": "Loadouts", "text": "Re-checked. No changes. YouTube could not be read for an eighth day, so the pro classes are as last confirmed on Nov 17. The M4 class was last seen on Nov 11 and comes off the page tomorrow." },
+      { "area": "Rules", "text": "CMG Arena rules re-read: no changes. CDL Competitive Settings are still v1.0." }
+    ] },
     { "date": "2026-11-24", "items": [
       { "area": "Warzone", "text": "Cronen Osprey on wzstats.gg: both builds now use the FT Stalwart MK2 stock, and the Sniper Support build drops the suppressor for a Locus PX3 Canted optic and a 100 Round Drum." },
       { "area": "Warzone", "text": "WZ.55 Striga on wzstats.gg: EXP Narrow-Lite stock and Schlager Visiv-5 laser replace the Wire Stock and the rear grip. ISO Nightshade: the laser is now the Schlager Visiv-5." },
