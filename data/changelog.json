@@ -1,6 +1,16 @@
 {
   "_about": "What changed, newest first. The daily refresh adds one entry per run (see tools/DAILY-LOADOUTS.md), even when nothing changed, so the home page can show when the site was last checked. area is one of Loadouts, Warzone, Rules, Maps, Site. Keep each line short and plain. Keep the newest 30 entries.",
   "entries": [
+    { "date": "2026-11-26", "items": [
+      { "area": "Warzone", "text": "Patriot XMR moves up from B to A after warzoneloadout.games raised it to its B tier. It now has two builds: wzstats.gg switched its optic to the Locus PX3 Canted, and warzoneloadout.games shows it with the Cronen R808." },
+      { "area": "Warzone", "text": "KG-7 Vulcan on wzstats.gg: the Bruen KG-7 MK. IV stock and XRK Clutch-LS laser replace the TT G76-RP Stock and KT76 Light Bolt. The two sites no longer agree, so both builds are shown." },
+      { "area": "Warzone", "text": "X-58 Nyx and PPSh-41 on wzstats.gg: both swap the Mire-50 Tac Grip for the FSS Tac90 Grip and add the XRK Clutch-LS laser, in place of the Nyx's BOK-980 rear grip and the PPSh's TT Banseok-24N barrel. warzoneloadout.games still shows the old builds, so both are listed." },
+      { "area": "Warzone", "text": "M4 on wzstats.gg: the Demo HVR2 Stock replaces the PF1 Fixed Stock. Axion on wzstats.gg: the TA Harrow Stock replaces the FSS Tac90 Grip." },
+      { "area": "Warzone", "text": "Kastov 762 moved from B to A on warzoneloadout.games. It stays in A tier here, and no other weapon changed tier." },
+      { "area": "Warzone", "text": "warzoneloadout.games did not show its builds for the Astaroth .57, Warlord, Signal 50, Sang 9mm and Mojave .357 today, so those are still the ones last read on Nov 25. The Sang 9mm and Mojave .357 keep that check date." },
+      { "area": "Loadouts", "text": "Re-checked. No changes. The description of the Nov 17 pro class video could be read again today and still lists the same HAN 86, VEL 46 and ISO Nightshade pro builds; nothing newer was found. The M4 class, last seen on Nov 11, has dropped off the page." },
+      { "area": "Rules", "text": "CMG Arena rules re-read: no changes. CDL Competitive Settings are still v1.0." }
+    ] },
     { "date": "2026-11-25", "items": [
       { "area": "Warzone", "text": "Hyeon Burst on wzstats.gg: new build with the Hyeon Auto Apex, Locus PX3 Canted optic, 60 Round Drum Mag and HVY-80 Stockpad. The Hyperburst Apex, Cronen R808, rear grip and high velocity rounds are gone." },
       { "area": "Warzone", "text": "CSG-35 on wzstats.gg: the Matuzek Fire-Pro rear grip replaces the CQC Stop underbarrel." },
