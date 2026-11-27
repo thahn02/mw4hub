@@ -36,7 +36,7 @@
         "source": {
           "label": "wzstats.gg",
           "url": "https://wzstats.gg/best-loadouts/cronen-osprey-mw4",
-          "date": "2026-11-25"
+          "date": "2026-11-26"
         }
       },
       {
@@ -96,7 +96,7 @@
         "source": {
           "label": "wzstats.gg",
           "url": "https://wzstats.gg/best-loadouts/cronen-osprey-mw4",
-          "date": "2026-11-25"
+          "date": "2026-11-26"
         }
       }
     ],
@@ -108,7 +108,7 @@
       "wzstats": "META",
       "warzoneloadout": "S"
     },
-    "verified": "2026-11-26",
+    "verified": "2026-11-27",
     "video": ""
   },
   {
@@ -148,7 +148,7 @@
         "source": {
           "label": "wzstats.gg",
           "url": "https://wzstats.gg/best-loadouts/wz55-striga-mw4",
-          "date": "2026-11-25"
+          "date": "2026-11-26"
         }
       },
       {
@@ -190,7 +190,89 @@
       "wzstats": "META",
       "warzoneloadout": "S"
     },
-    "verified": "2026-11-26",
+    "verified": "2026-11-27",
+    "video": ""
+  },
+  {
+    "game": "warzone",
+    "kind": "meta",
+    "weapon": "KG-7 Vulcan",
+    "class": "Sniper",
+    "tier": "S",
+    "category": "Sniper",
+    "players": [],
+    "team": "",
+    "builds": [
+      {
+        "name": "Sniper · wzstats",
+        "attachments": [
+          {
+            "slot": "Muzzle",
+            "name": "Gauge-12 Mono"
+          },
+          {
+            "slot": "Barrel",
+            "name": "Haebang RMT762 29\""
+          },
+          {
+            "slot": "Stock",
+            "name": "Bruen KG-7 MK. IV"
+          },
+          {
+            "slot": "Laser",
+            "name": "XRK Clutch-LS"
+          },
+          {
+            "slot": "Ammunition",
+            "name": "7.62x54mmR High Velocity"
+          }
+        ],
+        "source": {
+          "label": "wzstats.gg",
+          "url": "https://wzstats.gg/best-loadouts/kg-7-vulcan-mw4",
+          "date": "2026-11-26"
+        }
+      },
+      {
+        "name": "Sniper · wzloadout",
+        "attachments": [
+          {
+            "slot": "Muzzle",
+            "name": "Gauge-12 Mono"
+          },
+          {
+            "slot": "Barrel",
+            "name": "Haebang RMT762 29\""
+          },
+          {
+            "slot": "Stock",
+            "name": "TT G76-RP Stock"
+          },
+          {
+            "slot": "Ammunition",
+            "name": "7.62x54mmR High Velocity"
+          },
+          {
+            "slot": "Bolt",
+            "name": "KT76 Light Bolt"
+          }
+        ],
+        "source": {
+          "label": "warzoneloadout.games",
+          "url": "https://warzoneloadout.games/warzone-meta",
+          "date": "2026-11-25"
+        }
+      }
+    ],
+    "source": {
+      "label": "wzstats.gg + warzoneloadout.games",
+      "url": "https://wzstats.gg/"
+    },
+    "sources_tier": {
+      "wzstats": "META",
+      "warzoneloadout": "S"
+    },
+    "verified": "2026-11-27",
     "video": ""
   },
   {
@@ -230,7 +312,7 @@
         "source": {
           "label": "wzstats.gg",
           "url": "https://wzstats.gg/best-loadouts/iso-nightshade-mw4",
-          "date": "2026-11-25"
+          "date": "2026-11-26"
         }
       },
       {
@@ -272,7 +354,7 @@
       "wzstats": "META",
       "warzoneloadout": "A"
     },
-    "verified": "2026-11-26",
+    "verified": "2026-11-27",
     "video": ""
   },
   {
@@ -312,7 +394,7 @@
         "source": {
           "label": "wzstats.gg",
           "url": "https://wzstats.gg/best-loadouts/han-86-mw4",
-          "date": "2026-11-25"
+          "date": "2026-11-26"
         }
       },
       {
@@ -354,7 +436,7 @@
       "wzstats": "META",
       "warzoneloadout": "A"
     },
-    "verified": "2026-11-26",
+    "verified": "2026-11-27",
     "video": ""
   },
   {
@@ -394,7 +476,7 @@
         "source": {
           "label": "wzstats.gg",
           "url": "https://wzstats.gg/best-loadouts/mosin-nagant-mw4",
-          "date": "2026-11-25"
+          "date": "2026-11-26"
         },
         "both": true
       }
@@ -407,89 +489,7 @@
       "wzstats": "META",
       "warzoneloadout": "A"
     },
-    "verified": "2026-11-26",
-    "video": ""
-  },
-  {
-    "game": "warzone",
-    "kind": "meta",
-    "weapon": "KG-7 Vulcan",
-    "class": "Sniper",
-    "tier": "S",
-    "category": "Sniper",
-    "players": [],
-    "team": "",
-    "builds": [
-      {
-        "name": "Sniper · wzstats",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "Gauge-12 Mono"
-          },
-          {
-            "slot": "Barrel",
-            "name": "Haebang RMT762 29\""
-          },
-          {
-            "slot": "Stock",
-            "name": "Bruen KG-7 MK. IV"
-          },
-          {
-            "slot": "Laser",
-            "name": "XRK Clutch-LS"
-          },
-          {
-            "slot": "Ammunition",
-            "name": "7.62x54mmR High Velocity"
-          }
-        ],
-        "source": {
-          "label": "wzstats.gg",
-          "url": "https://wzstats.gg/best-loadouts/kg-7-vulcan-mw4",
-          "date": "2026-11-25"
-        }
-      },
-      {
-        "name": "Sniper · wzloadout",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "Gauge-12 Mono"
-          },
-          {
-            "slot": "Barrel",
-            "name": "Haebang RMT762 29\""
-          },
-          {
-            "slot": "Stock",
-            "name": "TT G76-RP Stock"
-          },
-          {
-            "slot": "Ammunition",
-            "name": "7.62x54mmR High Velocity"
-          },
-          {
-            "slot": "Bolt",
-            "name": "KT76 Light Bolt"
-          }
-        ],
-        "source": {
-          "label": "warzoneloadout.games",
-          "url": "https://warzoneloadout.games/warzone-meta",
-          "date": "2026-11-25"
-        }
-      }
-    ],
-    "source": {
-      "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://wzstats.gg/"
-    },
-    "sources_tier": {
-      "wzstats": "A",
-      "warzoneloadout": "S"
-    },
-    "verified": "2026-11-26",
+    "verified": "2026-11-27",
     "video": ""
   },
   {
@@ -529,7 +529,7 @@
         "source": {
           "label": "wzstats.gg",
           "url": "https://wzstats.gg/best-loadouts/kastov-762-mw4",
-          "date": "2026-11-25"
+          "date": "2026-11-26"
         }
       },
       {
@@ -571,7 +571,7 @@
       "wzstats": "A",
       "warzoneloadout": "A"
     },
-    "verified": "2026-11-26",
+    "verified": "2026-11-27",
     "video": ""
   },
   {
@@ -611,7 +611,7 @@
         "source": {
           "label": "wzstats.gg",
           "url": "https://wzstats.gg/best-loadouts/vel-46-mw4",
-          "date": "2026-11-25"
+          "date": "2026-11-26"
         }
       },
       {
@@ -653,7 +653,7 @@
       "wzstats": "A",
       "warzoneloadout": "A"
     },
-    "verified": "2026-11-26",
+    "verified": "2026-11-27",
     "video": ""
   },
   {
@@ -693,7 +693,7 @@
         "source": {
           "label": "wzstats.gg",
           "url": "https://wzstats.gg/best-loadouts/m4-mw4",
-          "date": "2026-11-25"
+          "date": "2026-11-26"
         }
       },
       {
@@ -735,7 +735,335 @@
       "wzstats": "A",
       "warzoneloadout": "A"
     },
-    "verified": "2026-11-26",
+    "verified": "2026-11-27",
+    "video": ""
+  },
+  {
+    "game": "warzone",
+    "kind": "meta",
+    "weapon": "CSG-35",
+    "class": "SMG",
+    "tier": "A",
+    "category": "Close Range",
+    "players": [],
+    "team": "",
+    "builds": [
+      {
+        "name": "Close Range · wzstats",
+        "attachments": [
+          {
+            "slot": "Muzzle",
+            "name": "EXP Forage-Hvy"
+          },
+          {
+            "slot": "Magazine",
+            "name": "40 Round Mag"
+          },
+          {
+            "slot": "Rear Grip",
+            "name": "Matuzek Fire-Pro"
+          },
+          {
+            "slot": "Stock",
+            "name": "XRK Slight Stock"
+          },
+          {
+            "slot": "Laser",
+            "name": "SA Laz-500"
+          }
+        ],
+        "source": {
+          "label": "wzstats.gg",
+          "url": "https://wzstats.gg/best-loadouts/csg-35-mw4",
+          "date": "2026-11-26"
+        }
+      },
+      {
+        "name": "Close Range · wzloadout",
+        "attachments": [
+          {
+            "slot": "Muzzle",
+            "name": "RTR-8 Pro"
+          },
+          {
+            "slot": "Magazine",
+            "name": "40 Round Mag"
+          },
+          {
+            "slot": "Rear Grip",
+            "name": "Matuzek Fire-Pro"
+          },
+          {
+            "slot": "Stock",
+            "name": "XRK Slight Stock"
+          },
+          {
+            "slot": "Ammunition",
+            "name": "9mm Parabellum High Velocity"
+          }
+        ],
+        "source": {
+          "label": "warzoneloadout.games",
+          "url": "https://warzoneloadout.games/warzone-meta",
+          "date": "2026-11-25"
+        }
+      }
+    ],
+    "source": {
+      "label": "wzstats.gg + warzoneloadout.games",
+      "url": "https://wzstats.gg/"
+    },
+    "sources_tier": {
+      "wzstats": "A",
+      "warzoneloadout": "B"
+    },
+    "verified": "2026-11-27",
+    "video": ""
+  },
+  {
+    "game": "warzone",
+    "kind": "meta",
+    "weapon": "Axion",
+    "class": "Assault Rifle",
+    "tier": "A",
+    "category": "Long Range",
+    "players": [],
+    "team": "",
+    "builds": [
+      {
+        "name": "Long Range · wzstats",
+        "attachments": [
+          {
+            "slot": "Optic",
+            "name": "Locus PX3 Canted"
+          },
+          {
+            "slot": "Muzzle",
+            "name": "FSS IS300"
+          },
+          {
+            "slot": "Barrel",
+            "name": "Cronen DC-Forge 40"
+          },
+          {
+            "slot": "Magazine",
+            "name": "40 Round Mag"
+          },
+          {
+            "slot": "Stock",
+            "name": "TA Harrow Stock"
+          }
+        ],
+        "source": {
+          "label": "wzstats.gg",
+          "url": "https://wzstats.gg/best-loadouts/axion-mw4",
+          "date": "2026-11-26"
+        }
+      },
+      {
+        "name": "Long Range · wzloadout",
+        "attachments": [
+          {
+            "slot": "Optic",
+            "name": "Cronen R808"
+          },
+          {
+            "slot": "Muzzle",
+            "name": "FSS IS300"
+          },
+          {
+            "slot": "Barrel",
+            "name": "SA DMN-L 30"
+          },
+          {
+            "slot": "Magazine",
+            "name": "40 Round Mag"
+          },
+          {
+            "slot": "Stock",
+            "name": "TA Harrow Stock"
+          }
+        ],
+        "source": {
+          "label": "warzoneloadout.games",
+          "url": "https://warzoneloadout.games/warzone-meta",
+          "date": "2026-11-25"
+        }
+      }
+    ],
+    "source": {
+      "label": "wzstats.gg + warzoneloadout.games",
+      "url": "https://wzstats.gg/"
+    },
+    "sources_tier": {
+      "wzstats": "A",
+      "warzoneloadout": "B"
+    },
+    "verified": "2026-11-27",
+    "video": ""
+  },
+  {
+    "game": "warzone",
+    "kind": "meta",
+    "weapon": "X-58 Nyx",
+    "class": "SMG",
+    "tier": "A",
+    "category": "Close Range",
+    "players": [],
+    "team": "",
+    "builds": [
+      {
+        "name": "Close Range · wzstats",
+        "attachments": [
+          {
+            "slot": "Barrel",
+            "name": "Doksa 4F 305mm"
+          },
+          {
+            "slot": "Underbarrel",
+            "name": "FSS Tac90 Grip"
+          },
+          {
+            "slot": "Magazine",
+            "name": "60 Round Mag"
+          },
+          {
+            "slot": "Stock",
+            "name": "Mugi HUL-73.M Stock"
+          },
+          {
+            "slot": "Laser",
+            "name": "XRK Clutch-LS"
+          }
+        ],
+        "source": {
+          "label": "wzstats.gg",
+          "url": "https://wzstats.gg/best-loadouts/x-58-nyx-mw4",
+          "date": "2026-11-26"
+        }
+      },
+      {
+        "name": "Close Range · wzloadout",
+        "attachments": [
+          {
+            "slot": "Barrel",
+            "name": "Doksa 4F 305mm"
+          },
+          {
+            "slot": "Underbarrel",
+            "name": "Mire-50 Tac Grip"
+          },
+          {
+            "slot": "Magazine",
+            "name": "60 Round Mag"
+          },
+          {
+            "slot": "Rear Grip",
+            "name": "BOK-980"
+          },
+          {
+            "slot": "Stock",
+            "name": "Mugi HUL-73.M Stock"
+          }
+        ],
+        "source": {
+          "label": "warzoneloadout.games",
+          "url": "https://warzoneloadout.games/warzone-meta",
+          "date": "2026-11-25"
+        }
+      }
+    ],
+    "source": {
+      "label": "wzstats.gg + warzoneloadout.games",
+      "url": "https://wzstats.gg/"
+    },
+    "sources_tier": {
+      "wzstats": "A",
+      "warzoneloadout": "B"
+    },
+    "verified": "2026-11-27",
+    "video": ""
+  },
+  {
+    "game": "warzone",
+    "kind": "meta",
+    "weapon": "PPSh-41",
+    "class": "SMG",
+    "tier": "A",
+    "category": "Close Range",
+    "players": [],
+    "team": "",
+    "builds": [
+      {
+        "name": "Close Range · wzstats",
+        "attachments": [
+          {
+            "slot": "Optic",
+            "name": "ZLR Type C"
+          },
+          {
+            "slot": "Muzzle",
+            "name": "Full Port Comp"
+          },
+          {
+            "slot": "Underbarrel",
+            "name": "FSS Tac90 Grip"
+          },
+          {
+            "slot": "Stock",
+            "name": "MT-L5 Jinhwa"
+          },
+          {
+            "slot": "Laser",
+            "name": "XRK Clutch-LS"
+          }
+        ],
+        "source": {
+          "label": "wzstats.gg",
+          "url": "https://wzstats.gg/best-loadouts/ppsh-41-mw4",
+          "date": "2026-11-26"
+        }
+      },
+      {
+        "name": "Close Range · wzloadout",
+        "attachments": [
+          {
+            "slot": "Optic",
+            "name": "ZLR Type C"
+          },
+          {
+            "slot": "Muzzle",
+            "name": "Full Port Comp"
+          },
+          {
+            "slot": "Barrel",
+            "name": "TT Banseok-24N"
+          },
+          {
+            "slot": "Underbarrel",
+            "name": "Mire-50 Tac Grip"
+          },
+          {
+            "slot": "Stock",
+            "name": "MT-L5 Jinhwa"
+          }
+        ],
+        "source": {
+          "label": "warzoneloadout.games",
+          "url": "https://warzoneloadout.games/warzone-meta",
+          "date": "2026-11-25"
+        }
+      }
+    ],
+    "source": {
+      "label": "wzstats.gg + warzoneloadout.games",
+      "url": "https://wzstats.gg/"
+    },
+    "sources_tier": {
+      "wzstats": "A",
+      "warzoneloadout": "B"
+    },
+    "verified": "2026-11-27",
     "video": ""
   },
   {
@@ -779,7 +1107,7 @@
         "source": {
           "label": "wzstats.gg",
           "url": "https://wzstats.gg/best-loadouts/hyeon-burst-mw4",
-          "date": "2026-11-25"
+          "date": "2026-11-26"
         }
       },
       {
@@ -819,337 +1147,9 @@
     },
     "sources_tier": {
       "wzstats": "A",
-      "warzoneloadout": "A"
-    },
-    "verified": "2026-11-26",
-    "video": ""
-  },
-  {
-    "game": "warzone",
-    "kind": "meta",
-    "weapon": "CSG-35",
-    "class": "SMG",
-    "tier": "A",
-    "category": "Close Range",
-    "players": [],
-    "team": "",
-    "builds": [
-      {
-        "name": "Close Range · wzstats",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "EXP Forage-Hvy"
-          },
-          {
-            "slot": "Magazine",
-            "name": "40 Round Mag"
-          },
-          {
-            "slot": "Rear Grip",
-            "name": "Matuzek Fire-Pro"
-          },
-          {
-            "slot": "Stock",
-            "name": "XRK Slight Stock"
-          },
-          {
-            "slot": "Laser",
-            "name": "SA Laz-500"
-          }
-        ],
-        "source": {
-          "label": "wzstats.gg",
-          "url": "https://wzstats.gg/best-loadouts/csg-35-mw4",
-          "date": "2026-11-25"
-        }
-      },
-      {
-        "name": "Close Range · wzloadout",
-        "attachments": [
-          {
-            "slot": "Muzzle",
-            "name": "RTR-8 Pro"
-          },
-          {
-            "slot": "Magazine",
-            "name": "40 Round Mag"
-          },
-          {
-            "slot": "Rear Grip",
-            "name": "Matuzek Fire-Pro"
-          },
-          {
-            "slot": "Stock",
-            "name": "XRK Slight Stock"
-          },
-          {
-            "slot": "Ammunition",
-            "name": "9mm Parabellum High Velocity"
-          }
-        ],
-        "source": {
-          "label": "warzoneloadout.games",
-          "url": "https://warzoneloadout.games/warzone-meta",
-          "date": "2026-11-25"
-        }
-      }
-    ],
-    "source": {
-      "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://wzstats.gg/"
-    },
-    "sources_tier": {
-      "wzstats": "A",
       "warzoneloadout": "B"
     },
-    "verified": "2026-11-26",
-    "video": ""
-  },
-  {
-    "game": "warzone",
-    "kind": "meta",
-    "weapon": "Axion",
-    "class": "Assault Rifle",
-    "tier": "A",
-    "category": "Long Range",
-    "players": [],
-    "team": "",
-    "builds": [
-      {
-        "name": "Long Range · wzstats",
-        "attachments": [
-          {
-            "slot": "Optic",
-            "name": "Locus PX3 Canted"
-          },
-          {
-            "slot": "Muzzle",
-            "name": "FSS IS300"
-          },
-          {
-            "slot": "Barrel",
-            "name": "Cronen DC-Forge 40"
-          },
-          {
-            "slot": "Magazine",
-            "name": "40 Round Mag"
-          },
-          {
-            "slot": "Stock",
-            "name": "TA Harrow Stock"
-          }
-        ],
-        "source": {
-          "label": "wzstats.gg",
-          "url": "https://wzstats.gg/best-loadouts/axion-mw4",
-          "date": "2026-11-25"
-        }
-      },
-      {
-        "name": "Long Range · wzloadout",
-        "attachments": [
-          {
-            "slot": "Optic",
-            "name": "Cronen R808"
-          },
-          {
-            "slot": "Muzzle",
-            "name": "FSS IS300"
-          },
-          {
-            "slot": "Barrel",
-            "name": "SA DMN-L 30"
-          },
-          {
-            "slot": "Magazine",
-            "name": "40 Round Mag"
-          },
-          {
-            "slot": "Stock",
-            "name": "TA Harrow Stock"
-          }
-        ],
-        "source": {
-          "label": "warzoneloadout.games",
-          "url": "https://warzoneloadout.games/warzone-meta",
-          "date": "2026-11-25"
-        }
-      }
-    ],
-    "source": {
-      "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://wzstats.gg/"
-    },
-    "sources_tier": {
-      "wzstats": "A",
-      "warzoneloadout": "B"
-    },
-    "verified": "2026-11-26",
-    "video": ""
-  },
-  {
-    "game": "warzone",
-    "kind": "meta",
-    "weapon": "X-58 Nyx",
-    "class": "SMG",
-    "tier": "A",
-    "category": "Close Range",
-    "players": [],
-    "team": "",
-    "builds": [
-      {
-        "name": "Close Range · wzstats",
-        "attachments": [
-          {
-            "slot": "Barrel",
-            "name": "Doksa 4F 305mm"
-          },
-          {
-            "slot": "Underbarrel",
-            "name": "FSS Tac90 Grip"
-          },
-          {
-            "slot": "Magazine",
-            "name": "60 Round Mag"
-          },
-          {
-            "slot": "Stock",
-            "name": "Mugi HUL-73.M Stock"
-          },
-          {
-            "slot": "Laser",
-            "name": "XRK Clutch-LS"
-          }
-        ],
-        "source": {
-          "label": "wzstats.gg",
-          "url": "https://wzstats.gg/best-loadouts/x-58-nyx-mw4",
-          "date": "2026-11-25"
-        }
-      },
-      {
-        "name": "Close Range · wzloadout",
-        "attachments": [
-          {
-            "slot": "Barrel",
-            "name": "Doksa 4F 305mm"
-          },
-          {
-            "slot": "Underbarrel",
-            "name": "Mire-50 Tac Grip"
-          },
-          {
-            "slot": "Magazine",
-            "name": "60 Round Mag"
-          },
-          {
-            "slot": "Rear Grip",
-            "name": "BOK-980"
-          },
-          {
-            "slot": "Stock",
-            "name": "Mugi HUL-73.M Stock"
-          }
-        ],
-        "source": {
-          "label": "warzoneloadout.games",
-          "url": "https://warzoneloadout.games/warzone-meta",
-          "date": "2026-11-25"
-        }
-      }
-    ],
-    "source": {
-      "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://wzstats.gg/"
-    },
-    "sources_tier": {
-      "wzstats": "A",
-      "warzoneloadout": "B"
-    },
-    "verified": "2026-11-26",
-    "video": ""
-  },
-  {
-    "game": "warzone",
-    "kind": "meta",
-    "weapon": "PPSh-41",
-    "class": "SMG",
-    "tier": "A",
-    "category": "Close Range",
-    "players": [],
-    "team": "",
-    "builds": [
-      {
-        "name": "Close Range · wzstats",
-        "attachments": [
-          {
-            "slot": "Optic",
-            "name": "ZLR Type C"
-          },
-          {
-            "slot": "Muzzle",
-            "name": "Full Port Comp"
-          },
-          {
-            "slot": "Underbarrel",
-            "name": "FSS Tac90 Grip"
-          },
-          {
-            "slot": "Stock",
-            "name": "MT-L5 Jinhwa"
-          },
-          {
-            "slot": "Laser",
-            "name": "XRK Clutch-LS"
-          }
-        ],
-        "source": {
-          "label": "wzstats.gg",
-          "url": "https://wzstats.gg/best-loadouts/ppsh-41-mw4",
-          "date": "2026-11-25"
-        }
-      },
-      {
-        "name": "Close Range · wzloadout",
-        "attachments": [
-          {
-            "slot": "Optic",
-            "name": "ZLR Type C"
-          },
-          {
-            "slot": "Muzzle",
-            "name": "Full Port Comp"
-          },
-          {
-            "slot": "Barrel",
-            "name": "TT Banseok-24N"
-          },
-          {
-            "slot": "Underbarrel",
-            "name": "Mire-50 Tac Grip"
-          },
-          {
-            "slot": "Stock",
-            "name": "MT-L5 Jinhwa"
-          }
-        ],
-        "source": {
-          "label": "warzoneloadout.games",
-          "url": "https://warzoneloadout.games/warzone-meta",
-          "date": "2026-11-25"
-        }
-      }
-    ],
-    "source": {
-      "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://wzstats.gg/"
-    },
-    "sources_tier": {
-      "wzstats": "A",
-      "warzoneloadout": "B"
-    },
-    "verified": "2026-11-26",
+    "verified": "2026-11-27",
     "video": ""
   },
   {
@@ -1189,7 +1189,7 @@
         "source": {
           "label": "wzstats.gg",
           "url": "https://wzstats.gg/best-loadouts/patriot-xmr-mw4",
-          "date": "2026-11-25"
+          "date": "2026-11-26"
         }
       },
       {
@@ -1231,7 +1231,7 @@
       "wzstats": "A",
       "warzoneloadout": "B"
     },
-    "verified": "2026-11-26",
+    "verified": "2026-11-27",
     "video": ""
   },
   {
@@ -1271,7 +1271,7 @@
         "source": {
           "label": "wzstats.gg",
           "url": "https://wzstats.gg/best-loadouts/cronen-squall-mw4",
-          "date": "2026-11-25"
+          "date": "2026-11-26"
         }
       },
       {
@@ -1313,7 +1313,7 @@
       "wzstats": "A",
       "warzoneloadout": "B"
     },
-    "verified": "2026-11-26",
+    "verified": "2026-11-27",
     "video": ""
   },
   {
@@ -1353,7 +1353,7 @@
         "source": {
           "label": "wzstats.gg",
           "url": "https://wzstats.gg/best-loadouts/finn-lmg-mw4",
-          "date": "2026-11-25"
+          "date": "2026-11-26"
         },
         "both": true
       }
@@ -1366,7 +1366,7 @@
       "wzstats": "A",
       "warzoneloadout": "B"
     },
-    "verified": "2026-11-26",
+    "verified": "2026-11-27",
     "video": ""
   },
   {
@@ -1406,7 +1406,7 @@
         "source": {
           "label": "wzstats.gg",
           "url": "https://wzstats.gg/best-loadouts/astaroth-57-mw4",
-          "date": "2026-11-25"
+          "date": "2026-11-26"
         }
       },
       {
@@ -1448,7 +1448,7 @@
       "wzstats": "A",
       "warzoneloadout": "C"
     },
-    "verified": "2026-11-26",
+    "verified": "2026-11-27",
     "video": ""
   },
   {
@@ -1488,7 +1488,7 @@
         "source": {
           "label": "wzstats.gg",
           "url": "https://wzstats.gg/best-loadouts/oden-mw4",
-          "date": "2026-11-25"
+          "date": "2026-11-26"
         }
       }
     ],
@@ -1500,7 +1500,7 @@
       "wzstats": "A",
       "warzoneloadout": "C"
     },
-    "verified": "2026-11-26",
+    "verified": "2026-11-27",
     "video": ""
   },
   {
@@ -1540,7 +1540,7 @@
         "source": {
           "label": "wzstats.gg",
           "url": "https://wzstats.gg/best-loadouts/krait-p68-mw4",
-          "date": "2026-11-25"
+          "date": "2026-11-26"
         }
       }
     ],
@@ -1552,7 +1552,7 @@
       "wzstats": "A",
       "warzoneloadout": "C"
     },
-    "verified": "2026-11-26",
+    "verified": "2026-11-27",
     "video": ""
   },
   {
@@ -1592,7 +1592,7 @@
         "source": {
           "label": "wzstats.gg",
           "url": "https://wzstats.gg/best-loadouts/rezi-12-mw4",
-          "date": "2026-11-25"
+          "date": "2026-11-26"
         }
       },
       {
@@ -1634,7 +1634,7 @@
       "wzstats": "A",
       "warzoneloadout": "C"
     },
-    "verified": "2026-11-26",
+    "verified": "2026-11-27",
     "video": ""
   },
   {
@@ -1674,7 +1674,7 @@
         "source": {
           "label": "wzstats.gg",
           "url": "https://wzstats.gg/best-loadouts/warlord-mw4",
-          "date": "2026-11-25"
+          "date": "2026-11-26"
         }
       },
       {
@@ -1716,7 +1716,7 @@
       "wzstats": "A",
       "warzoneloadout": "C"
     },
-    "verified": "2026-11-26",
+    "verified": "2026-11-27",
     "video": ""
   },
   {
@@ -1767,7 +1767,7 @@
     "sources_tier": {
       "warzoneloadout": "B"
     },
-    "verified": "2026-11-26",
+    "verified": "2026-11-27",
     "video": ""
   },
   {
@@ -1807,7 +1807,7 @@
         "source": {
           "label": "wzstats.gg",
           "url": "https://wzstats.gg/best-loadouts/apoc-338-mw4",
-          "date": "2026-11-25"
+          "date": "2026-11-26"
         },
         "both": true
       }
@@ -1820,7 +1820,7 @@
       "wzstats": "A",
       "warzoneloadout": "D"
     },
-    "verified": "2026-11-26",
+    "verified": "2026-11-27",
     "video": ""
   },
   {
@@ -1860,7 +1860,7 @@
         "source": {
           "label": "wzstats.gg",
           "url": "https://wzstats.gg/best-loadouts/signal-50-mw4",
-          "date": "2026-11-25"
+          "date": "2026-11-26"
         }
       },
       {
@@ -1902,7 +1902,7 @@
       "wzstats": "A",
       "warzoneloadout": "D"
     },
-    "verified": "2026-11-26",
+    "verified": "2026-11-27",
     "video": ""
   },
   {
@@ -1953,109 +1953,7 @@
     "sources_tier": {
       "warzoneloadout": "C"
     },
-    "verified": "2026-11-26",
-    "video": ""
-  },
-  {
-    "game": "warzone",
-    "kind": "meta",
-    "weapon": "Type 73",
-    "class": "LMG",
-    "tier": "C",
-    "category": "Long Range",
-    "players": [],
-    "team": "",
-    "builds": [
-      {
-        "name": "Long Range",
-        "attachments": [
-          {
-            "slot": "Optic",
-            "name": "SZ Helios Holo"
-          },
-          {
-            "slot": "Muzzle",
-            "name": "Gauge-12 Mono"
-          },
-          {
-            "slot": "Barrel",
-            "name": "Haebang ET-9D 772mm"
-          },
-          {
-            "slot": "Rear Grip",
-            "name": "Assault-L5 Grip"
-          },
-          {
-            "slot": "Stock",
-            "name": "FTAC RZR0 Stock"
-          }
-        ],
-        "source": {
-          "label": "wzstats.gg",
-          "url": "https://wzstats.gg/best-loadouts/type-73-mw4",
-          "date": "2026-11-25"
-        }
-      }
-    ],
-    "source": {
-      "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://wzstats.gg/"
-    },
-    "sources_tier": {
-      "warzoneloadout": "C"
-    },
-    "verified": "2026-11-26",
-    "video": ""
-  },
-  {
-    "game": "warzone",
-    "kind": "meta",
-    "weapon": "Oris 8.6",
-    "class": "Marksman Rifle",
-    "tier": "C",
-    "category": "Long Range",
-    "players": [],
-    "team": "",
-    "builds": [
-      {
-        "name": "Long Range",
-        "attachments": [
-          {
-            "slot": "Optic",
-            "name": "SZ Helios Holo"
-          },
-          {
-            "slot": "Barrel",
-            "name": "EXP Shadow-70 14\""
-          },
-          {
-            "slot": "Magazine",
-            "name": "20 Round Mag"
-          },
-          {
-            "slot": "Rear Grip",
-            "name": "Bruen C-Wrap 60"
-          },
-          {
-            "slot": "Bolt",
-            "name": "Lightfire-5 Quick Bolt"
-          }
-        ],
-        "source": {
-          "label": "wzstats.gg",
-          "url": "https://wzstats.gg/best-loadouts/oris-86-mw4",
-          "date": "2026-11-25"
-        }
-      }
-    ],
-    "source": {
-      "label": "wzstats.gg + warzoneloadout.games",
-      "url": "https://wzstats.gg/"
-    },
-    "sources_tier": {
-      "warzoneloadout": "C"
-    },
-    "verified": "2026-11-26",
+    "verified": "2026-11-27",
     "video": ""
   },
   {
@@ -2112,6 +2010,110 @@
   {
     "game": "warzone",
     "kind": "meta",
+    "weapon": "Type 73",
+    "class": "LMG",
+    "tier": "C",
+    "category": "Long Range",
+    "players": [],
+    "team": "",
+    "builds": [
+      {
+        "name": "Long Range",
+        "attachments": [
+          {
+            "slot": "Optic",
+            "name": "SZ Helios Holo"
+          },
+          {
+            "slot": "Muzzle",
+            "name": "Gauge-12 Mono"
+          },
+          {
+            "slot": "Barrel",
+            "name": "Haebang ET-9D 772mm"
+          },
+          {
+            "slot": "Rear Grip",
+            "name": "Assault-L5 Grip"
+          },
+          {
+            "slot": "Stock",
+            "name": "FTAC RZR0 Stock"
+          }
+        ],
+        "source": {
+          "label": "wzstats.gg",
+          "url": "https://wzstats.gg/best-loadouts/type-73-mw4",
+          "date": "2026-11-26"
+        },
+        "both": true
+      }
+    ],
+    "source": {
+      "label": "wzstats.gg + warzoneloadout.games",
+      "url": "https://wzstats.gg/"
+    },
+    "sources_tier": {
+      "warzoneloadout": "D"
+    },
+    "verified": "2026-11-27",
+    "video": ""
+  },
+  {
+    "game": "warzone",
+    "kind": "meta",
+    "weapon": "Oris 8.6",
+    "class": "Marksman Rifle",
+    "tier": "C",
+    "category": "Long Range",
+    "players": [],
+    "team": "",
+    "builds": [
+      {
+        "name": "Long Range",
+        "attachments": [
+          {
+            "slot": "Optic",
+            "name": "SZ Helios Holo"
+          },
+          {
+            "slot": "Barrel",
+            "name": "EXP Shadow-70 14\""
+          },
+          {
+            "slot": "Magazine",
+            "name": "20 Round Mag"
+          },
+          {
+            "slot": "Rear Grip",
+            "name": "Bruen C-Wrap 60"
+          },
+          {
+            "slot": "Bolt",
+            "name": "Lightfire-5 Quick Bolt"
+          }
+        ],
+        "source": {
+          "label": "wzstats.gg",
+          "url": "https://wzstats.gg/best-loadouts/oris-86-mw4",
+          "date": "2026-11-26"
+        },
+        "both": true
+      }
+    ],
+    "source": {
+      "label": "wzstats.gg + warzoneloadout.games",
+      "url": "https://wzstats.gg/"
+    },
+    "sources_tier": {
+      "warzoneloadout": "D"
+    },
+    "verified": "2026-11-27",
+    "video": ""
+  },
+  {
+    "game": "warzone",
+    "kind": "meta",
     "weapon": "Mojave .357",
     "class": "Pistol",
     "tier": "C",
@@ -2153,7 +2155,7 @@
     "sources_tier": {
       "warzoneloadout": "D"
     },
-    "verified": "2026-11-25",
+    "verified": "2026-11-27",
     "video": ""
   }
 ]

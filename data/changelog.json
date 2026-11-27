@@ -1,6 +1,14 @@
 {
   "_about": "What changed, newest first. The daily refresh adds one entry per run (see tools/DAILY-LOADOUTS.md), even when nothing changed, so the home page can show when the site was last checked. area is one of Loadouts, Warzone, Rules, Maps, Site. Keep each line short and plain. Keep the newest 30 entries.",
   "entries": [
+    { "date": "2026-11-27", "items": [
+      { "area": "Warzone", "text": "KG-7 Vulcan moved up to the top (META) tier on wzstats.gg, so both sites now rank it in their top tier. It was already S tier here." },
+      { "area": "Warzone", "text": "On warzoneloadout.games the Hyeon Burst dropped from A to B, and the Type 73 and Oris 8.6 dropped from C to D. On our list the Hyeon Burst stays in A tier and the other two stay in C tier." },
+      { "area": "Warzone", "text": "No weapon changed tier on our list and no build changed. All 30 weapons were re-read today. warzoneloadout.games now shows the Type 73 and Oris 8.6 with the same build as wzstats.gg." },
+      { "area": "Warzone", "text": "warzoneloadout.games did not show its builds for the Astaroth .57, Warlord and Sang 9mm today, so those are still the last ones it showed. The Sang 9mm keeps its Nov 25 check date and comes off the page after Nov 28 if its build is still not shown." },
+      { "area": "Loadouts", "text": "Re-checked. No changes. YouTube could not be read today (the Nov 17 pro class video and the other videos tried returned errors or rate limits) and TikTok does not allow automated reading, so the pro classes are as last confirmed on Nov 17. thecodlocker.com has nothing newer than October. Unless a newer source turns up, the pro classes drop off the page after Dec 1." },
+      { "area": "Rules", "text": "CMG Arena rules re-read: no changes. CDL Competitive Settings are still v1.0." }
+    ] },
     { "date": "2026-11-26", "items": [
       { "area": "Warzone", "text": "Patriot XMR moves up from B to A after warzoneloadout.games raised it to its B tier. It now has two builds: wzstats.gg switched its optic to the Locus PX3 Canted, and warzoneloadout.games shows it with the Cronen R808." },
       { "area": "Warzone", "text": "KG-7 Vulcan on wzstats.gg: the Bruen KG-7 MK. IV stock and XRK Clutch-LS laser replace the TT G76-RP Stock and KT76 Light Bolt. The two sites no longer agree, so both builds are shown." },
