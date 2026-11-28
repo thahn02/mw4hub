@@ -1,7 +1,7 @@
 {
   "_about": "Competitive multiplayer classes. Every build here must pass both rule sets in data/rules.json or the site will not build. `verified` is the date of the newest source that shows the build in use; builds older than the cut-off in build.js are hidden automatically. `kind`: pro = a named pro's or the pros' current build, creator = a creator's own variant. Attachment `type` is the in-game category (Long Barrel, Balanced Comp, Mini Reflex...) and is what the CMG category bans are checked against.",
-  "updated": "2026-11-27",
-  "summary": "Nothing new found today. As last confirmed on Nov 17, pros run the HAN 86 and the VEL 46, with the VEL on the light barrel since they agreed to drop the long barrel on Nov 16, and a few were testing the ISO Nightshade. YouTube could not be read today, so the Nov 17 video those builds come from was not re-checked, and no newer pro video could be found. Unless a newer source shows them in use, these builds drop off the page after Dec 1.",
+  "updated": "2026-11-28",
+  "summary": "Nothing new found today. As last confirmed on Nov 17, pros run the HAN 86 and the VEL 46, with the VEL on the light barrel since they agreed to drop the long barrel on Nov 16, and a few were testing the ISO Nightshade. The description of the Nov 17 video those builds come from could be read again today and still lists the Dashy HAN 86, VEL 46 and ISO Nightshade pro builds, but no newer pro video or post could be found. Unless a newer source shows them in use, these builds drop off the page after Dec 1.",
   "kit": {
     "secondary": {
       "name": "Sang 9mm",
